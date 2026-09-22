@@ -52,7 +52,7 @@
 
 ### 方法一
 
-如果你只是想要 PDF 笔记，那么[请点击这里直接下载最新发布版](https://github.com/econsun/XMU_AdvMacro_Note_SUN/releases/latest/download/AdvMacroNote_Sun_latest.pdf)。
+如果你只是想要 PDF 笔记，那么[请点此下载](https://github.com/econsun/XMU_AdvMacro_Note_SUN/releases/download/v1.0.0/AdvMacroNote_Sun_v1.0.0.pdf)。
 
 ### 方法二
 
@@ -91,7 +91,7 @@ make post 03
 make release VERSION=v2.1.0
 ```
 
-日常的 `make`、`make all`、Build LaTeX project 和 View PDF 都使用 `_build/book/AdvMacroNote_Sun.pdf`，不会修改根目录正式版。只有 `make release VERSION=vX.Y.Z` 会完整编译、把根目录正式版更新为 `AdvMacroNote_Sun_vX.Y.Z.pdf`、提交、创建标签、推送到 `main`，并创建同时包含版本文件和 latest 下载副本的 GitHub Release。发布前要求工作区干净、本地 `main` 与 `origin/main` 同步，并已通过 GitHub CLI 登录。
+日常的 `make`、`make all`、Build LaTeX project 和 View PDF 都使用 `_build/book/AdvMacroNote_Sun.pdf`，不会修改根目录正式版。只有 `make release VERSION=vX.Y.Z` 会完整编译、把根目录正式版更新为 `AdvMacroNote_Sun_vX.Y.Z.pdf`、提交、创建标签、推送到 `main`、创建 GitHub Release，并自动更新方法一的版本下载链接后提交 `doc: update readme`。发布前要求工作区干净、本地 `main` 与 `origin/main` 同步，并已通过 GitHub CLI 登录。
 
 </br>
 
