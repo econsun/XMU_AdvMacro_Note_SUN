@@ -198,7 +198,6 @@
     "files.exclude": {
         ".DS_Store": true,
         "missfont.log": true,
-        "_build": true,
         "**/*.aux": true,
         "**/*.bbl": true,
         "**/*.bcf": true,
@@ -245,6 +244,7 @@
         ".gitignore": false,
         "LICENSE": false,
         "Makefile": false,
-        "*.bib": false
+        "*.bib": false,
+        "README.md": false
     }
 }

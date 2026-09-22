@@ -41,11 +41,11 @@ def main() -> int:
         else:
             issue_dir = manager.create_issue(number)[0]
             manager.build_poster(number, issue_dir)
-        poster_name = manager.chapter_metadata(number)["POSTER_NAME"]
-        posters.append(manager.BUILD_ROOT / poster_name / f"{poster_name}.png")
+        output_name = manager.chapter_metadata(number)["OUTPUT_NAME"]
+        posters.append(manager.BUILD_ROOT / "posts" / output_name / "pages" / "00-cover.png")
         manager.ensure_nonempty(posters[-1])
 
-    output_dir = manager.BUILD_ROOT / "poster-overview"
+    output_dir = manager.BUILD_ROOT / "posts" / "overview"
     output_dir.mkdir(parents=True, exist_ok=True)
     output = output_dir / "poster-overview.png"
     output.unlink(missing_ok=True)

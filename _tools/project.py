@@ -34,7 +34,7 @@ def dispatch(values: list[str]) -> None:
     elif command == "chap":
         run("build.py", "chapter", require_number(values, "chap"))
     elif command == "post":
-        run("rednote.py", "poster", require_number(values, "post"))
+        run("rednote.py", "build", require_number(values, "post"))
     else:
         raise ProjectCommandError(
             f"未知命令：{' '.join(values)}；仅支持 make all、make chap 03、make post 03"

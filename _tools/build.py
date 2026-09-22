@@ -10,6 +10,7 @@ import shlex
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -21,7 +22,7 @@ XELATEX = str(Path(MACTEX_BIN) / "xelatex") if MACTEX_BIN else "xelatex"
 MAIN_TEX = PROJECT_ROOT / "AdvMacroNote_Sun.tex"
 MAIN_PDF = PROJECT_ROOT / "AdvMacroNote_Sun.pdf"
 MAIN_SYNCTEX = PROJECT_ROOT / "AdvMacroNote_Sun.synctex.gz"
-MAIN_BUILD_DIR = BUILD_ROOT / "AdvMacroNote_Sun"
+MAIN_BUILD_DIR = BUILD_ROOT / "book"
 MAIN_LOG = MAIN_BUILD_DIR / "AdvMacroNote_Sun.log"
 CONTENT_MANIFEST = PROJECT_ROOT / "_config" / "core" / "content-map.tex"
 
@@ -191,7 +192,7 @@ def verify_references() -> None:
         r"Label\(s\) may have changed",
     )
     if any(re.search(pattern, log) for pattern in problems):
-        raise BuildError("完整构建后仍有未解决的引用，请检查 _build/AdvMacroNote_Sun/AdvMacroNote_Sun.log")
+        raise BuildError("完整构建后仍有未解决的引用，请检查 _build/book/AdvMacroNote_Sun.log")
 
 
 def build_all() -> None:
@@ -200,7 +201,7 @@ def build_all() -> None:
     MAIN_BUILD_DIR.mkdir(parents=True, exist_ok=True)
     run([
         LATEXMK, "-xelatex", "-synctex=1", "-interaction=nonstopmode",
-        "-halt-on-error", "-file-line-error", "-outdir=_build/AdvMacroNote_Sun", MAIN_TEX.name,
+        "-halt-on-error", "-file-line-error", "-outdir=_build/book", MAIN_TEX.name,
     ], PROJECT_ROOT)
     publish(MAIN_BUILD_DIR / "AdvMacroNote_Sun.pdf", MAIN_PDF)
     publish(MAIN_BUILD_DIR / "AdvMacroNote_Sun.synctex.gz", MAIN_SYNCTEX)
@@ -228,16 +229,20 @@ def find_chapter(value: str) -> Path:
 def build_chapter(value: str) -> None:
     require_executable(XELATEX)
     chapter_file = find_chapter(value)
-    build_dir = BUILD_ROOT / chapter_file.stem
-    build_dir.mkdir(parents=True, exist_ok=True)
-    relative_output = os.path.relpath(build_dir, chapter_file.parent)
-    run([
-        *XELATEX_COMMAND, f"-jobname={chapter_file.stem}",
-        f"-output-directory={relative_output}", chapter_file.name,
-    ], chapter_file.parent)
-    ensure_nonempty(build_dir / f"{chapter_file.stem}.pdf")
-    ensure_nonempty(build_dir / f"{chapter_file.stem}.synctex.gz")
-    print(f"单章构建完成：{build_dir.relative_to(PROJECT_ROOT)}（一次 XeLaTeX）")
+    part_dir = BUILD_ROOT / "book" / chapter_file.parent.name
+    part_dir.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="advanced-macro-chapter-") as temporary:
+        temporary_dir = Path(temporary)
+        run([
+            *XELATEX_COMMAND, f"-jobname={chapter_file.stem}",
+            f"-output-directory={temporary_dir}", chapter_file.name,
+        ], chapter_file.parent)
+        publish(temporary_dir / f"{chapter_file.stem}.pdf", part_dir / f"{chapter_file.stem}.pdf")
+        publish(
+            temporary_dir / f"{chapter_file.stem}.synctex.gz",
+            part_dir / f"{chapter_file.stem}.synctex.gz",
+        )
+    print(f"单章构建完成：{part_dir.relative_to(PROJECT_ROOT)}（一次 XeLaTeX）")
 
 
 def remove_matching_intermediates() -> int:
@@ -276,7 +281,7 @@ def rednote_outputs() -> set[Path]:
         pages = issue / "pages"
         if pages.exists():
             paths.add(pages)
-    paths.add(BUILD_ROOT / "poster-overview")
+    paths.add(BUILD_ROOT / "posts")
     return paths
 
 

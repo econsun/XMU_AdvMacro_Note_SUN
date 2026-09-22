@@ -15,7 +15,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 LOGO_ROOT = PROJECT_ROOT / "logo"
 VARIANT_ROOT = LOGO_ROOT / "variants"
 OUTPUT_ROOT = LOGO_ROOT / "output"
-BUILD_ROOT = PROJECT_ROOT / "_build" / "logo"
+BUILD_ROOT = PROJECT_ROOT / "_build" / "visuals" / "logo"
 MACTEX_BIN = os.environ.get("MACTEX_BIN")
 XELATEX = str(Path(MACTEX_BIN) / "xelatex") if MACTEX_BIN else "xelatex"
 
@@ -102,7 +102,8 @@ def build(source_path: Path, profile: str) -> Path:
     )
     command = [
         XELATEX, "-synctex=1", "-interaction=nonstopmode", "-halt-on-error",
-        "-file-line-error", f"-jobname={job_name}", "-output-directory=../../_build/logo", tex_entry,
+        "-file-line-error", f"-jobname={job_name}",
+        "-output-directory=../../_build/visuals/logo", tex_entry,
     ]
     BUILD_ROOT.mkdir(parents=True, exist_ok=True)
     OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)

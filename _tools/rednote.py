@@ -10,7 +10,6 @@ import shutil
 import subprocess
 import sys
 import tempfile
-from datetime import date
 from pathlib import Path
 
 from build import collect_numbered_sources
@@ -188,11 +187,11 @@ def chapter_metadata(number: str) -> dict[str, str]:
         "CHAPTER_NUMBER": number,
         "CHAPTER_DISPLAY_NUMBER": str(int(number)),
         "CHAPTER_TITLE": title,
-        "ISSUE_DATE": date.today().isoformat(),
         "COURSE_SETUP": course_setup,
         "SOURCE_FILE": chapter_path.relative_to(PROJECT_ROOT).as_posix(),
         "PART_DIRECTORY": chapter_path.parent.name,
         "POSTER_NAME": managed_poster_name(chapter_path).removesuffix(".tex"),
+        "OUTPUT_NAME": chapter_path.stem,
     }
 
 
@@ -203,7 +202,7 @@ def poster_info_block(metadata: dict[str, str]) -> str:
         rf"\newcommand{{\RednoteChapterNumber}}{{{metadata['CHAPTER_NUMBER']}}}",
         rf"\newcommand{{\RednoteChapterDisplayNumber}}{{{metadata['CHAPTER_DISPLAY_NUMBER']}}}",
         rf"\newcommand{{\RednoteSourceChapterTitle}}{{{metadata['CHAPTER_TITLE']}}}",
-        rf"\newcommand{{\RednoteIssueDate}}{{{metadata['ISSUE_DATE']}}}",
+        r"\newcommand{\RednoteIssueDate}{\today}",
         rf"\newcommand{{\RednoteCourseSetup}}{{{metadata['COURSE_SETUP']}}}",
         rf"\newcommand{{\RednoteSourceFile}}{{{metadata['SOURCE_FILE']}}}",
         AUTO_INFO_END,
@@ -288,34 +287,37 @@ def build_poster(number: str, issue_dir: Path) -> None:
     require_mactex(XELATEX)
     require_command("pdftoppm")
     poster_name = chapter_metadata(number)["POSTER_NAME"]
-    build_name = poster_name
-    build_dir = BUILD_ROOT / build_name
-    build_dir.mkdir(parents=True, exist_ok=True)
-    relative_output = os.path.relpath(build_dir, issue_dir)
-    command = [
-        XELATEX, "-synctex=1", "-interaction=nonstopmode", "-halt-on-error",
-        "-file-line-error", f"-jobname={build_name}",
-        f"-output-directory={relative_output}", f"{poster_name}.tex",
-    ]
-    # 海报没有交叉引用，一次 XeLaTeX 即可得到最终输出。
-    run(command, issue_dir)
-    poster_pdf = build_dir / f"{build_name}.pdf"
-    poster_synctex = build_dir / f"{build_name}.synctex.gz"
-    ensure_nonempty(poster_pdf)
-    ensure_nonempty(poster_synctex)
-    verify_log(build_dir / f"{build_name}.log", "海报")
-    poster_png = build_dir / f"{poster_name}.png"
+    post_dir = BUILD_ROOT / "posts" / chapter_metadata(number)["OUTPUT_NAME"]
+    pages_dir = post_dir / "pages"
+    post_dir.mkdir(parents=True, exist_ok=True)
+    pages_dir.mkdir(parents=True, exist_ok=True)
+    poster_pdf = post_dir / "cover.pdf"
+    with tempfile.TemporaryDirectory(prefix="advanced-macro-poster-") as temporary:
+        temporary_dir = Path(temporary)
+        command = [
+            XELATEX, "-synctex=1", "-interaction=nonstopmode", "-halt-on-error",
+            "-file-line-error", "-jobname=cover",
+            f"-output-directory={temporary_dir}", f"{poster_name}.tex",
+        ]
+        # remember picture 的页面锚点需要第二遍才能稳定；首遍可能只得到纯色背景。
+        run(command, issue_dir)
+        run(command, issue_dir)
+        temporary_pdf = temporary_dir / "cover.pdf"
+        ensure_nonempty(temporary_pdf)
+        verify_log(temporary_dir / "cover.log", "海报")
+        shutil.copy2(temporary_pdf, poster_pdf)
+    poster_png = pages_dir / "00-cover.png"
     poster_png.unlink(missing_ok=True)
     width_px, height_px = pdf_pixel_size(poster_pdf, 300)
     poster_pdf_relative = poster_pdf.relative_to(PROJECT_ROOT)
-    poster_prefix_relative = (build_dir / poster_name).relative_to(PROJECT_ROOT)
+    poster_prefix_relative = (pages_dir / "00-cover").relative_to(PROJECT_ROOT)
     run([
         "pdftoppm", "-png", "-r", "300", "-f", "1", "-l", "1",
         "-scale-to-x", str(width_px), "-scale-to-y", str(height_px),
         "-singlefile", str(poster_pdf_relative), str(poster_prefix_relative),
     ], PROJECT_ROOT)
     ensure_nonempty(poster_png)
-    print(f"海报已生成：{poster_png.relative_to(PROJECT_ROOT)}（300 DPI）")
+    print(f"封面已生成：{poster_png.relative_to(PROJECT_ROOT)}（300 DPI）")
 
 
 def build_main_document() -> None:
@@ -367,8 +369,8 @@ def export_pages(
     last_page = next_structural_page(destinations, first_page, total_pages) - 1
     if last_page < first_page:
         raise RednoteError("计算出的导出页码范围无效")
-    poster_name = chapter_metadata(number)["POSTER_NAME"]
-    output_dir = BUILD_ROOT / poster_name / "pages"
+    output_name = chapter_metadata(number)["OUTPUT_NAME"]
+    output_dir = BUILD_ROOT / "posts" / output_name / "pages"
     output_dir.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="advanced-macro-rednote-") as temporary:
         temporary_prefix = Path(temporary) / "page"
@@ -383,11 +385,11 @@ def export_pages(
         expected = last_page - first_page + 1
         if len(pages) != expected:
             raise RednoteError(f"预期导出 {expected} 页，实际得到 {len(pages)} 页")
-        for old_image in output_dir.glob("*.png"):
+        for old_image in output_dir.glob("*-note.png"):
             old_image.unlink()
-        width = len(str(expected))
+        width = max(2, len(str(expected)))
         for index, source in enumerate(pages, start=1):
-            source.replace(output_dir / f"{index:0{width}d}.png")
+            source.replace(output_dir / f"{index:0{width}d}-note.png")
     print(f"Chapter {number} 的正文页已导出到 {output_dir.relative_to(PROJECT_ROOT)}")
 
 
@@ -430,9 +432,13 @@ def main() -> int:
             prepare_all_chapters()
             return 0
         issue_dir = create_issue(number)[0]
-        if operation in ("poster", "build"):
+        if operation == "build":
+            build_main_document()
             build_poster(number, issue_dir)
-        if operation in ("pages", "build"):
+            export_pages(number, issue_dir, rebuild_main=False)
+        elif operation == "poster":
+            build_poster(number, issue_dir)
+        elif operation == "pages":
             export_pages(number, issue_dir)
     except (RednoteError, subprocess.CalledProcessError) as exc:
         print(f"Rednote 失败：{exc}", file=sys.stderr)
