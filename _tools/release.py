@@ -7,13 +7,16 @@ import re
 import shutil
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 BUILD_PDF = PROJECT_ROOT / "_build" / "book" / "AdvMacroNote_Sun.pdf"
 LEGACY_PDF = PROJECT_ROOT / "AdvMacroNote_Sun.pdf"
+README_FILE = PROJECT_ROOT / "README.md"
 VERSION_PATTERN = re.compile(r"^v[0-9]+\.[0-9]+\.[0-9]+$")
+README_DOWNLOAD_PATTERN = re.compile(
+    r"^如果你只是想要 PDF 笔记，那么.*$", re.MULTILINE
+)
 
 
 class ReleaseError(RuntimeError):
@@ -58,6 +61,22 @@ def validate(version: str) -> None:
         raise ReleaseError(f"标签已存在：{version}")
 
 
+def update_readme(version: str, release_pdf: Path) -> None:
+    download_url = (
+        "https://github.com/econsun/XMU_AdvMacro_Note_SUN/releases/download/"
+        f"{version}/{release_pdf.name}"
+    )
+    source = README_FILE.read_text(encoding="utf-8")
+    replacement = f"如果你只是想要 PDF 笔记，那么[请点此下载]({download_url})。"
+    updated, count = README_DOWNLOAD_PATTERN.subn(replacement, source, count=1)
+    if count != 1:
+        raise ReleaseError("README 中找不到方法一的下载说明")
+    README_FILE.write_text(updated, encoding="utf-8")
+    run(["git", "add", "--", README_FILE.name])
+    run(["git", "commit", "-m", "doc: update readme"])
+    run(["git", "push", "origin", "main"])
+
+
 def release(version: str) -> None:
     validate(version)
     run([sys.executable, "_tools/build.py", "all"])
@@ -75,13 +94,11 @@ def release(version: str) -> None:
     run(["git", "commit", "-m", f"release: publish {version}"])
     run(["git", "tag", "-a", version, "-m", f"Release {version}"])
     run(["git", "push", "--atomic", "origin", "main", f"refs/tags/{version}"])
-    with tempfile.TemporaryDirectory(prefix="advanced-macro-release-") as temporary:
-        latest_pdf = Path(temporary) / "AdvMacroNote_Sun_latest.pdf"
-        shutil.copy2(release_pdf, latest_pdf)
-        run([
-            "gh", "release", "create", version, release_pdf.name, str(latest_pdf),
-            "--title", version, "--generate-notes", "--latest",
-        ])
+    run([
+        "gh", "release", "create", version, release_pdf.name,
+        "--title", version, "--generate-notes", "--latest",
+    ])
+    update_readme(version, release_pdf)
     print(f"发布完成：{version}")
 
 
