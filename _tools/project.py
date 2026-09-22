@@ -37,7 +37,8 @@ def dispatch(values: list[str]) -> None:
         run("rednote.py", "build", require_number(values, "post"))
     else:
         raise ProjectCommandError(
-            f"未知命令：{' '.join(values)}；仅支持 make all、make chap 03、make post 03"
+            f"未知命令：{' '.join(values)}；支持 make all、make chap 03、make post 03；"
+            "正式发布请使用 make release VERSION=v2.1.0"
         )
 
 

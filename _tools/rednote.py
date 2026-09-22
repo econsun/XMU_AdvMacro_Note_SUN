@@ -18,7 +18,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 REDNOTE_ROOT = PROJECT_ROOT / "rednote"
 BUILD_ROOT = PROJECT_ROOT / "_build"
 TEMPLATE_FILE = REDNOTE_ROOT / "poster-template.txt"
-MAIN_PDF = PROJECT_ROOT / "AdvMacroNote_Sun.pdf"
+MAIN_PDF = BUILD_ROOT / "book" / "AdvMacroNote_Sun.pdf"
 MACTEX_BIN = os.environ.get("MACTEX_BIN")
 XELATEX = str(Path(MACTEX_BIN) / "xelatex") if MACTEX_BIN else "xelatex"
 
@@ -327,7 +327,7 @@ def build_main_document() -> None:
 
 def pdf_destinations() -> dict[str, int]:
     require_command("pdfinfo")
-    output = run(["pdfinfo", "-dests", MAIN_PDF.name], PROJECT_ROOT, capture=True).stdout
+    output = run(["pdfinfo", "-dests", MAIN_PDF.name], MAIN_PDF.parent, capture=True).stdout
     destinations: dict[str, int] = {}
     pattern = re.compile(r'^\s*(\d+)\s+\[.*\]\s+"([^"]+)"\s*$')
     for line in output.splitlines():
@@ -338,7 +338,7 @@ def pdf_destinations() -> dict[str, int]:
 
 
 def pdf_page_count() -> int:
-    output = run(["pdfinfo", MAIN_PDF.name], PROJECT_ROOT, capture=True).stdout
+    output = run(["pdfinfo", MAIN_PDF.name], MAIN_PDF.parent, capture=True).stdout
     match = re.search(r"^Pages:\s+(\d+)\s*$", output, re.MULTILINE)
     if not match:
         raise RednoteError("无法读取主 PDF 的总页数")
@@ -377,7 +377,7 @@ def export_pages(
         run([
             "pdftoppm", "-png", "-r", "300", "-f", str(first_page),
             "-l", str(last_page), MAIN_PDF.name, str(temporary_prefix),
-        ], PROJECT_ROOT)
+        ], MAIN_PDF.parent)
         pages = sorted(
             Path(temporary).glob("page-*.png"),
             key=lambda path: int(path.stem.rsplit("-", 1)[1]),

@@ -35,8 +35,8 @@
     "latex-workshop.latex.build.enableMagicComments": true,
     "latex-workshop.latex.recipe.default": "first",
     "latex-workshop.latex.autoBuild.run": "onSave",
-    // 源文件名、构建目录名与 PDF 名相同，View PDF 可直接定位唯一产物。
-    "latex-workshop.latex.outDir": "%WORKSPACE_FOLDER%/_build/%DOCFILE%",
+    // 整书开发版固定进入 _build/book；View PDF 不读取根目录正式发布版。
+    "latex-workshop.latex.outDir": "%WORKSPACE_FOLDER%/_build/book",
     // 直接解析通过 \input 载入的 _config/setting-cmds.tex，不维护补全 JSON。
     "latex-workshop.latex.texDirs": [
         "%WORKSPACE_FOLDER%",

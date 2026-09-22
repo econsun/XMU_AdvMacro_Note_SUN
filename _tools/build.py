@@ -20,9 +20,9 @@ MACTEX_BIN = os.environ.get("MACTEX_BIN")
 LATEXMK = str(Path(MACTEX_BIN) / "latexmk") if MACTEX_BIN else "latexmk"
 XELATEX = str(Path(MACTEX_BIN) / "xelatex") if MACTEX_BIN else "xelatex"
 MAIN_TEX = PROJECT_ROOT / "AdvMacroNote_Sun.tex"
-MAIN_PDF = PROJECT_ROOT / "AdvMacroNote_Sun.pdf"
-MAIN_SYNCTEX = PROJECT_ROOT / "AdvMacroNote_Sun.synctex.gz"
 MAIN_BUILD_DIR = BUILD_ROOT / "book"
+MAIN_PDF = MAIN_BUILD_DIR / "AdvMacroNote_Sun.pdf"
+MAIN_SYNCTEX = MAIN_BUILD_DIR / "AdvMacroNote_Sun.synctex.gz"
 MAIN_LOG = MAIN_BUILD_DIR / "AdvMacroNote_Sun.log"
 CONTENT_MANIFEST = PROJECT_ROOT / "_config" / "core" / "content-map.tex"
 
@@ -203,10 +203,10 @@ def build_all() -> None:
         LATEXMK, "-xelatex", "-synctex=1", "-interaction=nonstopmode",
         "-halt-on-error", "-file-line-error", "-outdir=_build/book", MAIN_TEX.name,
     ], PROJECT_ROOT)
-    publish(MAIN_BUILD_DIR / "AdvMacroNote_Sun.pdf", MAIN_PDF)
-    publish(MAIN_BUILD_DIR / "AdvMacroNote_Sun.synctex.gz", MAIN_SYNCTEX)
+    ensure_nonempty(MAIN_PDF)
+    ensure_nonempty(MAIN_SYNCTEX)
     verify_references()
-    print("完整构建完成：AdvMacroNote_Sun.pdf（PDF 与 SyncTeX 均已生成）")
+    print("完整构建完成：_build/book/AdvMacroNote_Sun.pdf（根目录发布版未修改）")
 
 
 def normalize_chapter(value: str) -> str:
@@ -294,7 +294,7 @@ def stale_outputs() -> set[Path]:
 
 
 def all_deliverables() -> set[Path]:
-    paths = rednote_outputs() | {MAIN_PDF, MAIN_SYNCTEX}
+    paths = rednote_outputs()
     for root in (SECTION_ROOT, PROJECT_ROOT / "logo"):
         for path in root.rglob("*"):
             if path.is_file() and (path.suffix == ".pdf" or path.name.endswith(".synctex.gz")):

@@ -40,7 +40,7 @@
 ├── rednote/               # 产出小红书
 │
 ├── AdvMacroNote_Sun.tex   # 核心入口
-├── AdvMacroNote_Sun.pdf   # 完整笔记
+├── AdvMacroNote_Sun_vX.Y.Z.pdf # 正式发布版，仅由 make release 更新
 │
 ├── references.bib         # 参考文献
 └── Makefile               # 编译命令
@@ -86,7 +86,12 @@ make chap 03
 
 # 完整编译后生成封面与章笔记 PNG
 make post 03
+
+# 更新正式版并发布到 GitHub
+make release VERSION=v2.1.0
 ```
+
+日常的 `make`、`make all`、Build LaTeX project 和 View PDF 都使用 `_build/book/AdvMacroNote_Sun.pdf`，不会修改根目录正式版。只有 `make release VERSION=vX.Y.Z` 会完整编译、把根目录正式版更新为 `AdvMacroNote_Sun_vX.Y.Z.pdf`、提交、创建标签、推送到 `main`，并创建同时包含版本文件和 latest 下载副本的 GitHub Release。发布前要求工作区干净、本地 `main` 与 `origin/main` 同步，并已通过 GitHub CLI 登录。
 
 </br>
 
