@@ -52,7 +52,7 @@
 
 ### 方法一
 
-如果你只是想要 PDF 笔记，那么 [请点击这里](https://raw.githubusercontent.com/econsun/XMU_AdvMacro_Note_SUN/main/AdvMacroNote_Sun.pdf) 。
+如果你只是想要 PDF 笔记，那么[请点击这里直接下载最新发布版](https://github.com/econsun/XMU_AdvMacro_Note_SUN/releases/latest/download/AdvMacroNote_Sun_latest.pdf)。
 
 ### 方法二
 
