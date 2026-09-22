@@ -1,0 +1,617 @@
+% !LW recipe = XeLaTeX once (current file)
+\ifdefined\CourseRootDocument
+\providecommand{\FinishStandaloneChapter}{}
+\else
+\documentclass[11pt,oneside,openany,UTF8,fontset=none]{ctexbook}
+\def\StandaloneChapterNumber{7}
+\def\StandaloneCourseSetup{\UseMacroIICourse}
+\input{../../_config/core/chapter-standalone}
+\def\FinishStandaloneChapter{\end{document}}
+\fi
+% Migrated chapter content.
+
+
+\chapter{线性差分系统}\label{ch:07}
+
+\section{差分运算}\label{sec:Diff}
+
+\subsection{差分的定义}\label{subsec:DiffDef}
+
+在微积分中，我们熟练使用微分来考查变化率，如 \(y\bkt\) 随时间的变化率为 \footnote{2026 年 4 月 19 日勘误：此前变化率公式存在错误}\sidenote{通常用 \sidemath{\(y\bkt\)} 表示时间连续变量，\sidemath{\(y_t\)} 表示时间离散变量}
+\begin{equation}
+    \dot y\bkt\coloneq \lim_{h\to 0}\frac{y\bka{t+h} - y\bka t}{h}
+\end{equation}
+经济变量随时发生变化，但我们无法观察到它的连续变化，所以收集到的经济数据往往是离散的。相似地，我们构造离散\sidenote{离散指时间指标和自然数集等势}情形的 “变化率”
+\begin{equation}
+    \dfrac{y_t - y\lt}{t-\bka{t-1}}=y_t - y\lt \eqqcolon \D  y_t
+\end{equation}
+定义 \(\Delta\) 为 \term{差分}{difference}算子，且 \(\D  y_t\) 是序列 \(\bkd{y_t}\) 在 \(t\) 时刻的一阶差分\sidenote{差分通常取向后一个单位进行运算，而非向前；导数的定义则喜欢用向前}。运用两次差分算子得二阶差分
+\begin{equation*}
+    \DD y_t \coloneq \D \bka{\D  y_t}= \D  y_t - \D  y\lt = y_t - 2\,y\lt + y_{t-2}
+\end{equation*}
+
+相比一阶和二阶差分，一阶差分对经济数据的处理较少，故而有良好的经济学含义。例如，我们对 \(y_t\) 的对数作差分运算
+\begin{align}
+    \D \log y_t &= \log y_t - \log y\lt = \log\bka{1+\dfrac{y_t-y\lt}{y\lt}} \approx \frac{y_t - y\lt}{y\lt} \eqcolon g_{y,t}
+\end{align}
+如此我们定义了对数变量的差分为 \term{增长率}{growth rate}，这个含义在宏观经济学和计量经济学中都有广泛应用。
+
+\subsection{差分的性质}\label{subsec:DiffProp}
+
+以下是一些常见变量（函数）的差分
+\begin{itemize}
+    \item \(\Delta_t\, k = k-k=0\)
+    \item \(\Delta_t\, k\,t = k\,t-k\bka{t-1}=k\)
+    \item \(\Delta_t\, k\,t^2=k\,t^2-k\bka{t-1}^2=2\,k\,t-k\)
+    \item \(\Delta\log y_t=\log y_t-\log y\lt\approx\bka{y_t-y\lt}/\,y\lt=g_{y,t}\)
+\end{itemize}
+其中只有常数 \(k\) 和线性函数 \(k\,t\) 的差分结果是常数。
+
+
+\section{差分方程}\label{sec:DiffEqu}
+
+\subsection{差分方程的定义}\label{subsec:DiffEquDef}
+
+\term{差分方程}{difference equation}\sidenote{差分方程和微分方程又可称作\,\sidenoteterm{运动方程}}是利用差分构造的等式。在《高级宏观经济学 I》中，我们最常见到的差分方程是资本存量的运动方程
+\begin{equation*}
+    K_t - \bka{1-\delta} K\lt = I\lt\notag
+\end{equation*}
+并且它是一阶线性常系数非齐次差分方程 —— \AccentTerm{一阶}\,指最大下标与最小之差为 1；\AccentTerm{线性}\,指方程不包含 \(K_t\) 和 \(K\lt\) 的非线性函数；\AccentTerm{常系数}\,指系数不依赖于 \(t\)；\AccentTerm{非齐次}\sidenote{如 \sidemath{\(y_t-a\,y\lt=b\)} 写作 \sidemath{\(f\bka{y_t,y\lt;b}=0\)}，其中参数 \sidemath{\(b\)} 导致 \sidemath{\(f\)} 并不是 \sidemath{\(\bkd{y_t}\)} 的齐次函数}\,指方程中未知变量项是未知变量的齐次函数。
+
+在《高级宏观经济学 II》，我们会围绕一阶线性常系数非齐次差分方程展开讨论，若无特殊说明，后文中将其简称为差分方程。
+
+\subsection{一阶差分方程的基本解法}\label{sec:DiffEquBasicSoln}
+
+不失一般性地，我们将在本小节求解如下差分方程
+\begin{equation}\label{eq:DiffEqu}
+    y\nt+a\,y_t=C
+\end{equation}
+\term{通解}{general solution}由两部分构成：\term{齐次解}{homogeneous solution}和 \term{特解}{particular solution}。齐次解 \(y_t^c\) 是齐次方程（导出方程）\sidenote{\sidenoteterm{齐次方程}是原方程去除非齐次项所得方程}的解，有无穷多个；特解 \(y_t^p\) 是任一使差分方程成立的解，只需一个。齐次解和特解满足
+\begin{align}
+    \bka{y^c\nt+y^p\nt}+a\bka{y^c\nt+y^p\nt}&=C\\
+    \underbrace{y^c\nt+a\,y^c_t}_{=\,0} \ + \ \underbrace{y^p\nt+a\,y^p_t}_{=\,C}&=C
+\end{align}
+
+求解齐次方程我们使用 “特征方程法”，关于这个方法的细节，在本讲附录\ref{sec:CharEquMethod} 中展开。猜测齐次解的形式为 \(y_t^c=A\,\lambda^{-t}\)，将其代入齐次方程
+\begin{equation}
+    y\nt+a\,y_t=0
+\end{equation}
+得 \term{特征方程}{characteristic equation}
+\begin{align}
+    A\,\lambda^{-t} + a\,A\,\lambda^{-(t-1)}&=0\\
+    1 + a\,\lambda&=0
+\end{align}
+解得特征值 \(\lambda=-1/a\)，齐次解为 \(y_t^c=A\bka{-a}^{t}\)。
+
+求解特解仍然需要进行猜测。观察差分方程的形式，不难发现 \(\bkd{y_t}\) 是线性增长的，根据\ref{subsec:DiffProp} 所提供的常见差分，只有 \(k\) 和 \(k\,t\) 的差分结果是常数，满足差分方程形式。我们猜测特解的形式为 \(y_t^p=k\)，将其代入差分方程 \ref{eq:DiffEqu} 得
+\begin{align}
+    k + a\,k&=C\\
+    y_t^p=k&=\frac C{1+a}
+\end{align}
+这样的特解要求 \(a\neq -1\)，我们单独考查 \(a=-1\) 的情况。此时差分方程变为 \(y\nt-y_t=C\) 且
+\begin{align}
+    y\nt &= C + y_t = C + \bka{C + y\lt} \notag\\
+    &= 2\,C + y\lt = \cdots = C\bka{t+1} + y_0
+\end{align}
+两种差分方程的特解正好对应了 \(k\) 和 \(k\,t\) 两种不同的增长模式\sidenote{两种形式共同构成 \(a\) 的所有取值情况，说明没有第三种形式}。但要注意，在 \(a=-1\) 的情况中，我们直接解出了差分方程的通解（\(y_t\) 的完整形式）而非特解。为了形式统一，我们把 \(y_0\) 视为特解的一个参数，也记作 \(A\)，最终的通解被整合为
+\begin{equation}
+    y_t=y_t^c+y_t^p=\begin{cases}
+        \ A\bka{-a}^{t}+\dfrac C{1+a} & a\neq -1\\
+        \ A+C\,t & a=-1
+    \end{cases}
+\end{equation}
+其中 \(A\) 是任意常数。假设初始条件 \(y_0\) 已知，我们可以通过 \(y_0=y_0^c+y_0^p\) 来确定 \(A\) 的值
+\begin{equation}
+    y_0=\begin{cases}
+        \ A\bka{-a}^0 + \dfrac C{1+a} & a\neq -1\\
+        \ A+C\,t & a=-1
+    \end{cases} \quad \Longrightarrow \quad A=\begin{cases}
+        \ y_0-\dfrac C{1+a} & a\neq -1\\
+        \ y_0 & a=-1
+    \end{cases}\label{eq:DiffEquA}
+\end{equation}
+
+
+\subsection{差分方程解的经济含义}\label{subsec:DiffEquSolnMean}
+
+考虑 \(\{y_t\}_{t\in\bb N}\) 是一个经济变量的时间序列，它的对数序列满足线性差分方程\sidenote{方程的未知变量为 \sidemath{\(\log y_t\)}}
+\begin{align}\label{eq:LogDiffEq}
+    \log y\nt+a\log y_t=C
+\end{align}
+在 \(a\neq -1\) 的情况下，特解是常数，我们设其为 \(\log\bar y\)。求特解
+\begin{align}
+    &\log\bar y + a\log\bar y = C \label{eq:LogDiffEqTrend}\\
+    &\Rightarrow \quad \log \bar y = \frac C{1+a}
+\end{align}
+在差分方程 \ref{eq:LogDiffEq} 中减去特解 \(\log\bar y\) 得
+\begin{equation}
+    \log y\nt - \log\bar y + a\bka{\log y_t - \log\bar y} = C - \log\bar y - a\log\bar y = 0
+\end{equation}
+定义 \(\log\hat y_t := \log y_t - \log\bar y\)，有\sidenote{在下一章会看到 \ref{eq:LogDiffEqCycle} 就是 \ref{eq:LogDiffEq} 对数线性化后的结果}
+\begin{equation}
+    \log\hat y\nt + a\log\hat y_t = 0\label{eq:LogDiffEqCycle}
+\end{equation}
+我们又回到了齐次方程，\(\log\hat y_t\) 是齐次方程的解。
+
+讨论一个问题：{\kaiti 为什么要对变量取对数？} 可能的原因如下
+\begin{itemize}
+    \item 许多经济数据遵循 \term{复合增长}{compound growth}，取对数才满足线性差分方程形式\sidenote{详见附录\ref{sec:CompGrow}}
+    \item 对数变量的差具有良好的经济含义，并且可比较。例如大国和小国 GDP 的绝对增长量没有比较的意义，但它们的增长率却可以比较
+    \item 通过取对数缩小数据的量级，避免数据过大而在数值计算中的溢出问题
+\end{itemize}
+但要注意，并非所有变量都适合取对数，原因有
+\begin{itemize}
+    \item 变量可能包含零或负数，此时取对数没有定义
+    \item 通常不对 \(\bks{0,1}\) 区间的变量取对数，容易出现对数爆炸
+    \item 变量的增长模式可能不适合用对数来描述，例如线性增长
+\end{itemize}
+
+\subsection{高阶差分方程}\label{subsec:HDiffEqu}
+
+在差分方程中，最大角标减去最小角标的值是这个方程的阶数。如果阶数大于 1，我们将其视为高阶差分方程。我们仍然考虑线性常系数非齐次微分方程，形如
+\begin{equation}
+    y\nnt + a_1\,y\nt + a_2\,y_t = C
+\end{equation}
+接下来，我们将展示二阶差分方程如何转化为一阶差分方程组。令 \(x_t=y\nt\)，有
+\begin{equation}
+    \begin{cases}
+        \ x\nt + a_1\,x_t + a_2\,y_t = C\\
+        \ y\nt - x_t = 0
+    \end{cases}
+\end{equation}
+用矩阵符号表示为
+\begin{align}
+    \underbrace{\matbks{x\nt\\y\nt}}_{\bs X\nt}+\underbrace{\matbks{a_1 & a_2\\-1 & 0}}_{\bs A}\underbrace{\matbks{x_t\\y_t}}_{\bs X_t}&=\underbrace{\matbks{C\\0}}_{\bs C}\\
+    \bsX\nt+\bsA\,\bsX_t&=\bs C\label{eq:DiffEquMatrix}
+\end{align}
+我们在此又看到了一阶差分方程的形式。更高阶的差分方程仍然可以转为一阶线性方程，不过是向量维度更高而已。
+
+\section{差分系统及其稳定性}{\label{sec:DiffSysStable}}
+
+\term{差分系统}{difference system}是由一个或多个差分方程组成的系统。时间是不停变化的，经济变量就具有了随时间的运动性，我们非常关心这种运动是否有规律 —— 是否会在某个地方保持不变，是否会呈现线性增长趋势等等。
+
+在众多关于差分系统的问题中，我们最关心系统是否具有 \term{稳态}{steady state}。例如人均 GDP 是否具有稳态，到了某个平台期，人均 GDP 就不会再增长了。
+
+\subsection{一阶差分系统的稳定性}{\label{subsec:FDiffSysStable}}
+
+判断一阶线性差分系统
+\begin{equation}
+    y\nt - b\,y_t = C \quad (b:=-a)
+\end{equation}
+稳定性有两种方法（不只适用于线性差分系统）。
+
+\TopicLabel{方法一：求出通解}
+
+既然我们要判断经济变量 \(y_t\) 的稳定性，那么使用其表达式毫无疑问是最直白的判断方法。我们在\ref{sec:DiffEquBasicSoln} 已经求解出该差分方程的通解
+\begin{equation}
+    y_t=\begin{cases}
+        \ A\,b^{t}+\dfrac C{1-b} & b\neq 1\\
+        \ A+C\,t & b=1
+    \end{cases}
+\end{equation}
+根据指数函数 \(b^t\) 的收敛性，我们可以得出如下结论
+\begin{itemize}
+    \item 当 \(|b|<1\) 时，\(b^t\to 0\)，\(y_t\to C\,/\bka
+    {1+b}\)，系统具有稳态 \(\bar y = C\,/\bka
+    {1+b}\)\sidenote{\sidemath{\(|b|<1\)} 是差分系统具有稳态的充分条件}
+    \item 当 \(|b|>1\) 时，\(b^t\to \infty\)，\(y_t\to \infty\)，系统不具有稳态
+    \item 当 \(b=1\) 时，\(y_t=A+C\,t\)，系统不具有稳态
+    \item 当 \(b=-1\) 时，\(y_t=\bka{-1
+    }^tA\)，系统不具有稳态
+\end{itemize}
+更严谨地说，以上 “不具有稳态” 要求系统的初始位置不在稳态上及其他值得忽略的情况。如果 \(b<0\)，\(y_t-\bar y\) 的符号会随着 \(t\) 交替变化，称这种情况为 \term{交替震荡}{oscillation}。
+
+\TopicLabel{方法二：作迭代图}
+
+对差分方程作简单的处理
+\begin{equation}
+    y\nt = C + b\,y_t =: f\bka{y_t}
+\end{equation}
+我们在 \(\bka{y\nt,y_t}\) 平面中作出 \(0<b<1\) 情况中 \(y\nt=f\bka{y_t}\) 和 \(y\nt=y_t\)（即 45° 线）两条曲线的图像，此时 \(y\nt=f\bka{y_t}\) 是一条向右上方倾斜的曲线（直线）。
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        scale=0.95,
+        line cap=round,
+        line join=round,
+        >=Latex,
+        declare function={f(\x)=\C+\b*\x;}
+    ]
+        % Model parameters for y_t = C + b y_{t-1}
+        \pgfmathsetmacro{\C}{2}
+        \pgfmathsetmacro{\b}{0.40}
+        \pgfmathsetmacro{\xmin}{0}
+        \pgfmathsetmacro{\xmax}{6.2}
+        \pgfmathsetmacro{\ymax}{6.2}
+        \pgfmathsetmacro{\ybar}{\C/(1-\b)}
+
+        % Initial x-axis positions for cobweb (one above and one below steady state)
+        \pgfmathsetmacro{\xHi}{5.05}
+        \pgfmathsetmacro{\xLo}{0.75}
+
+        % Axes
+        \draw[-{Latex[length=2.8mm,width=2mm]}, thick] (0,0) -- (\xmax,0) node[below right] {\(y_t\)};
+        \draw[-{Latex[length=2.8mm,width=2mm]}, thick] (0,0) -- (0,\ymax) node[left] {\(y\nt\)};
+
+        % Cobweb paths first (so they stay below the two main lines)
+        \pgfmathsetmacro{\xk}{\xHi}
+        \fill[DiagramHighlight] (\xk,0) circle (1.4pt);
+        \node[DiagramHighlight, below] at (\xk,0) {\(y_0'>\bar y\)};
+        \pgfmathsetmacro{\yk}{f(\xk)}
+        \draw[-{Latex[length=2.2mm,width=1.5mm]}, DiagramHighlight, line width=0.9pt, opacity=0.78] (\xk,0) -- (\xk,\yk);
+        \draw[-{Latex[length=2.2mm,width=1.5mm]}, DiagramHighlight, line width=0.9pt, opacity=0.78] (\xk,\yk) -- (\yk,\yk);
+        \xdef\xk{\yk}
+        \foreach \k in {2,...,2} {
+            \pgfmathsetmacro{\yk}{f(\xk)}
+            \draw[-{Latex[length=2.2mm,width=1.5mm]}, DiagramHighlight, line width=0.9pt, opacity=0.78] (\xk,\xk) -- (\xk,\yk);
+            \draw[-{Latex[length=2.2mm,width=1.5mm]}, DiagramHighlight, line width=0.9pt, opacity=0.78] (\xk,\yk) -- (\yk,\yk);
+            \xdef\xk{\yk}
+        }
+
+        \pgfmathsetmacro{\xk}{\xLo}
+        \fill[DiagramComparison] (\xk,0) circle (1.4pt);
+        \node[DiagramComparison, below] at (\xk,0) {\(y_0<\bar y\)};
+        \pgfmathsetmacro{\yk}{f(\xk)}
+        \draw[-{Latex[length=2.2mm,width=1.5mm]}, DiagramComparison, line width=0.9pt, opacity=0.78] (\xk,0) -- (\xk,\yk);
+        \draw[-{Latex[length=2.2mm,width=1.5mm]}, DiagramComparison, line width=0.9pt, opacity=0.78] (\xk,\yk) -- (\yk,\yk);
+        \xdef\xk{\yk}
+        \foreach \k in {2,...,2} {
+            \pgfmathsetmacro{\yk}{f(\xk)}
+            \draw[-{Latex[length=2.2mm,width=1.5mm]}, DiagramComparison, line width=0.9pt, opacity=0.78] (\xk,\xk) -- (\xk,\yk);
+            \draw[-{Latex[length=2.2mm,width=1.5mm]}, DiagramComparison, line width=0.9pt, opacity=0.78] (\xk,\yk) -- (\yk,\yk);
+            \xdef\xk{\yk}
+        }
+
+        % Main lines on top
+        \draw[dashed, DiagramGuide, very thick] (\xmin,\xmin) -- (5.4,5.4)
+            node[pos=1, right] {\(y\nt=y_t\)};
+        \draw[very thick, DiagramPrimary, domain=\xmin:6.0, samples=2]
+            plot (\x, {f(\x)});
+        \node[DiagramPrimary, right] at (6.0,{f(6.0)}) {\(y\nt=C+b\,y_t\)};
+
+        % Fixed point marker
+        \fill[DiagramHighlight] (\ybar,\ybar) circle (1.7pt);
+        \draw[densely dotted, DiagramHighlight] (\ybar,0) -- (\ybar,\ybar);
+        \draw[densely dotted, DiagramHighlight] (0,\ybar) -- (\ybar,\ybar);
+        \draw[DiagramHighlight] (0,\ybar) -- (0.08,\ybar);
+        \node[DiagramHighlight, left] at (0,\ybar) {\(\frac C{1-b}\)};
+        \node[DiagramHighlight, below] at (\ybar,0) {\(\frac C{1-b}\)};
+        \node[DiagramHighlight, above] at (\ybar,\ybar) {\(\bar y\)};
+    \end{tikzpicture}
+    \caption{\(0<b<1\) 情况下 \(\bkd{y_t}\) 的迭代图}
+\end{figure}
+
+作图的关键在于：在横轴确定 \(y_0\) 的位置，然后垂直向上到 \(f\bka{y_t}\) 曲线，意味着我们找到了 \(y_1\)；再水平到 45° 线，则是找到 \(y_1\) 在横轴上的位置，准备进入下一轮的迭代，去 \(f\bka{y_t}\) 上寻找 \(y_2\)。我们看到，无论初始值大于还是小于稳态，最终都会收敛到稳态 —— 系统的收敛性与初始位置无关。
+
+最后来看参数 \(A\) 对收敛的影响。从差分方程的解 \ref{eq:DiffEquA} 可以看出 \(A=y_0-\bar y\)，即 \(A\) 是系统初始位置相对稳态的偏离。图中两条对比收敛轨迹刻画了不同 \(A\) 的情况，对比它们的水平线长度，发现：\(A\) 越大，即初始位置越远离稳态，每轮收敛的幅度就越大。
+
+参数 \(A\) 由 \(C\) 和 \(b\) 构成，实际上，影响收敛速度的只有 \(b\)。为得到该结论，我们要观察 \(y\nt=f\bka{y_t}\) 直线和 45° 线的夹角：\(b\) 越大，夹角越大，收敛速度越快；反之收敛速度越慢。而 \(C\) \sidenote{注意 \sidemath{\(C\)} 值会影响 \sidemath{\(A\)}，所以 \sidemath{\(C\)} 不影响收敛速度但影响收敛时间}是使 \(y\nt=f\bka{y_t}\) 直线上下平移的参数，并不影响夹角的大小，因此不影响收敛速度。
+
+\subsection{高阶差分系统的稳定性}{\label{subsec:HDiffSysStable}}
+
+高阶系统难以作图，所以我们通过特征根来分析系统的稳定性\sidenote{一阶系统中 \sidemath{\(\lambda=b\)}，分析 \sidemath{\(b\)} 就是分析 \sidemath{\(\lambda\)}}。
+
+\TopicLabel{初探稳定性}
+
+接下来，解二阶线性差分系统
+\begin{equation*}
+    y\nnt + a_1\,y\nt + a_2\,y_t = C
+\end{equation*}
+写出特征方程
+\begin{equation*}
+    \lambda^2 + a_1\,\lambda + a_2 = 0
+\end{equation*}
+这是二次方程，特征根可能出现两实根、重根、共轭复根三种情况（由判别式 \(\Delta\) 可知）。我们用特征根表示系统的解，解如何得到略过
+\begin{equation*}
+    y^c=\begin{cases}
+        \ A_1\,b^t_1+A_2\,b^t_2 & \n{ if}\quad \Delta>0\\
+        \ A_3\,b^t + A_4\,t\,b^t & \n{ if}\quad \Delta=0\\
+        \ \varrho^t\bks{A_5\,\cos\bka{t\,\theta} + A_6\,\sin\bka{t\,\theta}} & \n{ if}\quad \Delta<0
+    \end{cases}
+\end{equation*}
+在复根的情况中，\(\varrho\) 是复根的模，\(\theta\) 是复根的辐角。
+
+二阶线性差分系统稳定的条件是：
+\begin{itemize}
+    \item 当 \(\Delta>0\) 时，\(\bkf{\lambda_1}<1\) 且 \(\bkf{\lambda_2}<1\)
+    \item 当 \(\Delta=0\) 时，\(\bkf{\lambda_{1,2}}<1\)
+    \item 当 \(\Delta<0\) 时，\(\varrho<1\)（经计算得 \(\varrho=\dsq{a_2}\)）
+\end{itemize}
+我们在\ref{subsec:HDiffEqu} 中，我们把高阶线性差分系统转成由多个差分方程组成的一阶线性差分系统，可见无论几阶，线性差分系统的稳定性条件是相似的。这为我们的结论提供直觉，具体的证明略去。
+
+\TopicLabel{深入稳定性}
+
+判断稳定性最根本的方法是求解变量路径的表达式，计算它的极限查看是否收敛到固定值。求解路径是复杂的，所以在上一部分，我们简化到利用特征值就能判断稳定性。但其实还有更方便的方法：连特征值都不需要求出，只根据几个性质就能判断，这是我们即将要展开讨论的内容。
+
+二阶线性系统的记特征多项式为
+\begin{equation*}
+    p\bka\lambda=\bkf{\bsA-\lambda\,\bsI}=\lambda^2 + a_1\,\lambda + a_2
+\end{equation*}
+则特征方程可表示为
+\begin{align*}
+    p\bka\lambda=\bka{\lambda-\lambda_1}\bka{\lambda-\lambda_2}= \lambda^2 - \bka{\lambda_1+\lambda_2}\lambda + \lambda_1\,\lambda_2=0
+\end{align*}
+根据线性代数的知识，该特征方程的一次项系数为矩阵 \(\bsA\) 的迹，常数项为矩阵 \(\bsA\) 的行列式。具体来说\sidenote{本笔记的 \sidemath{\(\bsA\)} 定义和课堂上的不同，相当于课堂上的 \sidemath{\(-\bsA\)}，所以计算出行列式相同但迹的符号相反}
+\begin{align*}
+    &T\coloneq \tr\bka{\bsA}=\lambda_1+\lambda_2=a_1\\
+    &D\coloneq \det\bka{\bsA}=\lambda_1\,\lambda_2=a_2
+\end{align*}
+
+接下来，我们在不计算特征值的情况下，仅利用 \(T\) 和 \(D\) 对稳定性进行分析。对 \(\bka{T,D}\) 平面进行划分，划分依据有：
+\begin{itemize}
+    \item \(\Delta=0\) 抛物线：\(\Delta=T^2-4\,D\) 的符号决定特征根的类型
+    \item \(D=1\) 水平线：稳定性要求两根的模都小于 1，必有 \(D=\lambda_1\,\lambda_2<1\)
+    \item \(p\bka{1}=0\) 和 \(p\bka{-1}=0\) 斜线：这两条线分别对应某个特征根等于 \(1\) 或 \(-1\)，即特征根落在单位圆边界上。以 \(p\bka{1}\) 为例，考虑以下不等式
+    \begin{align*}
+        p\bka 1=\bka{1-\lambda_1}\bka{1-\lambda_2}<0
+    \end{align*}
+    在实根情形下，\(1-\lambda_1\) 与 \(1-\lambda_2\) 异号，说明两个特征根分别位于 \(\lambda=1\) 的两侧，因此至少存在一根满足 \(\lambda>1\)，系统不稳定。反过来，若 \(p\bka 1>0\)，两根同时大于或小于 1，仍然有可能发散，但其中存在稳定的可能。因此 \(p\bka{1}=0\) 和 \(p\bka{-1}=0\) 是重要边界。
+\end{itemize}
+从以上的说明我们已知 \(p\bka{1}=0\) 和 \(p\bka{-1}=0\) 对找到稳定区域重要，但不够充分，需配合 \(D=1\) 线一起使用。最终，我们可以得出稳定区域的边界由 \(D=1\)、\(p\bka{1}=0\)、\(p\bka{-1}=0\) 三条线构成，判别式只影响根的类型和系统运动的方式。
+
+% 待完成：D 其实是 p(0)
+
+\begin{figure}[H]
+    \centering
+    \sidenote{落在边界上也是不可能稳定的（排除特殊情况）；箭头表示大于的方向，如 \sidemath{\(p\bka{1}>1\)}}
+    \begin{tikzpicture}[
+        scale=1.0,
+        line cap=round,
+        line join=round,
+        >=Latex
+    ]
+        % ---- User-tunable geometry ----
+        \def\xmin{-5.2}
+        \def\xmax{5.4}
+        \def\ymin{-1.85}
+        \def\ymax{4.1}
+        \def\parabL{-4.00}
+        \def\parabR{4.00}
+        \def\lineL{-4.25}
+        \def\lineR{4.25}
+        \def\BaseLineWidth{0.85pt}
+        \def\GuideLineWidth{0.60pt}
+        
+        \def\MirrorArrowLineWidth{1.00pt}
+        \def\MirrorArrowALength{0.40}
+        \def\MirrorArrowBLength{0.35}
+        \def\MirrorArrowCLength{0.55}
+        \def\MirrorArrowAY{3.35}
+        \def\MirrorArrowBY{2.75}
+        \def\MirrorArrowCY{1.00}
+        \def\MirrorArrowAHalfGap{3.70}
+        \def\MirrorArrowBHalfGap{3.75}
+        \def\MirrorArrowCHalfGap{1.20}
+        \def\MirrorArrowAAngle{-40}
+        \def\MirrorArrowBAngle{135}
+        \def\MirrorArrowCAngle{90}
+
+        % ---- User-tunable label positions ----
+        \def\pOneLabelX{-3.95}     \def\pOneLabelY{2.76}
+        \def\pMinusOneLabelX{3.95} \def\pMinusOneLabelY{2.76}
+        \def\DeltaLabelX{2.60}     \def\DeltaLabelY{3.85}
+        \def\DOneLabelX{5.00}     \def\DOneLabelY{0.70}
+
+        \def\labOneX{2.00}   \def\labOneY{-1.00}
+        \def\labThreeX{-2.00}\def\labThreeY{-1.00}
+        \def\labOneXX{3.00}   \def\labOneYY{0.50}
+        \def\labThreeXX{-3.00}\def\labThreeYY{0.50}
+        \def\labOneXXX{3.50}   \def\labOneYYY{1.70}
+        \def\labThreeXXX{-3.50}\def\labThreeYYY{1.70}
+
+        \def\labTwoX{0.35}   \def\labTwoY{-1.70}
+        \def\labFiveX{1.50}  \def\labFiveY{2.72}
+        \def\labSixX{0.85}   \def\labSixY{0.65}
+        \def\labSevenX{0.35}\def\labSevenY{-0.27}
+
+        \def\labFourX{4.20} \def\labFourY{3.60}
+
+        \pgfmathsetmacro{\xcutL}{\ymin+1}
+        \pgfmathsetmacro{\xcutR}{-1-\ymin}
+        \pgfmathsetmacro{\MirrorArrowADx}{\MirrorArrowALength*cos(\MirrorArrowAAngle)}
+        \pgfmathsetmacro{\MirrorArrowADy}{\MirrorArrowALength*sin(\MirrorArrowAAngle)}
+        \pgfmathsetmacro{\MirrorArrowBDx}{\MirrorArrowBLength*cos(\MirrorArrowBAngle)}
+        \pgfmathsetmacro{\MirrorArrowBDy}{\MirrorArrowBLength*sin(\MirrorArrowBAngle)}
+        \pgfmathsetmacro{\MirrorArrowCDx}{\MirrorArrowCLength*cos(\MirrorArrowCAngle)}
+        \pgfmathsetmacro{\MirrorArrowCDy}{\MirrorArrowCLength*sin(\MirrorArrowCAngle)}
+
+        % Axes
+        \draw[-{Latex[length=2.8mm,width=2mm]}, line width=\BaseLineWidth] (\xmin,0) -- (\xmax,0) node[below] {\(T\)};
+        \draw[-{Latex[length=2.8mm,width=2mm]}, line width=\BaseLineWidth] (0,\ymin) -- (0,\ymax) node[right] {\(D\)};
+
+        % Reference lines
+        \draw[line width=\BaseLineWidth, DiagramPrimary] (\lineL,{-\lineL-1}) -- (\xcutR,\ymin);
+        \draw[line width=\BaseLineWidth, DiagramPrimary] (\xcutL,\ymin) -- (\lineR,{\lineR-1});
+        \draw[DiagramPrimary, line width=\BaseLineWidth] (-5,1) -- (5,1);
+        \draw[DiagramPrimary, line width=\BaseLineWidth, domain=\parabL:\parabR, samples=320] plot (\x, {(\x*\x)/4});
+
+        % Tick marks and labels
+        \foreach \x/\lab in {-2/-2,-1/-1,1/1,2/2} {
+            \draw (\x,0.06) -- (\x,-0.06);
+            \node[below] at (\x,0) {\lab};
+        }
+        \draw (0.06,-1) -- (-0.06,-1);
+        \node[right] at (0,-1) {\(-1\)};
+        \draw (0.06,1) -- (-0.06,1);
+        \node[above right] at (0,1) {\(1\)};
+
+        % Helper guides at T = ±2
+        \draw[DiagramPrimary, densely dashed, line width=\GuideLineWidth] (-2,0) -- (-2,1);
+        \draw[DiagramPrimary, densely dashed, line width=\GuideLineWidth] (2,0) -- (2,1);
+
+        % Labels for loci
+        \node[DiagramPrimary, anchor=west] at (\pMinusOneLabelX,\pMinusOneLabelY) {\(p\bka{-1}=0\)};
+        \node[DiagramPrimary, anchor=east] at (\pOneLabelX,\pOneLabelY) {\(p\bka{1}=0\)};
+        \node[DiagramPrimary] at (\DeltaLabelX,\DeltaLabelY) {\(\Delta=0\)};
+        \node[DiagramPrimary, left] at (\DOneLabelX,\DOneLabelY) {\(D=1\)};
+
+        % Circled region numbers
+        \newcommand{\RegionMarker}[4]{%
+            \draw[color=#4, line width=0.55pt] (#1,#2) circle (0.15);
+            \node[text=#4, font=\scriptsize\bfseries] at (#1,#2) {#3};
+        }
+        \RegionMarker{\labOneX}{\labOneY}{1}{DiagramHighlight}
+        \RegionMarker{\labTwoX}{\labTwoY}{2}{DiagramHighlight}
+        \RegionMarker{-\labTwoX}{\labTwoY}{2}{DiagramHighlight}
+        \RegionMarker{\labThreeX}{\labThreeY}{3}{DiagramHighlight}
+        \RegionMarker{\labFourX}{\labFourY}{4}{DiagramHighlight}
+        \RegionMarker{\labFiveX}{\labFiveY}{5}{DiagramHighlight}
+        \RegionMarker{\labSixX}{\labSixY}{6}{DiagramHighlight}
+        \RegionMarker{\labSevenX}{\labSevenY}{7}{DiagramHighlight}
+        \RegionMarker{-\labFiveX}{\labFiveY}{5}{DiagramHighlight}
+        \RegionMarker{-\labSixX}{\labSixY}{6}{DiagramHighlight}
+        \RegionMarker{-\labSevenX}{\labSevenY}{7}{DiagramHighlight}
+        \RegionMarker{-\labFourX}{\labFourY}{4}{DiagramHighlight}
+        \RegionMarker{\labOneXX}{\labOneYY}{1}{DiagramHighlight}
+        \RegionMarker{\labThreeXX}{\labThreeYY}{3}{DiagramHighlight}
+        \RegionMarker{\labOneXXX}{\labOneYYY}{1}{DiagramHighlight}
+        \RegionMarker{\labThreeXXX}{\labThreeYYY}{3}{DiagramHighlight}
+
+        % User-tunable mirrored arrows
+        \draw[-{Latex[length=2.4mm,width=1.7mm]}, DiagramPrimary, line width=\MirrorArrowLineWidth]
+            (\MirrorArrowAHalfGap,\MirrorArrowAY)
+            -- ({\MirrorArrowAHalfGap+\MirrorArrowADx},{\MirrorArrowAY+\MirrorArrowADy});
+        \draw[-{Latex[length=2.4mm,width=1.7mm]}, DiagramPrimary, line width=\MirrorArrowLineWidth]
+            (-\MirrorArrowAHalfGap,\MirrorArrowAY)
+            -- ({-\MirrorArrowAHalfGap-\MirrorArrowADx},{\MirrorArrowAY+\MirrorArrowADy});
+        \draw[-{Latex[length=2.4mm,width=1.7mm]}, DiagramPrimary, line width=\MirrorArrowLineWidth]
+            (\MirrorArrowBHalfGap,\MirrorArrowBY)
+            -- ({\MirrorArrowBHalfGap+\MirrorArrowBDx},{\MirrorArrowBY+\MirrorArrowBDy});
+        \draw[-{Latex[length=2.4mm,width=1.7mm]}, DiagramPrimary, line width=\MirrorArrowLineWidth]
+            (-\MirrorArrowBHalfGap,\MirrorArrowBY)
+            -- ({-\MirrorArrowBHalfGap-\MirrorArrowBDx},{\MirrorArrowBY+\MirrorArrowBDy});
+        \draw[-{Latex[length=2.4mm,width=1.7mm]}, DiagramPrimary, line width=\MirrorArrowLineWidth]
+            (\MirrorArrowCHalfGap,\MirrorArrowCY)
+            -- ({\MirrorArrowCHalfGap+\MirrorArrowCDx},{\MirrorArrowCY+\MirrorArrowCDy});
+        \draw[-{Latex[length=2.4mm,width=1.7mm]}, DiagramPrimary, line width=\MirrorArrowLineWidth]
+            (-\MirrorArrowCHalfGap,\MirrorArrowCY)
+            -- ({-\MirrorArrowCHalfGap-\MirrorArrowCDx},{\MirrorArrowCY+\MirrorArrowCDy});
+    \end{tikzpicture}
+    \caption{\(\bka{T,D}\) 平面中的稳定性分类示意图}
+    \label{fig:TDStabilityMap}
+\end{figure}
+
+% 从上小节\ref{subsec:FDiffSysStable} 我们看出，一个系统是否稳定，只关系到齐次方程中的参数。故我们依 \ref{eq:DiffEquMatrix} 写出高阶差分系统的齐次方程组
+% \begin{equation}
+%     \bsX\nt+\bsA\,\bsX_t=\bs 0 \label{eq:DiffEquMatrixHom}
+% \end{equation}
+% 齐次的差分析系统有 \term{奇点}{singularity}，\(\bar{\bsX}=\bka{0,0}\)；如果系统有稳态点，那么稳态点就是该奇点。代入特征向量 \(\bs X_t=\lambda^{t}\,\bs v\) 得
+% \begin{equation}
+%     \lambda^{-2}\,\bs v + \bsA\,\lambda^{-1}\,\bs v = \bka{\lambda\,\bs I + \bs A}\,\bs v = \bs 0
+% \end{equation}
+% 同样，特征值的实虚及其大小决定系统的稳定性。写出特征方程
+% \begin{equation}
+%     \det\bka{\lambda\,\bs I + \bs A} = \matbkf{a_1&a_2\\-1&0}+\matbkf{\lambda&0\\0&\lambda} = \matbkf{\lambda+a_1 & a_2\\-1 & \lambda} = \lambda^2 + a_1\,\lambda + a_2 = 0
+% \end{equation}
+% 该二次方程解的情况只与 \(a_1\) 和 \(a_2\) 值相关，它们分别是矩阵 \(\bsA\) 的迹（记 \(T\)）和行列式（记 \(D\)），那么高阶线性差分系统的稳定性转向对 \(T\) 和 \(D\)的分析。我们直接得出如下结论\footnote{参考《常微分方程》（丁同仁和李承治，2022）定理 8.5：初等奇点类型的判定}
+
+\TopicLabel{奇点的分类}
+
+我们分别假设特解的形式为 \(k_1\)、\(k_2\,t\) 和 \(k_3\,t^2\)，二阶线性差分方程的特解为 \footnote{2026 年 4 月 21 日勘误：此前第二种情况有误}
+\begin{equation}
+    y^p=\begin{cases}
+       \ \dfrac C{1+a_1+a_2} & \n{ if}\quad 1+a_1+a_2\neq 0\\[2ex]
+       \ \dfrac {C}{2+a_1}\cdot t & \n{ if}\quad 1+a_1+a_2=0\ \n{ and}\ a_1\ne-2\\[2ex]
+       \ \dfrac {C}{2}\cdot t^2& \n{ if}\quad a_1=-2\ \n{ and}\ a_2=1
+    \end{cases}
+\end{equation}
+称 \(y^p\) 称作 \term{奇点}{singularity}。奇点不一定是稳定点，但它对系统至关重要 —— 即使系统是发散的，系统也是围绕它运动。我们用下表总结奇点的类型以及判定条件。
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{>{\centering\arraybackslash}p{0.06\linewidth}>{\centering\arraybackslash}p{0.28\linewidth}>{\centering\arraybackslash}p{0.21\linewidth}>{\centering\arraybackslash}p{0.12\linewidth}>{\centering\arraybackslash}p{0.175\linewidth}}
+        \toprule
+        序号 & 条件 1 & 条件 2 & 类型 & 稳定\\
+        \midrule
+        1 & \(p\bka{1}<0\,, \ p\bka{-1}>0\) &  & 实鞍点 & 发散\\
+        2 & \(p\bka{1}<0\,, \ p\bka{-1}<0\) &  & 实结点 & 发散\\
+        3 & \(p\bka{1}>0\,, \ p\bka{-1}<0\) &  & 实鞍点 & 发散\sidenote{准确地说：当奇点为鞍点时，只存在两条收敛路径，其余发散}\\
+        4 & \(p\bka{1}>0\,, \ p\bka{-1}>0\) & \(\Delta>0\,,\ D>1\) & 实结点 & 发散\\
+        5 & \(p\bka{1}>0\,, \ p\bka{-1}>0\) & \(\Delta<0\,,\ D>1\) & 虚焦点 & 震荡发散\\
+        \midrule
+        6 & \(p\bka{1}>0\,, \ p\bka{-1}>0\) & \(\Delta<0\,,\ D<1\) & 虚焦点 & 震荡收敛\\
+        7 & \(p\bka{1}>0\,, \ p\bka{-1}>0\) & \(\Delta>0\,,\ D<1\) & 实结点 & 多种收敛情况\sidenote{结合 \sidemath{\(\Delta\)} 与 \sidemath{\(D\)} 值可得 \sidemath{\(T\)} 的范围，而对区域 \sidemath{\(7\)} 做更细致的划分，此处省略；\sidemath{\(T\)} 的符号影响根的符号}\\
+        \bottomrule
+    \end{tabular}
+    \caption{奇点类型与稳定性的判定表}
+    \label{tab:SingularityClassification}
+    \renewcommand{\arraystretch}{0}
+\end{table}
+
+\ref{fig:Sing} 以微分系统为例（因为差分系统是离散的，不便展示），汇总了各种稳定和不稳定奇点类型的图像 —— 强调曲线是序列随时间运动的轨线，辅助箭头是系统在每个位置的运动方向。
+
+有几个不同的特征根，代表需要多少个基向量构成特征向量空间。以第二行图像为例：首先，它们都有两个不同实特征根，所以我们能在图像中找到两个垂直方向，它们足够代表整个系统的运动方向，并且如果走上了这两条路径，那么系统会沿直线运动。在 (e) 和 (f) 图中，我们不区分实根是否是异号；如果是异号，那么系统会在对称路径上来回跳跃，这较难用图像展示，但异号会导致震荡，这一特性仍然存在。
+
+出现复根的系统必然震荡，这是因为 \(i^2=-1\) 相当于出现了负号\footnote{2026 年 4 月 19 日勘误：此前句中公式存在错误} 。(h) 图 \(\varrho=1\) 情况很好展示了系统在单位圆上 “震荡”（实际上是在复平面上旋转）的效果。
+
+\begin{figure}[H]
+    \MaybeIncludeGraphics[width=\linewidth]{chapter-07-singularity.png}
+  \caption{各种奇点类型汇总图}
+  \label{fig:Sing}
+\end{figure}
+
+
+%% ====================================================
+%% 章内附录
+%% ====================================================
+\BeginChapterAppendix
+
+\section{特征方程法}{\label{sec:CharEquMethod}}
+
+定义位移算子 \(L\) 作用在 \(\bkd{x_t}\) 上的结果为 \(L\,x_t = x\lt\)；恒等算子 \(I\) 的效果为 \(I \, x_t=x_t\)。位移算子也有自己的特征值和特征向量，仿照线性变换的\sidenote{参考了线性变换的特征值和特征向量满足 \sidemath{\(\bs A\,\bs x=\lambda\,\bsx\)}}，写出
+\begin{equation}
+    L\,x_t=\lambda\,x_t=x\lt
+\end{equation}
+那么特征值为 \(\lambda\)；由 \(x_t=\lambda^{-1}\,x\lt=\lambda^{-2}\,x\llt\) 得特征向量为 \(x_t=C\,\lambda^{-t}\)（\(C\) 为任意常数），该特征向量正是我们求解齐次方程时 “猜测” 的解的结构。
+
+为了更容易看出形式，我们对二阶线性齐次差分方程
+\begin{equation}
+    x_t + a_1\,x\lt + a_2\,x\llt=0
+\end{equation}
+展开讨论。改写差分方程得
+\begin{align}
+    x_t + a_1\,L\,x_t + a_2\,L^2\,x_t &= 0\notag\\
+    x_t + a_1\,\lambda\,x_t + a_2\,\lambda^2\,x_t &= 0\notag\\
+    1 + a_1\,\lambda + a_2\,\lambda^2 &= 0
+\end{align}
+这是由特征多项式（等式左侧）构成的\,\AccentTerm{特征方程}，其解为特征值。通过特征值找到对应的特征向量，再对不同特征值的特征向量进行线性组合得二阶线性差分方程的齐次解。
+
+不失一般性地，求解线性齐次差分方程（无论几阶），实际上就是解特征方程。之所以能这么做，是得益于我们要解的差分方程具有线性性，齐次解族可以形成向量空间\sidenote{此处 “向量” 有更广泛的含义}；反之，若不具有线性性，往往会违背向量空间所要求的加法封闭性，无法形成向量空间。而要猜测齐次解形为 \(C\,\lambda^{-t}\)，一方面我们目前所考虑的线性差分方程满足所需形式，特征向量确为其解；另一方面特征向量凝聚了位移算子的性质，是最具代表性的，也是最容易捕获的。
+
+\section{复合增长}\label{sec:CompGrow}
+
+假设某国 GDP 的增长率保持在 5\%。GDP 是典型的复合增长变量，即经济总是在过往的基础上增长的，过去的发展成果不会凭空消失。那么过去 \(t\) 年后，该国的 GDP 将达到
+\begin{equation*}
+    Y_t = Y_0 \cdot \bka{1+0.05}\cdot  \cdots\cdot \bka{1+0.05}=Y_0 \cdot 1.05^t\notag
+\end{equation*}
+将其取对数得
+\begin{equation}
+    \log Y_t=Y_0 \cdot t\cdot\log 1.05\sim C\cdot t \label{eq:CompGrowLog}
+\end{equation}
+可见我们只有做对数运算，对数变量才会呈现出线性的增长趋势，符合我们在求解线性差分方程中所假设的特解形式。
+
+如果我们把复合增长压榨到极值，会发生什么结果？考虑一年内有 \(n\) 个单位时间，增长率 \(g\) 被平均分成 \(n\) 份，得到每个单位时间的增长率，再进行复合增长，得到
+\begin{align}
+    Y_1 &= Y_0 \cdot \bka{1+\frac{g}{n}} \cdot \dots \cdot \bka{1+\frac{g}{n}}= Y_0 \cdot \bka{1+\frac{g}{n}}^n\to Y_0 \cdot \n e^{g}\,, \quad \nti\notag
+\end{align}
+以上只计算了一年内的连续增长，若计算 \(t\) 年内的连续增长，则 \(Y_t=Y_0 \cdot \n e^{g\,t}\)，我们称其中 \(g\) 为\,\AccentTerm{连续增长率}\,或\,\AccentTerm{瞬时增长率}。解 \(\n e^g=1.05\)，不难得到以 \(g=\log 1.05\) 的连续增长率增长，即可实现 5\% 的年增长率。
+
+连续增长率 \(g\) 与年增长率 \(g'\) 的关系为
+\begin{equation}
+    g' = \n e^g - 1 \quad \Leftrightarrow \quad g = \log\bka{1+g'}
+\end{equation}
+当 \(g'\) 很小时，\(g'=\n e^g-1\approx g\)，连续增长率和年增长率几乎没有区别；当 \(g'\) 较大时，\(g\) 会明显小于 \(g'\)，连续增长率和年增长率的差异就比较大。
+
+以上计算的都是都是一年内的连续增长，如果时间长到 \(t\) 年内的连续增长，则 \(Y_t=Y_0 \cdot \n e^{g\,t}\)。我们对该结果取对数得
+\begin{align}
+    \log Y_t=Y_0 + g\,t \notag
+\end{align}
+有趣的事情发生了：若要实现 5\% 的年增长率目标，\(g=\log1.05\)，此时该结果就是 \ref{eq:CompGrowLog} 中的结果。所以，复合增长的变量服从指数增长，取对数可以剥离出连续增长率。
+
+%% ====================================================
+%% 章内参考文献
+%% ====================================================
+% \PrintChapterBibliography
+
+\FinishStandaloneChapter

@@ -1,0 +1,39 @@
+% Rednote 海报的重要版式参数。尺寸使用 mm，字号使用 pt。
+
+% A4 竖版画布。
+\newcommand{\PosterPageWidth}{210mm}
+\newcommand{\PosterPageHeight}{297mm}
+\newcommand{\PosterMargin}{18mm}
+% 顶部两个模块距顶边、底部信息栏距底边共用这一垂直边距。
+\newcommand{\PosterVerticalInset}{20mm}
+
+% 顶部 Logo 的整体纵向位置；内部参数见 ../logo/poster-settings.tex。
+\newcommand{\PosterLogoTop}{\PosterVerticalInset}
+
+% 底部信息栏：距底边、栏高、内边距与统一顶边粗细。
+\newcommand{\PosterFooterBottom}{\PosterVerticalInset}
+\newcommand{\PosterFooterPanelHeight}{30mm}
+\newcommand{\PosterInfoPanelPadding}{6mm}
+\newcommand{\PosterInfoRuleHeight}{1mm}
+
+% 标题模块：一位数和两位数允许使用不同宽度；高度始终等于标题高度。
+\newcommand{\PosterTitleSingleDigitWidth}{31mm}
+\newcommand{\PosterTitleDoubleDigitWidth}{43mm}
+\newcommand{\PosterTitleNumberGap}{8mm}
+\newcommand{\PosterTitleVerticalShift}{-2mm}
+\newcommand{\PosterTitleShadowX}{2mm}
+\newcommand{\PosterTitleShadowY}{-2mm}
+\newcommand{\PosterTitleShadowOpacity}{0.58}
+
+% 两行标题的全局默认字号和行间距；各章只在 poster-xx.tex 中按需覆盖字号。
+\newcommand{\PosterTitleFirstLineDefaultSize}{70}
+\newcommand{\PosterTitleSecondLineDefaultSize}{70}
+\newcommand{\PosterTitleLineGap}{6mm}
+\providecommand{\RednotePosterFirstLineSize}{\PosterTitleFirstLineDefaultSize}
+\providecommand{\RednotePosterSecondLineSize}{\PosterTitleSecondLineDefaultSize}
+
+% 底部作者与日期信息的字号。
+\newcommand{\PosterCourseSize}{18}
+\newcommand{\PosterFooterMetaSize}{11}
+\newcommand{\PosterAuthorSize}{22}
+\newcommand{\PosterDateSize}{21}

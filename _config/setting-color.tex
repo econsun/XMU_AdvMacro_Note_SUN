@@ -1,0 +1,35 @@
+% !TeX root = ../AdvMacroNote_Sun.tex
+% 全项目颜色统一定义。颜色名称只描述用途，不描述具体色相。
+
+% 页面与文字层级。
+\definecolor{PageBackground}{HTML}{FAF9F7}
+\definecolor{BodyText}{HTML}{25272A}
+\definecolor{SecondaryText}{HTML}{746F69}
+\definecolor{Divider}{HTML}{D8D3CC}
+\definecolor{InstitutionMark}{HTML}{003C88}
+\definecolor{DiagramPrimary}{HTML}{25272A}
+\definecolor{DiagramAnnotation}{HTML}{746F69}
+\definecolor{DiagramGuide}{HTML}{999793}
+\definecolor{PartPrimaryText}{HTML}{FAF9F7}
+
+% 两册课程主题色：第一册为马卡龙橙，第二册为马卡龙绿。
+\definecolor{VolumeOneAccent}{HTML}{C98256}
+\definecolor{VolumeTwoAccent}{HTML}{74A184}
+\definecolor{AppendixAccent}{HTML}{8B83AD}
+\definecolor{MathEmphasisB}{HTML}{3F6F8F}
+\definecolor{MathEmphasisC}{HTML}{985F7A}
+
+% 当前课程及其派生用途。切换课程时同步更新。
+\colorlet{ActiveAccent}{VolumeOneAccent}
+\colorlet{MathEmphasisA}{ActiveAccent}
+\colorlet{DiagramHighlight}{ActiveAccent}
+\colorlet{DiagramComparison}{ActiveAccent!48!BodyText}
+\colorlet{PartSecondaryText}{PageBackground!72!ActiveAccent}
+
+\newcommand{\setcourseaccent}[1]{%
+    \colorlet{ActiveAccent}{#1}%
+    \colorlet{MathEmphasisA}{ActiveAccent}%
+    \colorlet{DiagramHighlight}{ActiveAccent}%
+    \colorlet{DiagramComparison}{ActiveAccent!48!BodyText}%
+    \colorlet{PartSecondaryText}{PageBackground!72!ActiveAccent}%
+}

@@ -1,0 +1,310 @@
+% !LW recipe = XeLaTeX once (current file)
+\ifdefined\CourseRootDocument
+\providecommand{\FinishStandaloneChapter}{}
+\else
+\documentclass[11pt,oneside,openany,UTF8,fontset=none]{ctexbook}
+\def\StandaloneChapterNumber{8}
+\def\StandaloneCourseSetup{\UseMacroIICourse}
+\input{../../_config/core/chapter-standalone}
+\def\FinishStandaloneChapter{\end{document}}
+\fi
+% Migrated chapter content.
+
+
+\chapter{对数线性化}\label{ch:08}
+
+\section{对数线性化的基本思想}\label{sec:LogLineIdea}
+
+商业周期研究常常关心经济变量围绕长期趋势或稳态附近的波动。许多模型本身是非线性的，直接求解往往较困难，因此一个标准做法是先在稳态附近作局部近似，再把变量改写为偏离稳态的百分比形式，被称为 \term{对数线性化}{log-linearization}\sidenote{简化模型求解的复杂度是引入对数线性化且该方法重要的原因}。
+
+对数线性化有“对数”“线性化”两个关键词 —— 线性关系需满足可加性与齐次性；取对数则是引入百分比含义。我们会在\ref{sec:LogLineMethod} 中介绍三种对数线性化的方法。
+
+对数线性化特别适合分析连续可微、并且在稳态附近平滑变动的方程。若函数在某些区域不连续、不可微或存在拐点式约束，则这种局部近似可能失效。
+
+
+\section{对数偏离变量}\label{sec:HatVar}
+
+两项作差得它们间的距离；如果其中一项被视为基准（比如稳态），我们将作差结果视为 \term{偏离}{deviation}；如果作差两项是对数形式，那么就有本节要讨论的 \term{对数偏离}{log-deviation}。记 \(X_t\) \sidenote{稳态记号不需要时间角标，\sidemath{\(\bar X_t\)} 不够准确}相对于自己的稳态 \(\bar X\) 的对数偏离为
+\begin{equation}
+    \hat x_t\coloneq \log X_t-\log\bar X\label{eq:HatDef}
+\end{equation}
+进一步计算
+\begin{align}
+    \hat x_t\cdot100\%=\log\frac{X_t}{\bar X}\cdot100\%&=\log\bka{1+\frac{X_t-\bar X}{\bar X}}\cdot100\%\approx \frac{X_t-\bar X}{\bar X}\cdot100\%\notag\\
+    \hat x_t\approx \dfrac{X_t-\bar X}{\bar X} &\quad\Leftrightarrow\quad X_t\approx \bar X\bka{1+\hat x_t}
+    \label{eq:HatPercent}
+\end{align}
+上式告诉我们：对数偏离用于近似 “百分比偏离”，该式与增长率的定义相似。但其形式不具有增长率的经济含义，所以只能称作百分比偏离。简言之，\(\hat x_t\ne g_{X,t}\,\)。
+
+当 \(\hat x_t\) 足够小时，由指数函数在 0 点的一阶泰勒展开 \(e^{\hat x_t}\approx 1+\hat x_t\) 可知
+\begin{equation}
+    \bar X\,e^{\hat x_t}\approx\bar X\bka{1+\hat x_t}=\bar X+\bar X\,\hat x_t\approx X_t
+    \label{eq:LevelFromHat}
+\end{equation}
+\(X_t=\bar X\bka{1+\hat x_t}\) 和 \(X_t=\bar X\,e^{\hat x_t}\) 都是重要结论，它们直接从待处理变量 \(X_t\) 得到 \(\bar X\) 和 \(\hat x_t\) 的表达式，为我们对数线性化提供另一条路径（\ref{subsec:LogLineTransform}）。
+
+\section{泰勒近似估计}\label{sec:TaylorApprox}
+
+\subsection{一元函数}\label{subsec:TaylorOneVar}
+
+设函数 \(f\) 在点 \(a\) 的邻域内可微到足够高阶，则 \(f\) 在 \(a\) 附近可写为
+\begin{equation}
+    f\bka{x}=f\bka{a}+\sum_{i=1}^{k}\frac{f^{(i)}\bka{a}}{i\,!}\,\bka{x-a}^{i}+o\bka{x-a}^{k}
+\end{equation}
+这是函数 \(f\) 在 \(a\) 点的 \(k\) 阶 \term{泰勒展开}{Taylor expansion}。注意上式为等式！当我们把高阶项丢弃，那么左右两侧不再相等，才有 \term{泰勒近似}{Taylor approximation}—— 用多项式近似估计处理对象。
+
+一阶和二阶泰勒近似如下给出\sidenote{一阶泰勒近似最常用}
+\begin{align}
+    f\bka{x} &\approx f\bka{a}+f'\bka{a}\bka{x-a}\label{eq:TaylorFirst}\\
+    f\bka{x} &\approx f\bka{a}+f'\bka{a}\bka{x-a}+\frac{f''\bka{a}}{2}\bka{x-a}^{2}\label{eq:TaylorSecond}
+\end{align}
+一阶展开 \ref{eq:TaylorFirst} 给出局部线性近似，二阶展开 \ref{eq:TaylorSecond} 则在线性近似的基础上纳入曲率修正。
+
+\subsection{多元函数}\label{subsec:TaylorMultiVar}
+
+设二元函数 \(f\bka{x,y}\) 在点 \(\bka{x_0,y_0}\) 的邻域内二阶连续可微\sidenote{从多元泰勒式中更容易看出，近似使用的是全微分，即 \ref{eq:MultiTaylor} 中的最后两项}，其在该点附近的一阶近似为
+\begin{equation}
+    f\bka{x_0+h,y_0+k}\approx f\bka{x_0,y_0}+f_x\bka{x_0,y_0}\,h+f_y\bka{x_0,y_0}\,k\label{eq:MultiTaylor}
+\end{equation}
+若保留二阶项，则有
+\begin{align}
+    f\bka{x_0+h,y_0+k}\approx\,& f\bka{x_0,y_0}+f_x\bka{x_0,y_0}h+f_y\bka{x_0,y_0}k\notag\\
+    &+\frac12\bks{f_{xx}\bka{x_0,y_0}h^2+2\,f_{xy}\bka{x_0,y_0}h\,k+f_{yy}\bka{x_0,y_0}\,k^2}
+\end{align}
+
+用向量写法可更紧凑地表示为
+\begin{equation}
+    f\bka{\bs z_0+\Delta}\approx f\bka{\bs z_0}+\nabla\tra \, f\bka{\bs z_0}\matbks{h\\k}+\frac12\bks{h\quad k} H_f\bka{\bs z_0}\matbks{h\\k}
+\end{equation}
+其中 \(\bs z_0\coloneq\bka{x_0,y_0}\tra\)；\(H_f\bka{\bs z_0}\) 是 Hessian 矩阵。
+
+泰勒近似提供了寻找用于估计 \(f\bkx\) 的最优多项式的方法，可见用泰勒近似就已经能实现线性化，说明对数运算的主要目的是引入百分比，增强经济含义。
+
+\subsection{常用近似}\label{subsec:CommonApprox}
+
+在下一节，我们会学习对数线性化的三种方法，但在实践中，常常还要配合如下近似技巧，它们都能从泰勒近似获得。假设 \(x\) 足够小（\(x\to0\)），那么
+\begin{itemize}
+    \item \(e^x\approx 1+x\)
+    \item \(\log\bka{1+x}\approx x\)
+    \item \(\bka{1+x}^\alpha\approx 1+ \alpha\,x\) \footnote{2026 年 4 月 19 日勘误：此前该式存在错误}
+\end{itemize}
+
+\section{对数线性化的方法}\label{sec:LogLineMethod}
+
+以柯布-道格拉斯生产函数为例，说明对数线性化的三种方法
+\begin{equation}
+    Y_t=K_t^\alpha\,L_t^{1-\alpha}\label{eq:CDProdExample}
+\end{equation}
+
+\subsection{直接方法}\label{subsec:LogLineBasic}
+
+对等式两侧去对数得
+\begin{align}
+    \log Y_t & = \alpha\log K_t + \bka{1-\alpha}\log L_t\notag\\ 
+    \log \bar Y & = \alpha\log \bar K + \bka{1-\alpha}\log \bar L\label{eq:CDProdLog}
+\end{align}
+两式相减
+\begin{equation}
+    \log Y_t - \log \bar Y = \alpha\log K_t - \alpha\log \bar K + \bka{1-\alpha}\log L_t - \bka{1-\alpha}\log \bar L
+\end{equation}
+定义对数偏离量，得
+\begin{equation}
+    \hat y_t = \alpha\,\hat k_t + \bka{1-\alpha}\hat l_t\label{eq:CDProdLogLinear}
+\end{equation}
+等式两侧都是齐次函数，且满足可加性，所以 \ref{eq:CDProdLogLinear} 是 \(Y_t\) 关于 \(K_t\) 和 \(L_t\) 的对数线性化形式。
+
+\subsection{基础方法}\label{subsec:LogLineTransform}
+
+本方法虽和直接方法看起来不同，但内在逻辑相同，故而是变形。直接应用 \ref{eq:LevelFromHat} 有
+\begin{equation}
+    \bar Y\,e^{\hat y_t}=\bar K^\alpha\,e^{\alpha\,\hat k_t}\cdot \bar L^{1-\alpha}\,e^{\bka{1-\alpha}\hat l_t}
+\end{equation}
+这时再取对数得
+\begin{equation}
+    \AccentMark{\log\bar Y}+\hat y_t=\AccentMark{\alpha\log\bar K}+\alpha\,\hat k_t+\AccentMark{\bka{1-\alpha}\log\bar L}+\bka{1-\alpha}\hat l_t
+\end{equation}
+根据 \ref{eq:CDProdLog} 消去标注部分，不难得到和基础方法相同的结论
+\begin{equation*}
+    \hat y_t=\alpha\,\hat k_t+\bka{1-\alpha}\hat l_t\notag
+\end{equation*}
+
+
+\subsection{通用方法}\label{subsec:LogLineGeneral}
+
+先一般地考虑
+\begin{equation*}
+    Z_t=f\bka{X_t,Y_t} \quad\Rightarrow\quad \log Z_t=\log \, f\bka{e^{\log X_t}, \,e^{\log Y_t}}\notag
+\end{equation*}
+计算偏导数
+\begin{align}
+    \dfrac{\partial\log Z_t}{\partial\log X_t}\bka{\bar X,\bar Y}& = \dfrac1{\bar Z}\cdot\dfrac{\p Z_t}{\p X_t}\bka{\bar X,\bar Y}\cdot \underbrace{e^{\log \bar X}}_{=\,\bar X}=\dfrac{\bar X}{\bar Z}\cdot\dfrac{\p Z_t}{\p X_t}\bka{\bar X,\bar Y}\eqcolon\bar\eta_{zx}\label{eq:LogLineGeneralX}
+\end{align}
+此时再应用泰勒公式不难得到\sidenote{往后的偏导数都是在稳态的实现值，此处作一定的符号简化}
+\begin{align}
+    \log Z_t-\log\bar Z\approx\dfrac{\bar X}{\bar Z}\dfrac{\p Z_t}{\p X_t}\cdot\bka{\log X_t-\log\bar X}+\dfrac{\bar Y}{\bar Z}\dfrac{\p Z_t}{\p Y_t}\cdot\bka{\log Y_t-\log\bar Y}\label{eq:LogLineGeneralTaylor}
+\end{align}
+定义对数偏离量，在变量都足够小时得\sidenote{对比基本方法所有过程都是等式，但使用泰勒近似要加上 “变量足够小” 的条件才能把约等号改为等号，可见两种偏离量有细微的区别，但不影响结果的正确性}
+\begin{equation}
+    \hat z_t=\bar\eta_{zx}\cdot\hat x_t+\bar\eta_{zy}\cdot\hat y_t\label{eq:LogLineGeneralHat}
+\end{equation}
+或等价地
+\begin{equation}
+    \bar Z\,\hat z_t=\dfrac{\p Z_t}{\p X_t}\bka{\bar X,\bar Y}\cdot\bar X\,\hat x_t+\dfrac{\p Z_t}{\p Y_t}\bka{\bar X,\bar Y}\cdot\bar Y\,\hat y_t\label{eq:LogLineGeneralHatLevel}
+\end{equation}
+在 \ref{eq:LogLineGeneralX} 的最后结果我们看到了稳态处的弹性（得益于取对数操作），那么此处 \(\bar\eta_{zx}\) 和 \(\bar\eta_{zy}\) 分别是 \(Z_t\) 关于 \(X_t\) 和 \(Y_t\) 在稳态处的弹性系数。
+
+使用 \ref{eq:LogLineGeneralHat} 的形式，直接把柯布-道格拉斯生产函数改写为
+\begin{align}
+    \hat y_t&=\bar\eta_{yk}\cdot\hat k_t+\bar\eta_{yl}\cdot\hat l_t=\alpha\,\hat k_t+\bka{1-\alpha}\hat l_t\notag
+\end{align}
+
+\section{对数线性化的性质}\label{sec:LogLineProp}
+
+下表总结了对数线性化的重要性质，证明略。
+\begin{table}[H]
+    \centering
+    \caption{对数线性化的常用性质}
+    \renewcommand{\arraystretch}{1.4}
+    \begin{tabular}{>{\centering\arraybackslash}p{0.1\textwidth} >{\centering\arraybackslash}p{0.3\textwidth} >{\centering\arraybackslash}p{0.3\textwidth}}
+        \toprule
+        \textbf{序号} & \textbf{原方程} & \textbf{对数线性化形式} \\
+        \midrule
+        1 & \(X_t\,Y_t=c\) & \(\hat x_t+\hat y_t=0\) \\
+        2 & \(X_t\islash Y_t=c\) & \(\hat x_t-\hat y_t=0\) \\
+        3 & \(X_t\pm Y_t=c\) & \(\bar X\,\hat x_t\pm\bar Y\,\hat y_t=0\) \\
+        \midrule
+        4 & \(Z_t=c\,X_t\) & \(\hat z_t=\hat x_t\) \\
+        5 & \(Z_t=X_t\,Y_t\) & \(\hat z_t=\hat x_t+\hat y_t\) \\
+        6 & \(Z_t=X_t\islash Y_t\) & \(\hat z_t=\hat x_t-\hat y_t\) \\
+        7 & \(Z_t=X_t^\alpha\) & \(\hat z_t=\alpha\,\hat x_t\) \\
+        \midrule
+        8 & \(\dis Z_t=\sum\wsni\,X_{i,t}\) & \(\dis\hat z_t=\sum\wsni\,\frac{\bar X_{i}}{\bar Z}\,\hat x_{i,t}\) \\
+        \bottomrule
+    \end{tabular}
+    \renewcommand{\arraystretch}{0}
+\end{table}
+
+
+\section{对数线性化的示例}\label{sec:LogLineExamples}
+
+对数线性化的步骤不复杂，并且多数式子都可以用性质快速得到结果，但不可跳过某些重要步骤。以下我们来考虑一些有意思的例子。
+
+\subsection{GDP 恒等式}\label{subsec:exGDP}
+
+三部门经济使用支出法核算 GDP 是依据下式\sidenote{不难发现该式已满足线性，但不是对数的}
+\begin{equation*}
+    Y_t=C_t+I_t+G_t=f\bka{C_t,I_t,G_t}\notag
+\end{equation*}
+我们使用通用方法对其对数线性化。首先求偏导数
+\begin{equation*}
+    \dfrac{\partial\log Y_t}{\partial\log C_t}=1 \qquad \dfrac{\partial\log Y_t}{\partial\log I_t}=1 \qquad \dfrac{\partial\log Y_t}{\partial\log G_t}=1\notag
+\end{equation*}
+接着泰勒近似
+\begin{align}
+    \log Y_t-\log Y&=\dfrac{\bar C}{\bar Y}\cdot \bka{C_t-\bar C_t} + \dfrac{\bar I}{\bar Y}\cdot \bka{I_t-\bar I_t} + \dfrac{\bar G}{\bar Y}\cdot\bka{G_t-\bar G_t}\notag\\
+    \hat y_t &=\frac{\bar C}{\bar Y}\cdot \hat c_t + \frac{\bar I}{\bar Y}\cdot \hat i_t + \frac{\bar G}{\bar Y}\cdot \hat g_t\label{eq:LogLineGDP}
+\end{align}
+这个结果可以帮我们理解对数线性化的第 8 条性质，并且有意思地说明了 GDP 数据的对数偏离是消费、投资和政府支出的对数偏离的加权平均，权重是各自占 GDP 的份额，而这个份额也可以理解为弹性，如消费的
+\begin{equation}
+    \bar\eta_{yc}=\underbrace{\dfrac{\partial\log Y_t}{\partial\log C_t}\bka{\bar C,\bar I,\bar G}}_{=\,1} \ \cdot \ \dfrac{\bar C}{\bar Y}=\dfrac{\bar C}{\bar Y}
+\end{equation}
+
+\subsection{CES 函数}\label{subsec:exCES}
+
+不变替代弹性（CES）函数形如
+\begin{equation}
+    Z_t=\bka{X_{1,t}^{\varrho}+X_{2,t}^{\varrho}}^{\frac1\varrho}\label{eq:CESExample}
+\end{equation}
+通用法可以很快得到结果，但我们当然不会满足，所以先尝试直接法，再展示通用法。
+
+\TopicLabel{方法一}
+
+首先取对数容易得到
+\begin{equation}
+    \hat z_t=\dfrac1\varrho\log\bka{\dfrac{X^\varrho_{1,t}+X^\varrho_{2,t}}{\bar X_1^\varrho+\bar X_2^\varrho}}\label{eq:CESHatBasic}
+\end{equation}
+式 \ref{eq:LevelFromHat} 告诉我们 \(X_t=\bar X\,e^{\hat x_t}\)，那么
+\begin{equation}
+    X_{i,t}^\varrho=\qa{\bar X_i\,e^{\hat x_{i,t}}}^\varrho=\bar X_i^\varrho\cdot \,e^{\varrho\,\hat x_{i,t}}\label{eq:CESHatBasicX}
+\end{equation}
+代入 \ref{eq:CESHatBasic} 并使用 \(e^x\approx1+x\) 和 \(\log\bka{1+x}\approx x\) 得
+\begin{align}
+    \hat z_t&=\dfrac1\varrho\log\bka{\dfrac{\bar X_1^\varrho\,e^{\varrho\,\hat x_{1,t}}+\bar X_2^\varrho\,e^{\varrho\,\hat x_{2,t}}}{\bar X_1^\varrho+\bar X_2^\varrho}}\notag\\
+    &\approx\dfrac1\varrho\log\bks{\dfrac{\bar X_1^\varrho\bka{1+\varrho\,\hat x_{1,t}}+\bar X_2^\varrho\bka{1+\varrho\,\hat x_{2,t}}}{\bar X_1^\varrho+\bar X_2^\varrho}}\notag\\
+    &=\dfrac1\varrho\log\bka{1+\dfrac{\varrho\,\bar X_1^\varrho}{\bar X_1^\varrho+\bar X_2^\varrho}\cdot\hat x_{1,t}+\dfrac{\varrho\,\bar X_2^\varrho}{\bar X_1^\varrho+\bar X_2^\varrho}\cdot\hat x_{2,t}}\notag\\
+    &\approx\dfrac1\varrho\bka{\dfrac{\varrho\,\bar X_1^\varrho}{\bar X_1^\varrho+\bar X_2^\varrho}\cdot\hat x_{1,t}+\dfrac{\varrho\,\bar X_2^\varrho}{\bar X_1^\varrho+\bar X_2^\varrho}\cdot\hat x_{2,t}}\notag\\
+    &=\dfrac{\bar X_1^\varrho}{\bar X_1^\varrho+\bar X_2^\varrho}\cdot\hat x_{1,t}+\dfrac{\bar X_2^\varrho}{\bar X_1^\varrho+\bar X_2^\varrho}\cdot\hat x_{2,t}\notag
+\end{align}
+在此之中我们也能看到对数线性化的第 8 条性质的影子。
+
+\TopicLabel{方法二}
+
+以下是通用方法的处理。先计算偏导数
+\begin{align*}
+    \dfrac{\p Z_t}{\p X_{1,t}}&=X_{1,t}^{\varrho-1}\bka{X_{1,t}^\varrho+X_{2,t}^\varrho}^{\frac{1-\varrho}\varrho}\notag
+\end{align*}
+再代入弹性表达式\sidenote{以上计算的是任意位置的偏导数，别忘记取稳态处的值\\ \vspace{8pt}注意不变替代弹性的定义，和这里计算的弹性不同，所以计算结果不是 \sidemath{\(\varrho\)}}
+\begin{equation*}
+    \dfrac{\partial\log Z_t}{\partial\log X_{1,t}}=\dfrac{X_{1,t}}{Z_t}\cdot\dfrac{\p Z_t}{\p X_{1,t}}=\dfrac{X_{1,t}}{\bka{X_{1,t}^\varrho+X_{2,t}^\varrho}^{1/\varrho}}\cdot X_{1,t}^{\varrho-1}\bka{X_{1,t}^\varrho+X_{2,t}^\varrho}^{\frac{1-\varrho}\varrho}=\dfrac{X_{1,t}^\varrho}{X_{1,t}^\varrho+X_{2,t}^\varrho}\notag
+\end{equation*}
+此时结果就很显然了。
+
+\subsection{欧拉方程}\label{subsec:exEuler}
+
+在我们后续会学习的 RBC 模型中，\term{欧拉方程}{Euler equation}为
+\begin{equation}
+    u'\bka{C_t}=\beta\cdot\mean_t\bks{u'\bka{C\nt}\cdot R\nt}
+\end{equation}
+应用 CRRA 形式效用函数
+\begin{equation}
+    C_t^{-\sigma}=\beta\cdot\mean_t\bks{C\nt^{-\sigma}\cdot R\nt}
+\end{equation}
+使用基础方法对其线性化。如 \ref{eq:CESHatBasicX} 所示，我们有
+\begin{equation*}
+    C_t^{-\sigma}=\bar C^{-\sigma}\cdot e^{-\sigma\,\hat c_t}\notag
+\end{equation*}
+代入欧拉方程得 \footnote{2026 年 4 月 10 日勘误：此前倒数第二行等式左侧有误}
+\begin{align}
+    \AccentMark{\bar C^{-\sigma}}\,e^{-\sigma\,\hat c_t}&=\AccentMark{\beta}\cdot\mean_t\bks{\AccentMark{\bar C^{-\sigma}}\,e^{-\sigma\,\hat c\nt}\cdot \AccentMark{\bar R}\,e^{\hat r\nt}}\notag\\
+    e^{-\sigma\,\hat c_t}&=\mean_t\bks{e^{-\sigma\,\hat c\nt}\cdot e^{\hat r\nt}}\notag\\
+    1-\sigma\,\hat c_t&=\mean_t\bks{\bka{1-\sigma\,\hat c\nt}\bka{1+\hat r\nt}}\notag\\
+    1-\sigma\,\hat c_t&=\mean_t\bks{1-\sigma\,\hat c\nt+\hat r\nt-\sigma\,\hat c\nt\,\hat r\nt}\notag\\
+    \hat c_t&=\mean_t\bks{\hat c\nt}-\dfrac1\sigma\,\mean_t\bks{\hat r\nt}
+\end{align}
+出于对精度的容忍，我们在倒数第二行使用了丢弃（二次）交叉项。千万注意不能对第二行使用取对数，因为对数运算和期望运算不能交换顺序，\(\log\mean\bka\abfun\ne\mean\log\bka\abfun\)，那么就不会有效果。
+
+%% ====================================================
+%% 章内附录
+%% ====================================================
+\BeginChapterAppendix
+
+\section{增长率的性质}\label{sec:GrowRateProp}
+
+定义变量 \(X\) 在 \(t\) 的 \term{增长率}{growth rate}为
+\begin{equation}
+    g_{X,t}\coloneq\dfrac{\D X_t}{X\lt}=\dfrac{X_t-X\lt}{X\lt}
+\end{equation}
+进一步计算
+\begin{equation}
+    g_{X,t}=\frac{X_t}{X\lt}-1\approx\log\frac{X_t}{X\lt}=\log X_t-\log X\lt\label{eq:GrowRateLog}
+\end{equation}
+以 \(Z_t=X_t\,Y_t\) 为例，我们如何计算增长率呢？一般路径是取对数
+\begin{equation}
+    \log Z_t=\log X_t+\log Y_t\notag
+\end{equation}
+对等式两侧作差分运算
+\begin{align}
+    \underbrace{\log Z_t-\log Z\lt}_{g_{Z,t}}&=\underbrace{\log X_t-\log X\lt}_{g_{X,t}}+\underbrace{\log Y_t-\log Y\lt}_{g_{Y,t}}\notag
+\end{align}
+我们对这样的手法再熟悉不过了，和对数线性化一模一样，区别仅在于计算 “偏离” 的方式 —— 增长率减去上一期的对数，对数线性化减去稳态的对数。这种相似性来自于它们都有取对数和计算偏离的步骤，而增长率的处理中取对数，我们在\ref{sec:CompGrow} 中已经讨论过，是为了剥离出连续增长率。
+
+既然如此，增长率和对数线性化有相似的性质，不再赘述。我们应用性质，不难实现索洛模型中，全要素生产率的核算（取时间连续形式）
+\begin{align*}
+    Y=A\,K^\alpha\,L^{1-\alpha} \quad \Rightarrow \quad  & \grt Y = \grt A + \alpha\,\grt K + \bka{1-\alpha}\grt L\notag\\
+    & \grt A = \grt Y - \alpha\,\grt K - \bka{1-\alpha}\grt L
+\end{align*}
+
+
+% \PrintChapterBibliography
+
+\FinishStandaloneChapter

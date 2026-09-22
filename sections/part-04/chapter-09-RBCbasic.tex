@@ -1,0 +1,503 @@
+% !LW recipe = XeLaTeX once (current file)
+\ifdefined\CourseRootDocument
+\providecommand{\FinishStandaloneChapter}{}
+\else
+\documentclass[11pt,oneside,openany,UTF8,fontset=none]{ctexbook}
+\def\StandaloneChapterNumber{9}
+\def\StandaloneCourseSetup{\UseMacroIICourse}
+\input{../../_config/core/chapter-standalone}
+\def\FinishStandaloneChapter{\end{document}}
+\fi
+
+
+\chapter{RBC 模型：基本情况}\label{ch:09}
+
+在经济周期中，我们最关心的变量莫过于产出、消费、投资，而投资的结果是资本存量，所以我们会通过消费和资本存量来构建实际\sidenote{“实际” 意味着不考虑货币，所有变量都是实际变量}经济周期模型，探讨这些令人着迷的变量会在经济中如何增长、如何波动。
+
+在本章，我们会进入 \term{实际经济周期}{real business cycle，RBC}的基本模型
+\begin{itemize}
+    \item \ref{sec:SocialPlanProb}：以全知全能的社会规划者视角，考查如何配置资源可以实现家庭效用最大化，从一阶条件中得到 RBC 模型的动态系统 \ref{eq:RBCModel}。
+    \item \ref{sec:CompMarketProb}：视角切换到完全竞争市场，考查家庭和厂商作为市场的供给双方，他们会如何在借贷资本的过程中实现效用最大化或利润最大化，二者的一阶条件也可以得到 RBC 模型的动态系统，在无摩擦条件下和社会规划者的一致。
+    \item \ref{sec:RBCStable}：明确 RBC 动态系统之后，我们将其对数线性化。对数线性化的结果会包含稳态未知变量，所以还要求出稳态，使得系统中只包含目标变量的波动和参数，为下一章数值求解做准备。对数线性化的过程是繁琐的，我们需要理解每个新变量和参数的定义、每个步骤的目的，才不会在过程中迷路。
+    \begin{itemize}
+        \item 在本章学习结束后，我们应该熟练写出 RBC 系统及其对数线性化结果，还有以下所有变量和参数的表达式、（跨行或跨列）任意两者间的关系
+        \begin{align*}
+            &Y_t \qquad \dfrac{Y_t}{K_t}\qquad\dfracb{Y}{K} \qquad \dfracb{C}{K}\\
+            &R_t \qquad \bar R \qquad \hat r_t\qquad\tilde\delta\\
+            &\n{MPK}_t \qquad \overline{\n{MPK}} \qquad \widehat{\n{MPK}}_t
+        \end{align*}
+    \end{itemize}
+\end{itemize}
+
+\section{社会规划者问题}\label{sec:SocialPlanProb}
+
+我们假设经济体中有全知全能的 \term{社会规划者}{social planner}，他知道所有家庭的偏好、技术和资源约束，并且能够为整个经济体做出最优决策。社会规划者以人民幸福为唯一目标，所以它会在有限资源条件下，尽可能使得人民幸福，也就是最大化家庭的效用函数。
+
+\subsection{模型基本设定}\label{subsec:BasicSetup}
+
+\TopicLabel{偏好}
+
+社会规划者知道所有家庭的偏好，并且可以用代表性效用函数将其表示出来
+\begin{align}
+    U\coloneq \mean_0\bks{\sum\wsito \,\beta^t\,\dfrac{C_t^{1-\sigma}-1}{1-\sigma}}
+\end{align}
+\begin{itemize}
+    \item \(C_t\) 是家庭在 \(t\) 时刻的消费，效用函数组从 CRRA 形式
+    \item \(\beta\) 是家庭的时间偏好折现因子，取值范围为 \(\bka{0,1}\)\sidenote{如果 \sidemath{\(\beta>1\)}，意味着同量消费留到未来更好，不符合人性}
+    \item \(\sigma\) 是家庭的相对风险厌恶系数，取值范围为 \((0,+\infty)\)
+\end{itemize}
+
+\TopicLabel{技术}
+
+生产函数为 Cobb-Douglas 形式
+\begin{align}
+    &Y_t=Z_t\,K\lt^\alpha\,N_t^{1-\alpha}\\
+    &\log Z_t=\bka{1-\psi}\log\bar Z+\psi\log Z\lt+\varepsilon_t\\
+    &\qquad\qquad \varepsilon_t\sim_\text{i.i.d.}\normal\bka{0,\sigma^2_Z}\notag
+\end{align}
+\begin{itemize}
+    \item \(Y_t\) 和 \(N_t\) 分别是 \(t\) 时刻的产出、资本投入和劳动投入
+    \item \(K\lt\) 是 \(t-1\) 时刻的资本存量\sidenote{因为我们在 \sidemath{\(t\)} 时期只能使用上一期留存的资本存量，所以 \sidemath{\(K\)} 的角标为 \sidemath{\(t-1\)}}
+    \item \(\alpha\) 是资本的产出弹性，取值范围为 \(\bka{0,1}\)
+    \item \(Z_t\) 是 \(t\) 时刻的技术水平，服从 AR(1)（一阶自回归）过程
+    \item \(\psi\) 是技术水平的持续性参数，取值范围 \(\bka{0,1}\) 保证了 \(Z_t\) 的平稳性
+\end{itemize}
+
+\TopicLabel{资源}
+
+资源约束（或生产约束）为
+\begin{align}
+    C_t+K_t=Z_t\,K\lt^\alpha\,N_t^{1-\alpha}+\bka{1-\delta}K_{t-1}\,, \quad \forall\,t\geq 0
+\end{align}
+\begin{itemize}
+    \item 方程左侧是经济体的支出，右侧是经济体的收入
+    \item 资本存量的运动方程为 \(K_t-\bka{1-\delta}K\lt=i_t\)\sidenote{为避免和信息的记号 \sidemath{\(I_t\)} 重复，投资记作 \sidemath{\(i_t\)}}
+\end{itemize}
+
+\TopicLabel{禀赋}
+
+为了优雅的模型结果和良好的经济学含义，我们标准化劳动投入 \(N_t=1\)\sidenote{\sidemath{\(N_t=1\)} 将被代入生产函数}，并设定初始资本存量 \(K_{-1}>0\)。
+
+\TopicLabel{信息}
+
+在效用函数中我们看到了期望运算，这是社会规划者在考虑当前到未来无穷远期，家庭效用的加总。在不确定性之下，人们的决策基于 \(I_t\) 信息。
+
+
+\subsection{最优化问题的表述}\label{subsec:OptProbForm}
+
+在 RBC 模型中，社会规划者面临如下最优化问题
+\begin{align*}
+    \max_{\bkd{C_t,K_t}\wsito} \quad & U= \mean_0\bks{\sum\wsito \,\beta^t\,\dfrac{C_t^{1-\sigma}-1}{1-\sigma}} \\
+    \text{s.t.} \quad & C_t+K_t=Z_t\,K^\alpha\lt+\bka{1-\delta}K_{t-1}\,, \quad \forall\, t\geq 0 \\
+    & N_0=1\,,\quad K_{-1}>0
+\end{align*}
+该最优化问题，是在 \(t\) 个（无穷个）资源约束下最大化效用函数。
+
+在无限期最优化问题中，我们还需要 \term{截断条件}{transversality condition，TVC}来保证最优解的存在性和唯一性
+\begin{align}
+    \lim_{T\to\infty}\,\beta^T\cdot\mean_T\bks{\lambda_T\,K_T}=0
+\end{align}
+根据其经济学含义，我们又称之为 \term{庞氏条件}{Ponzi condition}。截断条件的主体是影子价格乘以资本存量再折现到当前 —— 该结果不能是正数，否则还有未利用尽的资源，最优值有上升空间；不可能为负数，因为其中每项都是非负的（根据一阶条件，\(\lambda_T\) 是边际效用）。故截断条件必须为零。
+
+\subsection{最优化问题的一阶条件}\label{subsec:OptProbFOC}
+
+构建 \term{拉格朗日函数}{Lagrangian function}
+\begin{align}
+    \scr L=\mean_0\,\sum\wsito\,\beta^t\bkd{\dfrac{C_t^{1-\sigma}-1}{1-\sigma}+\lambda_t\bks{Z_t\,K\lt^\alpha+\bka{1-\delta}K_{t-1}-C_t-K_t}}
+\end{align}
+最优化的一阶条件为
+\begin{align}
+    \scr L_{C_t}&=C_t^{-\sigma}-\lambda_t=0 \label{eq:foc1}\\
+    \scr L_{K_t}&=-\lambda_t+\beta\,\mean_t\bks{\lambda_{t+1}\bka{\alpha\, Z_{t+1}\,K_t^{\alpha-1}+1-\delta}}=0\label{eq:foc2}\\
+    \scr L_{\lambda_t}&=C_t+K_t-Z_t\,K\lt^\alpha-\bka{1-\delta}K\lt=0\label{eq:foc3}
+\end{align}
+将 \ref{eq:foc1} 代入 \ref{eq:foc2}，消去拉格朗日乘子 \(\lambda_t\)\sidenote{乘子 \sidemath{\(\lambda_t\)} 的含义在 \ref{sec:LagMult}中展开}，我们可以得到
+\begin{align}
+    C_t^{-\sigma}=\beta\,\mean_t\bks{C_{t+1}^{-\sigma}\bka{\alpha\, Z_{t+1}\,K_t^{\alpha-1}+1-\delta}}\label{eq:eulereq}
+\end{align}
+式 \ref{eq:eulereq} 被称作 \term{欧拉方程}{Euler equation}。
+
+\subsection{社会规划者的 RBC 模型}\label{subsec:RBCModel}
+
+对一阶条件进行整理，得到社会规划者的 RBC 模型
+\begin{equation}
+    \begin{cases}
+        \ C_t+K_t=Z_t\,K\lt^\alpha+\bka{1-\delta}K\lt \\
+        \ C_t^{-\sigma}=\beta\,\mean_t\bks{C_{t+1}^{-\sigma}\bka{\alpha\, Z_{t+1}\,K_t^{\alpha-1}+1-\delta}}\\
+        \ \log Z_t=\bka{1-\psi}\log\bar Z+\psi\log Z\lt+\varepsilon_t
+    \end{cases}\label{eq:RBCModel}
+\end{equation}
+其中第一行是资源约束，第二行是欧拉方程，第三行是技术水平的 AR(1) 过程。
+
+此前，我们给出实际经济周期模型的设定，并计算了它的一阶条件，构建起以 \(C_t\) 和 \(K_t\) 为基础的动态系统；此后，我们的目标是先判定系统的稳定性（本章），然后求解出 \(C_t\) 和 \(K_t\) 的数值路径（下一章）。现在，对系统中的几个运动方程进行分析。
+
+\TopicLabel{欧拉方程的经济学含义}
+
+假设现在有 1 单位产出，你可以用于消费或投资（从 \(Y=C+I\) \sidenote{把产出核算公式视作预算线，发现其符合完全替代偏好}可知消费和投资是 \(1:1\) 完全替代的）。如果用于本期消费，你可以获得 \({\AccentMark 1}\times C_t^{-\sigma}\) 边际效用；如果用于本投资，你可以在下期拥有 \(\alpha\, Z_{t+1}\,{\AccentMark 1}^{\alpha-1}+{\AccentMark 1}-\delta\)（暂记为 CS 式）。
+
+虽然 CS 不是消费，但我们以效用衡量来拥有 CS 的幸福感。现在，方程左侧是本期 1 单位消费带来的幸福感，右侧是本期 1 单位投资带来的幸福感，欧拉方程说二者应当相等
+\begin{equation}
+    \underbrace{ \ {\AccentMark 1}\times C_t^{-\sigma} \ }_{\n{单位消费效用}}=\underbrace{ \ \beta \ }_{\n{折现至本期}}\,\mean_t\ps{\underbrace{ \ \underbrace{ \ C\nt^{-\sigma} \ }_{\n{单位效用}}\pa{\underbrace{ \ \underbrace{ \ \alpha\, Z_{t+1}\,{\AccentMark 1}^{\alpha-1} \ }_{\n{单位资本产出}}+\underbrace{ \ {\AccentMark 1}-\delta \ }_{\n{单位资本余量}} \ }_{\n{单位投资总回报}}} \ }_{\n{单位投资效用}}}
+\end{equation}
+
+\TopicLabel{技术水平的 AR(1) 过程}
+
+虽然技术水平 \(Z_t\) 的 AR(1) 过程始终具有随机性，但如果我们假设 \(\bar Z=1\)\sidenote{\sidemath{\(\bar Z\)} 取多少都可以，取 \sidemath{\(1\)} 可以简化模型，我们会沿用该做法}
+\begin{align*}
+    \log Z_t=\underbrace{\bka{1-\psi}\log\bar Z}_{=\,0}+\psi\log Z\lt+\varepsilon_t=\psi\log Z\lt+\varepsilon_t
+\end{align*}
+上式是带有随机性的一阶差分方程。不严谨地分析，我们使用\ref{subsec:FDiffSysStable}中的结论：由于 \(\psi\) 的取值范围为 \(\bka{0,1}\)，所以 \(Z_t\) 的随机性会逐渐衰减，表现为 \(Z_t\) 的期望为常数、不为无穷大
+\begin{equation*}
+    \mean\bks{\log Z_t}=\psi\,\mean\bks{\log Z\lt}+\underbrace{\mean\bks{\varepsilon_t}}_{=\,0} \quad\Rightarrow\quad \mean\bks{\log Z_t}=\log\bar Z
+\end{equation*}
+且不依赖于初始值 \(Z_{-1}\)。我们称这样的过程是 \term{平稳的}{stationary}。
+
+因为技术会自动收敛，那么 BRC 模型的稳定性就取决于 \(C_t\) 和 \(K_t\) 的运动方程。
+
+\section{完全竞争市场问题}\label{sec:CompMarketProb}
+
+上一节我们讨论了资源由社会规划者配置的情况，在本节，我们让市场通过价格来配置资源。有供需才会有市场 —— 此处的市场是资本借贷市场，供给方是家庭，需求方是厂商，价格是资本的租金。接下来，我们会分别考虑供需双方的最优化问题，然后证明：由完全竞争市场配置资源，会得到和社会规划者的相同。
+
+\subsection{家庭的最优化问题}\label{subsec:HHProb}
+
+家庭面临如下效用最大化问题\sidenote{角标 \sidemath{\(s\)} 代表家庭为供给方；厂商为需求方则用 \sidemath{\(d\)}}
+\begin{align*}
+    \max_{\bkd{C_t,K^{(s)}_t}\wsito} \quad & U= \mean_0\bks{\sum\wsito \,\beta^t\,\dfrac{C_t^{1-\sigma}-1}{1-\sigma}} \\
+    \text{s.t.} \quad & C_t+K_t^{(s)}=R\s t\,K\lt\w{(s)}+\bka{1-\delta}K\lt\w{(s)}
+\end{align*}
+在约束条件中，左侧是家庭支出，消费和租出资本；右侧是家庭收入，租金和收回资本。我们忽略了家庭向厂商提供劳动（厂商只用资本进行生产），所以约束中不含劳动收入，后面厂商利润中也不会有工资成本。
+
+家庭最优化问题的一阶条件如下 \footnote{2026 年 4 月 7 日勘误：此前 \(\scr L_{K_t^{(s)}}\) 表达式有误}
+\begin{align*}
+    &\scr L_{C_t}=C^{-\sigma}_t-\lambda_t=0\\
+    &\scr L_{K_t^{(s)}}=\lambda_t-\beta\,\mean_t\bks{\lambda\nt\bka{R\nt+1-\delta}}=0\\
+    &\scr L_{\lambda_t}=C_t+K_t^{(s)}-R\s t\,K\lt\w{(s)}-\bka{1-\delta}K\lt\w{(s)}=0
+\end{align*}
+
+
+\subsection{厂商的最优化问题}\label{subsec:ProduceProb}
+
+厂商面临利润最大化问题
+\begin{align*}
+    \max_{K^{(d)}\lt} \quad & \Pi_t=Z_t\,K\lt^{(d),\,\alpha}-R_t\, K\lt^{(d)}
+\end{align*}
+其中技术的运动方程为
+\begin{align*}
+    \log Z_t=\bka{1-\psi}\log\bar Z+\psi\log Z\lt+\varepsilon_t
+\end{align*}
+厂商的最优化问题的一阶条件为\sidenote{完全竞争市场中，租金 \sidemath{\(R_t\)} 等于 \sidemath{\(\n{MPK}_t\)}}
+\begin{align*}
+    &\scr L_{K\lt^{(d)}}=\alpha\, Z_t\,K\lt^{(d),\,\alpha-1}-R_t=0\\
+    &\scr L_{\lambda_t}=\log Z_t-\bka{1-\psi}\log\bar Z-\psi\log Z\lt-\varepsilon_t=0
+\end{align*}
+
+\subsection{市场出清条件}\label{subsec:MarketClear}
+
+市场出清是完全竞争市场的关键条件。现在在家庭和厂商最优化问题的一阶条件中，加入 \(K^{(s)}_t=K^{(d)}_t=K\) 的市场出清条件，得到完全竞争市场的动态系统
+\begin{equation*}
+    \begin{cases}
+        \ C_t+K_t=Z_t\,K\lt^\alpha+\bka{1-\delta}K\lt \\
+        \ C_t^{-\sigma}=\beta\,\mean_t\bks{C_{t+1}^{-\sigma}\bka{\alpha\, Z_{t+1}\,K_t^{\alpha-1}+1-\delta}}\\
+        \ \log Z_t=\bka{1-\psi}\log\bar Z+\psi\log Z\lt+\varepsilon_t
+    \end{cases}
+\end{equation*}
+我们发现，完全竞争市场的动态系统和社会规划者的 RBC 模型完全一样。这验证了 \term{第一福利定理}{1st Welfare Theorem}，完全竞争市场机制能够实现资源最优配置；以及 \term{第二福利定理}{2nd Welfare Theorem}，社会规划者的资源最优配置都可以通过完全竞争市场来实现。但需要注意的是，福利经济学第一定理要求“无摩擦”，即：完全竞争，所有主体都是价格接受者；不存在市场失灵（不完全信息、市场势力、外部性）；目标函数有极大值；无庞氏骗局；等等优良性质。
+
+\section{RBC 模型的稳定性}\label{sec:RBCStable}
+
+目前我们只进展到获得 RBC 模型的动态系统（一阶条件），远远没到知道 \(C_t\) 和 \(K_t\) 的值。我们先假设 RBC 模型存在稳态并求出来，然后再分析系统的稳定性，最后在下一章求解出 \(C_t\) 和 \(K_t\) 的数值路径。
+
+\subsection{RBC 模型的稳态}\label{subsec:RBCSS}
+
+复述 RBC 模型的动态系统
+\begin{equation}
+    \begin{cases}
+        \ K_t=Z_t\,K\lt^\alpha+\bka{1-\delta}K\lt-C_t \\
+        \ C_t^{-\sigma}=\beta\,\mean_t\bks{C_{t+1}^{-\sigma}\bka{\alpha\, Z_{t+1}\,K_t^{\alpha-1}+1-\delta}}\\
+        \ \log Z_t=\bka{1-\psi}\log\bar Z+\psi\log Z\lt+\varepsilon_t
+    \end{cases}
+\end{equation}
+在\ref{subsec:RBCModel}得知技术是稳定的。我们沿用假设 \(\bar Z=1\)。经济系统的稳态形式为
+\begin{equation}
+    \begin{cases}
+        \ \bar K=\bar K^\alpha+\bka{1-\delta}\bar K-\bar C \\
+        \ \bar C^{-\sigma}=\beta\,\bar C^{-\sigma}\bks{\alpha\,\bar K^{\alpha-1}+\bka{1-\delta}}
+    \end{cases}\label{eq:SS}
+\end{equation}
+其中\(\alpha\,\bar K^{\alpha-1}\) 是边际产出 \(\n{MPK}=\alpha\,Z_t\,K^{\alpha-1}_t\) 在稳态处的值，又是 \(\alpha\,Y_t\islash K_t\) 在稳态处的值。
+
+我们对欧拉方程右侧记新符号，来简化表达式（为后文分析和对数线性化做准备）\sidenote{注意 \sidemath{\(R\)} 是新记号，不再代表租金}
+\begin{align}
+    &R_t\coloneq\underbrace{\n{MPK}_t+1-\delta}_{\n{投资的总回报}}=\alpha\,Z_t\,K_t^{\alpha-1}+1-\delta\label{eq:MPK}\\
+    &\tilde\delta\coloneq1-\beta\bka{1-\delta}\label{eq:deltatilde}
+\end{align}
+继续 \ref{eq:SS} 的求解，从第二式两侧消去 \(\bar C^{-\sigma}\) 得 \(1=\beta\bks{\alpha\,\bar K^{\alpha-1}+\bka{1-\delta}}\)，再得
+\begin{align}
+    \bar K&=\bks{\dfrac{\alpha\,\beta}{1-\beta\bka{1-\delta}}}^{\frac{1}{1-\alpha}}=\bka{\dfrac{\alpha\,\beta}{\tilde\delta}}^{\frac{1}{1-\alpha}}\\
+    \bar R&=\overline{\n{MPK}}+1-\delta=\beta\inv\label{eq:R}
+\end{align}
+回到第一式，两侧除以 \(\bar K\) 得
+\begin{equation}
+    \dfracb{C}{K}=\bar K^{\alpha-1}-\delta=\dfrac{\overline{\n{MPK}}}{\alpha}-\delta=\dfrac{\bar R-1+\delta}{\alpha}-\delta=\dfrac{\beta\inv-1+\delta}{\alpha}-\delta=\dfrac{\tilde\delta}{\alpha\,\beta}-\delta\label{eq:CK}
+\end{equation}
+不难发现，\(\bar Y\islash\bar K=\overline{\n{MPK}}\islash\alpha\)，那么
+\begin{equation}
+    \dfracb{Y}{K}=\dfrac{\overline{\n{MPK}}}\alpha=\dfracb{C}{K}+\delta=\dfrac{\tilde\delta}{\alpha\,\beta}\label{eq:YK}
+\end{equation}
+
+我们要熟练记住 \(\n{MPK}=\alpha\,Z_t\,K\lt^{\alpha-1}\) 表达式、\ref{eq:MPK} 和 \ref{eq:deltatilde} 两个的定义、\ref{eq:R} \(R\) 的稳态、\ref{eq:CK} 和 \ref{eq:YK} 的结果，避免此处推导复杂而混淆不清。现在我们先来看看 \(\tilde\delta\)含义，它其实来自于
+\begin{equation}
+    \dfrac{\overline{\n{MPK}}}{\bar R}=\dfrac{\bar R-1+\delta}{\bar R}=1-\beta\bka{1-\delta}\eqcolon\tilde\delta\label{eq:deltatilde2}
+\end{equation}
+其中 \(\bar R\) 根据定义是 1 单位投资的总回报（包括资本产出和资本余量），它的值为 \(\beta\inv\) 含义就是 “反贴现率” —— 当前的资本在下一期值多少；\(\n{MPK}\) 是其中的资本产出部分，\(\tilde\delta\) 则是资本产出占投资总回报的比例。
+
+\subsection{对数线性化 RBC 模型}\label{subsec:LogLinRBC}
+
+完整过程放在了 \ref{sec:LogLinProcess}，以下是对数线性化的结果。
+
+\TopicLabel{对数线性化资源约束}
+\begin{equation}
+    \hat k_t=\bks{\alpha\,\dfrac{\bar Y}{\bar K}+\bka{1-\delta}}\cdot\hat k\lt+\dfracb{Y}{K}\cdot\hat z_t-\dfracb{C}{K}\cdot\hat c_t
+\end{equation}
+它告诉我们 \(\hat k_t\) 的波动来自于三个部分：上期资本存量波动、技术波动、消费波动；三者加权得 \(\hat k_t\) 所需的系数分别是：资本回报（\(\n{MPK}+1-\delta\)）、产出资本比、消费资本比。
+
+\TopicLabel{对数线性化欧拉方程}
+\begin{equation}
+    \sigma\,\mean_t\bks{\hat c\nt-\hat c_t}=\tilde\delta\bks{\mean_t\,\hat z\nt-\bka{1-\alpha}\hat k_t}
+\end{equation}
+其中 \(\hat c\nt-\hat c_t\) 即为消费在 \(t\) 时刻的增长率，理由如下
+\begin{align*}
+    \hat c\nt-\hat c_t&=\bka{\log C\nt-\log\bar C}-\bka{\log C_t-\log\bar C}=\log C\nt-\log C_t\\
+    &=\log\bka{1+\dfrac{C\nt-C_t}{C_t}}\approx\dfrac{C\nt-C_t}{C_t}\eqcolon g_{C,t}
+\end{align*}
+再看等式右侧，其为 MPK 的波动，理由如下
+\begin{align}
+    \widehat{\n{MPK}}\nt &= \log\bka{\alpha\,Z\nt\,K_t^{\alpha-1}}-\log\bka{\alpha\,\bar Z\,\bar K^{\alpha-1}}\notag\\
+    &=\log Z\nt-\log\bar Z+\bka{\alpha-1}\bka{\log K_t-\log\bar K}\notag\\
+    &=\hat z\nt-\bka{1-\alpha}\hat k_t\label{eq:MPKhat}
+\end{align}
+
+现在做一些比较静态分析，查看欧拉方程中 MPK、\(\tilde\delta\)、\(\sigma\) 的变动会对模型有什么影响。经过对对数线性化结果的分析，可知
+\begin{equation*}
+    \mean_t\,g_{C,t}\propto \mean_t\,\widehat{\n{MPK}}\nt
+\end{equation*}
+从数学分析的角度来看，MPK 和 \(\tilde\delta\) 的上升会使消费增长率上升，即有冲击的下期消费比没冲击的更多；\(\sigma\) 的上升会使消费增长率下降，即有冲击的下期消费比没冲击的更少。从经济含义来看，MPK 上升代表产出更多，自然消费更多；\(\tilde\delta\) 的含义是资本产出占投资总回报的比例，它的上升只能由 MPK 上升引起\sidenote{由 \ref{eq:deltatilde2} 可知 \sidemath{\(\frac{\n d\, \tilde\delta}{\n d\, \n{MPK}}>0\)}}；\(\sigma\) 变动对 \(g_{C,t}\) 影响的比较静态分析，我们放在 \ref{sec:CRRA} 中展开。
+
+\TopicLabel{对数线性化技术运动}
+\begin{equation}
+    \hat z\nt=\psi\,\hat z_t+\varepsilon_{t}
+\end{equation}
+技术服从 AR(1)，其波动也服从 AR(1)。
+
+\subsection{判定 RBC 模型的稳定性}\label{subsec:RBCStable}
+
+将\ref{subsec:LogLinRBC}的结果汇总为
+\begin{equation}
+    \begin{cases}
+        \ \hat k_t=\bks{\alpha\,\dfrac{\bar Y}{\bar K}+\bka{1-\delta}}\cdot\hat k\lt+\dfracb{Y}{K}\cdot\hat z_t-\dfracb{C}{K}\cdot\hat c_t \\[2ex]
+        \ \mean_t\bks{\hat c\nt-\hat c_t}=\dfrac{\tilde\delta}{\sigma}\bks{\mean_t\,\hat z\nt-\bka{1-\alpha}\hat k_t} \\
+        \ \hat z\nt=\psi\,\hat z_t+\varepsilon_{t}
+    \end{cases}
+\end{equation}
+目前，系统中还有很多未知项，好在我们已经在\ref{subsec:RBCSS}求解了一系列稳态值，主要使用 \(\bar Y\islash\bar K\) 和 \(\bar C\islash\bar K\)，将它们代入对数线性化系统，使之参数化
+\begin{equation}
+    \begin{cases}
+        \ \hat k_t=\dfrac1\beta\cdot\hat k\lt+\dfrac{\tilde\delta}{\alpha\,\beta}\cdot\hat z_t-\bka{\dfrac{\tilde\delta}{\alpha\,\beta}-\delta}\cdot\hat c_t \\[2ex]
+        \ \sigma\,\mean_t\,\hat c\nt+\tilde\delta\bka{1-\alpha}\hat k_t-\tilde\delta\,\mean_t\,\hat z\nt=\sigma\,\hat c_t \\
+        \ \hat z\nt=\psi\,\hat z_t+\varepsilon_{t}
+    \end{cases}
+\end{equation}
+把未来期所需的变量以列向量形式写在等式左侧（其中 \(\mean_t\,\hat z\nt\) 可视为 \(\mean_t\bks{\hat z\nt-\varepsilon_t}\)，那么以下结果将不再出现 \(\varepsilon_t\)），现期的写在右侧，用矩阵表达系统为
+\begin{equation*}
+    \matbks{1&0&0\\\tilde\delta\bka{1-\alpha}&\sigma&-\tilde\delta\\0&0&1}
+    \matbks{\hat k_t\\\mean_t\,\hat c\nt\\\mean_t\,\hat z\nt}
+    =
+    \matbks{\dfrac1\beta&\delta-\dfrac{\tilde\delta}{\alpha\,\beta}&\dfrac{\tilde\delta}{\alpha\,\beta}\\0&\sigma&0\\0&0&\psi}
+    \matbks{\hat k\lt\\\hat c_t\\\hat z_t}
+\end{equation*}
+同样地，我们不用担心技术运动的稳定性，只顾考虑前两个方程。令
+\begin{equation*}
+    \bs M=\matbks{1&0\\\tilde\delta\bka{1-\alpha}&\sigma}\qquad \bs N =\matbks{\dfrac1\beta&\delta-\dfrac{\tilde\delta}{\alpha\,\beta}\\0&\sigma}
+\end{equation*}
+把差分系统简化为
+\begin{equation*}
+    \bs{M}\,\mean_t\bks{\bs x_t}=\bs{N}\,\bs x\lt
+\end{equation*}
+
+在 \(\sigma>0\) 的假设下，显然 \(\bs M\) 是可逆矩阵。省去计算逆矩阵的步骤，直接得
+\begin{align*}
+    \mean_t\bks{\bs x_t}=\bs{M}\inv\bs{N}\,\bs x\lt&=
+    \matbks{1&0\\-\dfrac{\tilde\delta\bka{1-\alpha}}{\sigma}&\dfrac1\sigma}\matbks{\dfrac1\beta&\delta-\dfrac{\tilde\delta}{\alpha\,\beta}\\0&\sigma}\bs x\lt\\
+    &=\matbks{\dfrac1\beta&\delta-\dfrac{\tilde\delta}{\alpha\,\beta}\\[2ex]-\dfrac{\tilde\delta\bka{1-\alpha}}{\sigma\,\beta}&1+\dfrac{\tilde\delta\bka{1-\alpha}}{\sigma}\bka{\dfrac{\tilde\delta}{\alpha\,\beta}-\delta}}\bs x\lt
+\end{align*}
+称 \(\bs J=\bs M\inv\bs N\) 为 \term{Jacobi 矩阵}{Jacobian matrix，或转移矩阵}。应用 \(\bar C\islash\bar K\) 的表达式，计算 \(\bs J\) 的迹和行列式
+\begin{align*}
+    \tr\bs J=1+\dfrac1\beta+\dfrac{\tilde\delta\bka{1-\alpha}}{\sigma}\dfracb{C}{K}\qquad \& \qquad\det\bs J=\dfrac1\beta
+\end{align*}
+根据\ref{subsec:HDiffSysStable}的结论，我们要计算对判定稳定性至关重要的 \(p\bka{1}\) 和 \(p\bka{-1}\)。计算它们并不复杂
+\begin{align*}
+    &p\bka\lambda=\lambda^2-T\,\lambda+D\\
+    \Rightarrow\quad &p\bka{1}=1-T+D=-\dfrac{\tilde\delta\bka{1-\alpha}}{\sigma}\dfracb{C}{K}<0\\
+    \Rightarrow\quad &p\bka{-1}=1+T+D=2+\dfrac2\beta+\dfrac{\tilde\delta\bka{1-\alpha}}{\sigma}\dfracb{C}{K}>0
+\end{align*}
+\(p\bka{1}\) 和 \(p\bka{-1}\) 异号的结果是：系统同时存在稳定根和不稳定根，奇点类型为鞍点。\footnote{2026 年 4 月 19 日勘误：此前表述有误}
+
+
+
+%% ====================================================
+%% 章内附录
+%% ====================================================
+\BeginChapterAppendix
+
+\section{拉格朗日乘子}\label{sec:LagMult}
+
+考虑一个简单的生产者要素投入选择问题
+\begin{align*}
+    \min_{K,L} \quad & C=K+L\\
+    \text{s.t.} \quad & K^{0.5}\,L^{0.5}=9
+\end{align*}
+其中两个要素的价格都是 1 元，生产者预计生产 9 单位产品，通过计算不难得到最优成本 \(C_{\min}=18\) 元。如果生产者将产量目标从 9 增加 1 到 10 单位，最优成本会随之上升到 \(C_{\min}'=20\) 元，而相较之前成本增加 2 元，这增加额就是拉格朗日函数
+\begin{equation*}
+    \scr L\bkx=K+L+\lambda\bka{9-K^{0.5}\,L^{0.5}}
+\end{equation*}
+中，拉格朗日乘子 \(\lambda\) 的数值。
+
+是拉格朗日乘子 \(\lambda\) 希望捕获：如果约束条件被放松一些，目标函数的最优值会变动多少？比如上面的例子中，我们把约束条件从 \(9\) “放松” 到 \(10\)，成本函数的最优值变动了 2，所以 \(\lambda=2\)。我们让拉格朗日求导得 \(\bka{K,L;\lambda}\) 的方程组，可以验证 \(\lambda=2\) 确实为方程组的解\sidenote{或使用包络定理验证 \sidemath{\(\frac{\n{d}\,f^*\bka a}{\n{d}\,a}=\frac{\p f\bka{x;\,a}}{\p a}\biggbar{x^*\bka a}\)}}。
+
+再举一个例子。因为市场火爆，厂老板要求工人工作 8 小时变为 9 小时（约束条件改变），使得厂商额外多挣 10 万元，那么 \(\lambda\) 值就是 10 万。这额外的理论几乎全由工人劳动贡献，理应全部作为工人工资，所以 \(\lambda\) 还有 \term{影子价格}{shadow price}的含义；但厂老板可能只给 8 万、只给 4 万，甚至分毫不给，因此影子价格中的 “影子” 代表未必能实现。
+
+\section{对数线性化的细节}\label{sec:LogLinProcess}
+
+\subsection{对数线性化资源约束}
+
+资源约束为
+\begin{equation*}
+    K_t=Z_t\,K\lt^\alpha+\bka{1-\delta}K\lt-C_t
+\end{equation*}
+
+\TopicLabel{方法一}
+
+使用 \(X_t=\bar X\bka{1+\hat x_t}\) 对数线性化资源约束
+\begin{align*}
+    \bar K\bka{1+\hat k_t}=\bar Z\bka{1+\hat z_t}\cdot \bar K^{\alpha}\,\AccentMark{\bka{1+\hat k\lt}^\alpha}+\bka{1-\delta}\bar K\bka{1+\hat k\lt}-\bar C\bka{1+\hat c_t}
+\end{align*}
+再用 \(\bka{1+X}^\alpha\approx1+\alpha\,X\) 近似，得到
+\begin{align*}
+    \bar K+\bar K\,\hat k_t&=\bar Z\,\bar K^{\alpha}\bka{1+\hat z_t}\AccentMark{\bka{1+\alpha\,\hat k\lt}}+\bka{1-\delta}\bar K\bka{1+\hat k\lt}-\bar C\bka{1-\hat c_t}\\
+    \bar K+\bar K\,\hat k_t&=\bar Z\,\bar K^\alpha\bka{1+\hat z_t+\alpha\,\hat k\lt+\alpha\,\hat z_t\,\hat k\lt}+\bka{1-\delta}\bar K\bka{1+\hat k\lt}-\bar C\bka{1-\hat c_t}
+\end{align*}
+展开，丢弃交叉项并减去稳态，整理得
+\begin{align*}
+    \bar K\,\hat k_t&=\bar Z\,\bar K^\alpha\,\hat z_t+\alpha\,\bar Z\,\bar K^\alpha\,\hat k\lt+\bka{1-\delta}\bar K\,\hat k\lt-\bar C\,\hat c_t\\
+    \Rightarrow\quad \hat k_t&=\bks{\alpha\,\dfrac{\bar Y}{\bar K}+\bka{1-\delta}}\cdot\hat k\lt+\dfracb{Y}{K}\cdot\hat z_t-\dfracb{C}{K}\cdot\hat c_t
+\end{align*}
+
+\TopicLabel{方法二}
+
+资源约束中，\(K_t\) 分别对 \(K\lt\)、\(Z_t\) 和 \(C_t\) 求偏导数
+\begin{align*}
+    &\dfrac{\p K_t}{\p K\lt}\Biggbar{\n{S.S.}}=\alpha\,Z_t\,K\lt^{\alpha-1}+\bka{1-\delta}=\alpha\,\dfrac{\bar Y}{\bar K}+\bka{1-\delta}\\
+    &\dfrac{\p K_t}{\p Z_t}\Biggbar{\n{S.S.}}=\bar K^\alpha=\dfracb{Y}{Z} \ ,\qquad \dfrac{\p K_t}{\p C_t}\Biggbar{\n{S.S.}}=-1
+\end{align*}
+应用
+\begin{equation*}
+    \bar Z\,\hat z_t=\dfrac{\p Z_t}{\p X_t}\bka{\bar X,\bar Y}\cdot\bar X\,\hat x_t+\dfrac{\p Z_t}{\p Y_t}\bka{\bar X,\bar Y}\cdot\bar Y\,\hat y_t
+\end{equation*}
+得
+\begin{align*}
+    \bar K\,\hat k_t&=\bks{\alpha\,\dfrac{\bar Y}{\bar K}+\bka{1-\delta}}\bar K\,\hat k\lt+\dfracb{Y}{Z}\cdot\bar Z\,\hat z_t-\bar C\,\hat c_t\\
+    \Rightarrow\quad \hat k_t&=\bks{\alpha\,\dfrac{\bar Y}{\bar K}+\bka{1-\delta}}\cdot\hat k\lt+\dfracb{Y}{K}\cdot\hat z_t-\dfracb{C}{K}\cdot\hat c_t
+\end{align*}
+
+\subsection{对数线性化欧拉方程}
+
+欧拉方程为
+\begin{equation*}
+    C_t^{-\sigma}=\beta\,\mean_t\bks{C_{t+1}^{-\sigma}\bka{\alpha\, Z_{t+1}\,K_t^{\alpha-1}+1-\delta}}
+\end{equation*}
+方便起见，我们使用 \ref{eq:MPK} 的定义，把欧拉方程简化为
+\begin{equation*}
+    C_t^{-\sigma}=\beta\,\mean_t\bks{C_{t+1}^{-\sigma}\,R_{t+1}}
+\end{equation*}
+应用 \(X_t=\bar X\,e^{\hat x_t}\) 
+\begin{align*}
+    \bar C\,e^{-\sigma\,\hat c_t}&=\beta\,\mean_t\bks{\bar C^{-\sigma}\,e^{-\sigma\,\hat c\nt}\cdot\bar R\,e^{\hat r\nt}}
+\end{align*}
+注意到 \(\bar R=\beta\inv\) \ref{eq:R}，并应用 \(e^X\approx1+X\) 进一步整理\sidenote{2026 年 4 月 21 日勘误：此前推导的最后一行存在符号错误}
+\begin{align}
+    e^{-\sigma\,\hat c_t}&=\mean_t\bks{e^{-\sigma\,\hat c\nt+\hat r\nt}}\notag\\
+    1-\sigma\,\hat c_t&=\mean_t\bks{1-\sigma\,\hat c\nt+\hat r\nt}\notag\\
+    \sigma\,\hat c_t&=\sigma\,\mean_t\,\hat c\nt-\mean_t\,\hat r\nt\label{eq:LogLinEuler}
+\end{align}
+
+现在获得 \(\hat r\nt\)\sidenote{计算 \sidemath{\(\hat r\nt\)} 乃至整个欧拉方程，方法非常多，此处给出较为优雅的方式}。根据其定义式 \ref{eq:MPK}，我们有
+\begin{align*}
+R\nt&=\n{MPK}\nt+1-\delta
+\end{align*}
+应用对数线性化的性质
+\begin{equation*}
+    X_t\pm Y_t=C\quad\Rightarrow\quad \bar X\,\hat x_t\pm\bar Y\,\hat y_t=0
+\end{equation*}
+再加上先前 \ref{eq:MPKhat} 计算过 \(\widehat{\n{MPK}}\) 的结果，还有 \ref{eq:deltatilde2} \(\tilde\delta\) 定义式，这里有
+\begin{align*}
+    \bar R\cdot\hat r\nt&=\overline{\n{MPK}} \cdot\widehat{\n{MPK}}\nt\\
+    \hat r\nt&=\dfrac{\overline{\n{MPK}}}{\bar R}\bks{\hat z\nt-\bka{1-\alpha}\hat k_t}\\
+    \hat r\nt&=\tilde\delta\bks{\hat z\nt-\bka{1-\alpha}\hat k_t}
+\end{align*}
+
+最终得到对数线性化欧拉方程的结果
+\begin{align*}
+    \sigma\,\hat c_t&=\sigma\,\mean_t\,\hat c\nt-\tilde\delta\,\mean_t\hat z\nt+\tilde\delta\bka{1-\alpha}\hat k_t\\
+    \sigma\,\mean_t\bka{\hat c\nt-\hat c_t}&=\tilde\delta\bks{\mean_t\,\hat z\nt-\bka{1-\alpha}\hat k_t}
+\end{align*}
+
+\subsubsection{对数线性化技术运动}
+
+应用 \(X_t=\bar X\,e^{\hat x_t}\) 对数线性化技术运动
+\begin{align*}
+    \log\pa{\bar Z\,e^{\hat z\nt}}&=\bka{1-\psi}\log\bar Z+\psi\log\bka{\bar Z\,e^{\hat z_t}}+\varepsilon_t\\
+    \Rightarrow\quad \hat z\nt&=\psi\,\hat z_t+\varepsilon_t
+\end{align*}
+
+\section{CRRA 型函数}\label{sec:CRRA}
+
+\subsection{CRRA 型函数的定义和来源}\label{subsec:CRRAdef}
+
+在宏观经济学中，我们通常假设家庭的效用函数为 \term{不变相对风险厌恶}{Constant Relative Risk Aversion，CRRA}形式，因为刻画了现实中人们是风险厌恶的，又有较好的数学性质。CRRA 型函数形如
+\begin{equation*}
+    u\bka{C}=\dfrac{C^{1-\sigma}-1}{1-\sigma}
+\end{equation*}
+将每一期效用按时间价值折现\sidenote{效用能否被折现是个有意思的话题}并相加，得到家庭的总效用函数
+\begin{equation*}
+    U=\sum_{t=0}^\infty \,\beta^t\,\dfrac{C_t^{1-\sigma}-1}{1-\sigma}
+\end{equation*}
+这里涉及到了跨期消费问题：家庭要在约束之下，在各期分配好消费，以实现效用最大化。
+
+当下消费和未来消费间存在一定的替代关系。假设家庭每期收入固定，那么本期少消费点，存下来的收入就能增加未来消费。但家庭每期收入并非固定，他们不可知未来生活是好是坏，因此要在不确定下分配收入，决定本期消费。人性通常是厌恶不确定性的，我们使用 \term{相对风险厌恶}{relative risk aversion，RRA}\AccentTerm{系数}\,衡量经济主体厌恶不确定性的程度
+\begin{equation*}
+    R\bka C=-\dfrac{C\cdot u''\bka{C}}{u'\bka{C}}
+\end{equation*}
+令 \(R\bka C=\sigma\)，解微分方程即可得 CRRA 形式，这是 CRRA 型函数的来源。所以，在 CRRA 形式效用函数中，\(\sigma\) 是相对风险厌恶系数。
+
+\subsection{回答比较静态分析问题}\label{subsec:ReplyCompStatic}
+
+\(\sigma\) 衡量不确定性，更具体地说，衡量家庭有多厌恶消费波动。现在我们能对比较静态分析问题进行回答了\sidenote{比较静态分析问题在\ref{subsec:LogLinRBC}}：当 \(\sigma\) 上升时，家庭对消费波动的厌恶程度上升，因此会更倾向于平滑消费，保证每期消费量相当，即消费增长率 \(g_{C,t}\)（的绝对值，后文同）变小；反之，\(\sigma\) 下降会引起 \(g_{C,t}\) 变大，此时家庭更敢于冒风险（或是对未来足够乐观），无所谓本期多消费可能会导致以后消费减少。\footnote{2026 年 3 月 29 日勘误：此前 “\(\sigma\) 越大，\(g_{C,t}\) 越大；\(\sigma\) 越小，\(g_{C,t}\) 越小”说法有误。}
+
+换一个角度，我们使用 \term{边际替代率}{marginal rate of substitution，MRS}来回答。计算家庭愿意放弃多少下期消费来获得 1 单位本期消费
+\begin{equation*}
+    \text{MRS}_{t,t+1}=\dfrac{U_{C_t}}{U_{C\nt}}=\dfrac{C^{\sigma}\nt}{\beta\,C_t^{\sigma}}
+\end{equation*}
+对边际替代率取对数得 \footnote{2026 年 3 月 29 日勘误：\(\log\n{MRS}_{t,t+1}\) 的表达式补充 \(-\log\beta\)；后文 IES 公式增加负号，以保证结果为正数 \(1\islash\sigma\)。}
+\begin{align*}
+    \log\n{MRS}_{t,t+1}=\sigma\log\dfrac{C\nt}{C_t}-\log\beta
+\end{align*}
+再计算 CRRA 型函数的 \term{跨期替代弹性}{intertemporal elasticity of substitution，IES}
+\begin{align*}
+    \text{IES}=\dfrac{\n{d}\log\bka{C\nt/\,C_t}}{\n{d}\log\n{MRS}_{t,t+1}}=\dfrac1\sigma
+\end{align*}
+这再次说明：\(\sigma\) 较大时 IES 较小，则家庭不喜欢用一期的消费换另一期的消费，平滑消费才是家庭青睐的方案 —— 消费增长率 \(g_{C,t}\) 必然是小的。
+
+
+% \PrintChapterBibliography
+
+\FinishStandaloneChapter

@@ -1,0 +1,13 @@
+% !LW recipe = XeLaTeX once (current file)
+\documentclass[tikz]{standalone}
+% 透明底 Poster 版；可单独覆盖年份、轴宽、柱宽、图文距离等共享默认值。
+\providecommand{\LogoVariantPrimaryColor}{BodyText}
+\providecommand{\LogoVariantSecondaryColor}{SecondaryText}
+\input{00-variant-preamble}
+\standaloneconfig{border=\PosterLogoPreviewBorder}
+\begin{document}
+\begin{tikzpicture}
+    \AdvMacroLogoPosterCustom{\LogoVariantPrimaryColor}{\LogoVariantPrimaryColor}%
+        {\LogoVariantSecondaryColor}{\LogoVariantPrimaryColor}
+\end{tikzpicture}
+\end{document}

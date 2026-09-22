@@ -1,0 +1,553 @@
+% !TeX root = ../../AdvMacroNote_Sun.tex
+\color{BodyText}
+\tikzset{every picture/.append style={color=DiagramPrimary}}
+\AtBeginDocument{\pagecolor{PageBackground}}
+
+% 主封面与 Part 封面只引用 Logo 总入口。
+\def\LogoRootPath{logo}
+\input{logo/logo}
+\newsavebox{\AdvMacroBrandLogoBox}
+\newsavebox{\CourseIdentityBox}
+
+% 主封面与 Part 封面共用同一套校徽、字号、行距和图文间距。
+\newcommand{\CourseIdentityGraphic}[1]{%
+    \begin{tikzpicture}[baseline=(course-identity-text.base)]
+        \node[anchor=west,inner sep=0pt] (course-emblem) at (0,0)
+            {\includegraphics[width=\CoverEmblemSize]{\CourseEmblem}};
+        \node[anchor=west,inner sep=0pt,text width=56mm,align=left]
+            (course-identity-text) at ([xshift=\CoverEmblemTextGap]course-emblem.east)
+            {{\HeadingLatinFont\fontsize{\CoverIdentityInstitutionSize}{\CoverIdentityInstitutionLeading}\selectfont\bfseries\CourseInstitution}\\[-1pt]
+             {\HeadingLatinFont\fontsize{\CoverIdentityAffiliationSize}{\CoverIdentityAffiliationLeading}\selectfont\bfseries\color{#1}\CourseAffiliation}\\[-1pt]
+             {\HeadingLatinFont\fontsize{\CoverIdentityLevelSize}{\CoverIdentityLevelLeading}\selectfont\color{SecondaryText}\CourseLevel}};
+    \end{tikzpicture}%
+}
+
+\newlength{\SideMargin}
+\setlength{\SideMargin}{22mm}
+\newlength{\SymmetricMargin}
+\setlength{\SymmetricMargin}{30mm}
+\newlength{\MarginNoteWidth}
+\setlength{\MarginNoteWidth}{35mm}
+\newlength{\MarginNoteSep}
+\setlength{\MarginNoteSep}{6mm}
+\geometry{
+    a4paper,
+    left=\SideMargin,
+    right=50mm,
+    top=25mm,
+    bottom=25mm,
+    marginparwidth=\MarginNoteWidth,
+    marginparsep=\MarginNoteSep,
+    headheight=15pt,
+    headsep=7mm,
+    footskip=11mm
+}
+\newcommand{\notesymmetriclayout}{%
+    \newgeometry{
+        left=\SymmetricMargin,
+        right=\SymmetricMargin,
+        top=25mm,
+        bottom=25mm,
+        headheight=15pt,
+        headsep=7mm,
+        footskip=11mm
+    }%
+}
+\newcommand{\notemainlayout}{\restoregeometry}
+\normalmarginpar
+\setlength{\marginparpush}{8pt}
+\raggedbottom
+\setstretch{1.38}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{2ex plus 0.3ex minus 0.2ex}
+\newcommand{\TTTFont}{\fontsize{11.5pt}{12.5pt}\selectfont\ttfamily}
+\DeclareRobustCommand{\ttt}[1]{{\TTTFont #1}}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=ActiveAccent,
+    citecolor=ActiveAccent,
+    urlcolor=ActiveAccent,
+    bookmarksnumbered=true,
+    bookmarksopen=true,
+    bookmarksopenlevel=2,
+    pdfstartview=FitH,
+    pdftitle={\DocumentTitle},
+    pdfauthor={\CourseContributor},
+    pdfsubject={Advanced Macroeconomics}
+}
+\renewcommand{\UrlFont}{\TTTFont}
+
+% Footer and left page-edge metadata.
+\newif\ifnotesideinfo
+\notesideinfofalse
+\newcommand{\sideinfosep}{\quad{\color{Divider}/}\quad}
+\fancypagestyle{notefancy}{%
+    \fancyhf{}%
+    \fancyhead[L]{{\normalfont\mdseries\small\color{SecondaryText}\nouppercase{\rightmark}}}%
+    \fancyfoot[L]{{\normalfont\mdseries\small\color{SecondaryText}\thepage}}%
+    \renewcommand{\headrulewidth}{0.3pt}%
+    \renewcommand{\footrulewidth}{0pt}%
+}
+\fancypagestyle{plain}{%
+    \fancyhf{}%
+    \fancyfoot[L]{\ifnotesideinfo{\normalfont\mdseries\small\color{SecondaryText}\thepage}\fi}%
+    \fancyfoot[C]{\ifnotesideinfo\else{\normalfont\mdseries\small\color{SecondaryText}\thepage}\fi}%
+    \renewcommand{\headrulewidth}{0pt}%
+    \renewcommand{\footrulewidth}{0pt}%
+}
+\fancypagestyle{symplain}{%
+    \fancyhf{}%
+    \fancyfoot[C]{{\normalfont\mdseries\small\color{SecondaryText}\thepage}}%
+    \renewcommand{\headrulewidth}{0pt}%
+    \renewcommand{\footrulewidth}{0pt}%
+}
+\AddToHook{shipout/foreground}{%
+    \ifnotesideinfo
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[
+                rotate=90,
+                anchor=center,
+                font=\normalfont\mdseries\small,
+                text=SecondaryText
+            ] at ([xshift=8mm]current page.west)
+            {\CourseShortTitle\sideinfosep\CourseSideLevel\sideinfosep\CourseTerm\sideinfosep\CourseInstructor\sideinfosep\CourseCompileDate};
+        \end{tikzpicture}%
+    \fi
+}
+
+% Margin notes stay in the right margin on every page.
+\newcommand{\SidenoteScaleMath}[1]{\scalebox{\SidenoteMathScale}{#1}}
+\newcommand{\sidemath}[1]{\SidenoteScaleMath{#1}}
+\newcommand{\SidenoteMathIdentity}[1]{#1}
+% 在内容进入 marginnote 前，把每组 \(...\) 改写成完整且平衡的缩放组。
+% 这样用户只需正常输入 \sidenote{文字 \(公式\) 文字}。
+\ExplSyntaxOn
+\cs_new_protected:Npn \sidenote_process_math:n #1
+  {
+    \tl_set:Nn \l_tmpa_tl {#1}
+    \regex_replace_all:nnN
+      { \c{\(} (.*?) \c{\)} }
+      { \c{SidenoteScaleMath} \cB\{ \c{(} \1 \c{)} \cE\} }
+      \l_tmpa_tl
+    \tl_use:N \l_tmpa_tl
+  }
+\cs_new_eq:NN \SidenoteProcessMath \sidenote_process_math:n
+\ExplSyntaxOff
+\newfontfamily\SidenoteLatinFont{TeXGyrePagellaX}[Scale=\SidenoteLatinScale]
+\newcommand{\SidenoteFont}{%
+    \fontsize{\SidenoteBaseFontSize}{\SidenoteBaseLeading}\selectfont
+    \SidenoteLatinFont
+}
+% Distinct styling for proper nouns or named concepts inside a margin note.
+% Inherit the surrounding sidenote's size and leading.  Re-applying
+% \SidenoteFont inside a CJK family switch makes XeCJK reset the glyphs to a
+% smaller nominal size, so only the Kai family and active emphasis are changed.
+\newcommand{\sidenoteterm}[1]{{\kaiti\color{ActiveAccent}#1}}
+\let\sideterm\sidenoteterm
+\newcommand{\sidenote}[1]{%
+    \marginnote{%
+        \raggedright
+        \kaiti
+        % 先选中文楷体，再应用西文字体与字号，避免西文 Scale 被覆盖。
+        \SidenoteFont
+        \setstretch{1.08}%
+        \color{SecondaryText}%
+        % 旧写法 \sidemath{\(...\)} 仍可使用，但不重复缩放。
+        \let\sidemath\SidenoteMathIdentity
+        \SidenoteProcessMath{#1}%
+    }%
+}
+
+% Numbered chapter openers show only the large Arabic numeral. The local
+% clearing below does not alter CTeX's Chinese chapter label in the TOC.
+\makeatletter
+\newcommand{\chapterbodynumberonly}{%
+    \let\CTEX@prechapter\@empty
+    \let\CTEX@postchapter\@empty
+}
+\makeatother
+\IfFontExistsTF{Source Han Sans SC}
+    {\newfontfamily\HeadingLatinFont{Source Han Sans SC}[BoldFont=Source Han Sans SC Bold]}
+    {\newcommand{\HeadingLatinFont}{\sffamily}}
+\IfFontExistsTF{Source Han Sans SC Heavy}
+    {\newfontfamily\CoverDisplayFont{Source Han Sans SC Heavy}}
+    {\newcommand{\CoverDisplayFont}{\HeadingLatinFont\bfseries}}
+\ctexset{
+    chapter={
+        name={第,章},
+        number=\arabic{chapter},
+        format=\normalfont\HeadingLatinFont\CJKfamily{\CJKsfdefault}\raggedleft,
+        nameformat=\chapterbodynumberonly,
+        numberformat=\fontsize{82}{76}\selectfont\HeadingLatinFont\CJKfamily{\CJKsfdefault}\bfseries\color{ActiveAccent},
+        titleformat=\HeadingLatinFont\CJKfamily{\CJKsfdefault}\LARGE\bfseries\color{BodyText},
+        aftername=\par\vspace{-3pt},
+        beforeskip=8pt,
+        afterskip=28pt
+    }
+}
+\titleformat{\section}[block]
+    {\normalfont\HeadingLatinFont\CJKfamily{\CJKsfdefault}\Large\bfseries\color{ActiveAccent}\raggedright}
+    {\thesection}
+    {0.8em}
+    {}
+\titleformat{\subsection}[block]
+    {\normalfont\HeadingLatinFont\CJKfamily{\CJKsfdefault}\large\bfseries\color{ActiveAccent!82!BodyText}\raggedright}
+    {\thesubsection}
+    {0.8em}
+    {}
+\titleformat{\subsubsection}[block]
+    {\normalfont\HeadingLatinFont\CJKfamily{\CJKsfdefault}\normalsize\bfseries\color{BodyText}\raggedright}
+    {\textcolor{ActiveAccent}{\thesubsubsection}}
+    {0.8em}
+    {}
+\titlespacing*{\section}{0pt}{18pt}{9pt}
+\titlespacing*{\subsection}{0pt}{13pt}{6pt}
+\titlespacing*{\subsubsection}{0pt}{10pt}{4pt}
+
+% Classic main contents, matching the original project's standard dotted
+% layout. Keep the whole-book directory compact independently from the
+% larger directory printed on each Part opener.
+\makeatletter
+\newcommand{\GlobalTOCLineStretch}{1.50}
+% Increase this value to open up the Part-local directory. This is deliberately
+% separate from the global directory so the two layouts can be tuned alone.
+\newcommand{\MainTOCLineStretch}{1.50}
+\newcommand{\makecompacttableofcontents}{%
+    \begingroup
+    \footnotesize
+    \etocstandardlines
+    \etocsetnexttocdepth{section}% omit subsection (x.x.x) entries
+    \setstretch{\GlobalTOCLineStretch}%
+    \setlength{\parskip}{0pt}%
+    \renewcommand{\@pnumwidth}{2.6em}% accommodate three-digit sans-serif page numbers
+    \color{ActiveAccent}%
+    % Switch only CJK glyphs to Source Han Sans; keep the Latin/math font
+    % unchanged so raw Greek symbols in titles retain their existing glyphs.
+    \HeadingLatinFont\CJKfamily{\CJKsfdefault}
+    % LaTeX 的标准目录命令会对页码执行 \normalfont；这里仅覆盖页码字体，
+    % 不改变总目录原有的缩进、点线和行距。
+    \let\CourseOriginalDottedTocLine\@dottedtocline
+    \renewcommand{\@dottedtocline}[5]{%
+        \CourseOriginalDottedTocLine{##1}{##2}{##3}{##4}{{\HeadingLatinFont ##5}}}%
+    \renewcommand*\l@part[2]{%
+        \addpenalty{-\@highpenalty}%
+        \addvspace{1.25em plus 1pt}%
+        \begingroup
+        \large\bfseries
+        \noindent
+        \makebox[\linewidth][c]{##1}% centered Part title
+        \llap{\hb@xt@\@pnumwidth{\hss {\HeadingLatinFont ##2}}}% page number at right
+        \par
+        \endgroup
+    }%
+    \tableofcontents
+    \endgroup
+}
+
+% Local contents placed on each Part opener. Only chapters and sections appear;
+% the page number is aligned at right, with no leaders or rule lines.
+\newcommand{\partlocalcontents}{%
+    \begingroup
+    \etocstandardlines
+    \etocsettocstyle{}{}%
+    \etocsetnexttocdepth{section}%
+    \footnotesize
+    \setstretch{\PartCoverContentsLineStretch}%
+    \setlength{\parskip}{0pt}%
+    % Part-local directory text and page numbers use the same sans-serif family.
+    \HeadingLatinFont\CJKfamily{\CJKsfdefault}
+    \def\@dotsep{10000}%
+    \renewcommand{\@pnumwidth}{2.4em}% allow three-digit page numbers to breathe
+    \renewcommand*\l@chapter[2]{%
+        \addvspace{\PartCoverChapterGap\baselineskip}%
+        \@dottedtocline{0}{0em}{4.7em}%
+            {\bfseries\color{ActiveAccent}##1}%
+            {\HeadingLatinFont\bfseries\color{ActiveAccent}##2}}%
+    \renewcommand*\l@section[2]{%
+        \@dottedtocline{1}{1.1em}{3.3em}%
+            {\color{SecondaryText}##1}%
+            {\HeadingLatinFont\color{SecondaryText}##2}}%
+    \localtableofcontents*%
+    \endgroup
+}
+\makeatother
+
+% Part opener: retain the original white/accent split, while borrowing the
+% main cover's sans-serif hierarchy and compact metadata treatment.
+\renewcommand{\thepart}{\Roman{part}}
+\NewDocumentCommand{\coursepart}{m m m}{%
+    \clearpage
+    \notesideinfofalse
+    \notesymmetriclayout
+    \refstepcounter{part}%
+    \phantomsection
+    \label{#3}%
+    \addcontentsline{toc}{part}{%
+        \texorpdfstring{第~\thepart~部分\quad #1}{第 \thepart 部分 #1}}%
+    \markboth{第~\thepart~部分\quad #1}{第~\thepart~部分\quad #1}%
+    \thispagestyle{empty}%
+    \sbox{\AdvMacroBrandLogoBox}{%
+        \begin{tikzpicture}[scale=\PartCoverBrandLogoScale,transform shape]
+            \AdvMacroLogoHorizontal{PartPrimaryText}{PartSecondaryText}
+        \end{tikzpicture}}%
+    \begin{tikzpicture}[remember picture,overlay]
+        \fill[ActiveAccent]
+            ([xshift=-0.43\paperwidth]current page.north east)
+            rectangle (current page.south east);
+        \coordinate (partblockcenter) at
+            ([xshift=-0.215\paperwidth]current page.north east);
+        \node[anchor=north,inner sep=0pt]
+            at ([yshift=-\PartCoverBrandLogoTop]partblockcenter)
+            {\usebox{\AdvMacroBrandLogoBox}};
+        \node[
+            anchor=north,
+            text=PartSecondaryText,
+            font=\HeadingLatinFont\fontsize{16}{20}\selectfont\bfseries
+        ] at ([yshift=-\dimexpr\PartCoverLabelTop+\PartCoverPartBlockShift\relax]partblockcenter)
+        {Part};
+        \node[
+            anchor=north,
+            text=PartPrimaryText,
+            font=\CoverDisplayFont\fontsize{\PartCoverNumberSize}{92}\selectfont
+        ] at ([yshift=-\dimexpr\PartCoverNumberTop+\PartCoverPartBlockShift\relax]partblockcenter)
+        {\thepart};
+        \node[
+            anchor=north,
+            text=PartPrimaryText,
+            text width=70mm,
+            align=center,
+            font=\HeadingLatinFont\CJKfamily{\CJKsfdefault}\fontsize{\PartCoverChineseTitleSize}{\PartCoverChineseTitleLeading}\selectfont\bfseries
+        ] at ([yshift=-\PartCoverChineseTitleTop]partblockcenter)
+        {#1};
+        \node[
+            anchor=north,
+            text=PartSecondaryText,
+            text width=70mm,
+            align=center,
+            font=\HeadingLatinFont\fontsize{\PartCoverEnglishTitleSize}{\PartCoverEnglishTitleLeading}\selectfont\bfseries
+        ] at ([yshift=-\PartCoverEnglishTitleTop]partblockcenter)
+        {#2};
+        \node[
+            anchor=north,
+            text=PartSecondaryText,
+            font=\HeadingLatinFont\fontsize{9.5}{12}\selectfont
+        ] at ([yshift=-\dimexpr\PartCoverEnglishTitleTop+\PartCoverPreparedTopGap\relax]partblockcenter)
+        {Prepared by};
+        \node[
+            anchor=north,
+            text=PartPrimaryText,
+            font=\HeadingLatinFont\fontsize{13.5}{17}\selectfont\bfseries
+        ] at ([yshift=-\dimexpr\PartCoverEnglishTitleTop+\PartCoverPreparedTopGap+\PartCoverAuthorGap\relax]partblockcenter)
+        {\CoursePartAuthor};
+        \node[
+            anchor=north,
+            text=PartSecondaryText,
+            align=center,
+            font=\HeadingLatinFont\fontsize{9}{12}\selectfont
+        ] at ([yshift=-\dimexpr\PartCoverEnglishTitleTop+\PartCoverPreparedTopGap+\PartCoverLegalGap\relax]partblockcenter)
+        {\CourseLicenseToken\\[3pt]\CoursePartDate};
+    \end{tikzpicture}%
+    \enlargethispage{6mm}% allow the left directory to approach, but not crowd, the page foot
+    \hspace*{-19mm}% center the visible directory block within the white half
+    \begin{minipage}[t][\PartCoverLeftHeight][t]{83mm}
+        \vspace*{\PartCoverLeftTopSpace}
+        \setlength{\parindent}{0pt}
+        \raggedright
+        \noindent
+        \CourseIdentityGraphic{ActiveAccent}\par
+        \vspace{\PartCoverCourseTopGap}
+        {\HeadingLatinFont\fontsize{\PartCoverCourseSize}{\PartCoverCourseLeading}\selectfont\bfseries
+            Advanced\par Macroeconomics~\CourseVolumeRoman\par}
+        \vspace{7pt}
+        {\HeadingLatinFont\fontsize{12}{15}\selectfont\bfseries\color{SecondaryText}Course Notes\par}
+        \vspace{5pt}
+        {\HeadingLatinFont\fontsize{10.5}{13}\selectfont\color{SecondaryText}%
+            \CourseTerm\enspace·\enspace Instructor \CourseInstructor\par}
+        \vfill
+        \partlocalcontents
+    \end{minipage}
+    \clearpage
+    \notemainlayout
+    \notesideinfotrue
+}
+
+\DeclareCaptionLabelSeparator{fullwidthcolon}{：}
+\captionsetup{font=small,labelfont={bf,color=ActiveAccent},labelsep=fullwidthcolon}
+\setlist[itemize]{
+    label=\raisebox{0.2ex}{\scriptsize$\bullet$},
+    labelsep=0.7em,
+    topsep=0.5ex plus 0.2ex minus 0.1ex,
+    itemsep=0.35ex plus 0.1ex minus 0.1ex,
+    parsep=0pt,
+    partopsep=0pt
+}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=2pt,topsep=3pt}
+
+% Footnotes and compact display spacing.
+\renewcommand{\thefootnote}{[\arabic{footnote}]}
+\setlength{\skip\footins}{18pt plus 4pt minus 2pt}
+\setlength{\footnotesep}{9pt}
+\interfootnotelinepenalty=10000
+\makeatletter
+\renewcommand\@makefntext[1]{%
+    \noindent\normalfont\@thefnmark\enspace #1%
+}
+\makeatother
+\setlength{\jot}{6pt}
+\AtBeginDocument{%
+    \setlength{\abovedisplayskip}{8pt plus 2pt minus 2pt}%
+    \setlength{\belowdisplayskip}{8pt plus 2pt minus 2pt}%
+    \setlength{\abovedisplayshortskip}{6pt plus 2pt minus 2pt}%
+    \setlength{\belowdisplayshortskip}{6pt plus 2pt minus 2pt}%
+}
+\newcommand{\ResetMathArraySpacing}{%
+    \linespread{1}\selectfont
+    \renewcommand{\arraystretch}{1}%
+}
+\AtBeginEnvironment{matrix}{\ResetMathArraySpacing}
+\AtBeginEnvironment{smallmatrix}{\ResetMathArraySpacing}
+\AtBeginEnvironment{cases}{\ResetMathArraySpacing}
+\AtBeginEnvironment{dcases}{\ResetMathArraySpacing}
+\AtBeginEnvironment{dcases*}{\ResetMathArraySpacing}
+\AtBeginEnvironment{rcases}{\ResetMathArraySpacing}
+\AtBeginEnvironment{rcases*}{\ResetMathArraySpacing}
+
+% Compatibility helpers retained by migrated prose.
+\newcommand{\myskip}{\vspace{0.5cm}}
+\newcommand{\mysec}[1]{\myskip\noindent\textbf{#1}}
+\NewDocumentCommand{\MaybeIncludeGraphics}{O{}m}{%
+    \IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+        \IfFileExists{\FigureFile{#2}}{\includegraphics[#1]{#2}}{%
+            \IfFileExists{\ImageFile{#2}}{\includegraphics[#1]{#2}}{%
+                \PackageWarning{AdvMacro Notes}{Missing figure `#2'}%
+            }%
+        }%
+    }%
+}
+
+% ==========================================
+% 全角中文标点统一压缩
+% 仍然直接输入：（），《》，“”，，。！？：；、……
+% 编译时自动应用新的左右间距
+% 需要：XeLaTeX 或 LuaLaTeX
+% ==========================================
+
+\usepackage{newunicodechar}
+
+% ------------------------------------------
+% 统一可调参数
+% ------------------------------------------
+\newdimen\CJKPunctOuterKern   % 标点外侧压缩
+\newdimen\CJKPunctInnerKern   % 成对标点内侧压缩
+\newdimen\CJKDashKern         % 破折号两侧统一间距
+
+% 你主要调这两个值
+\CJKPunctOuterKern=-0.1em
+\CJKPunctInnerKern=+0.1em
+\CJKDashKern=-0.09em
+
+% ------------------------------------------
+% 工具宏
+% ------------------------------------------
+\makeatletter
+
+% 单体标点：左右都用 outer
+\newcommand{\CJKPunctSingle}[1]{%
+  \nobreak\hspace*{\CJKPunctInnerKern}#1\hspace*{\CJKPunctOuterKern}%
+}
+
+% 破折号单独处理，避免左右间距不对称
+\newcommand{\CJKDash}[1]{%
+  \nobreak\hspace*{\CJKDashKern}#1\hspace*{\CJKDashKern}%
+}
+
+% 左半边成对标点：外侧 outer，内侧 inner
+\newcommand{\CJKPunctOpen}[1]{%
+  \nobreak\hspace*{\CJKPunctOuterKern}#1\nobreak\hspace*{\CJKPunctInnerKern}%
+}
+
+% 右半边成对标点：内侧 inner，外侧 outer
+\newcommand{\CJKPunctClose}[1]{%
+  \nobreak\hspace*{\CJKPunctInnerKern}#1\hspace*{\CJKPunctOuterKern}%
+}
+
+% 中文省略号需要把“……”当成一个整体处理，不能把两个“…”分别加间距。
+\newcommand{\CJKEllipsisSingle}{%
+  \nobreak\hspace*{\CJKPunctInnerKern}\char"2026\hspace*{\CJKPunctOuterKern}%
+}
+\newcommand{\CJKEllipsisPairOutput}{%
+  \nobreak\hspace*{\CJKPunctInnerKern}\char"2026\char"2026\hspace*{\CJKPunctOuterKern}%
+}
+\makeatother
+
+% ------------------------------------------
+% 成对标点：圆括号 / 方头括号 / 方括号 / 花括号
+% ------------------------------------------
+\newunicodechar{（}{\CJKPunctOpen{\char"FF08}}
+\newunicodechar{）}{\CJKPunctClose{\char"FF09}}
+
+\newunicodechar{【}{\CJKPunctOpen{\char"3010}}
+\newunicodechar{】}{\CJKPunctClose{\char"3011}}
+
+\newunicodechar{〔}{\CJKPunctOpen{\char"3014}}
+\newunicodechar{〕}{\CJKPunctClose{\char"3015}}
+
+\newunicodechar{［}{\CJKPunctOpen{\char"FF3B}}
+\newunicodechar{］}{\CJKPunctClose{\char"FF3D}}
+
+\newunicodechar{｛}{\CJKPunctOpen{\char"FF5B}}
+\newunicodechar{｝}{\CJKPunctClose{\char"FF5D}}
+
+% ------------------------------------------
+% 成对标点：书名号 / 尖括号
+% ------------------------------------------
+\newunicodechar{《}{\CJKPunctOpen{\char"300A}}
+\newunicodechar{》}{\CJKPunctClose{\char"300B}}
+
+\newunicodechar{〈}{\CJKPunctOpen{\char"3008}}
+\newunicodechar{〉}{\CJKPunctClose{\char"3009}}
+
+% ------------------------------------------
+% 成对标点：中文引号
+% ------------------------------------------
+\newunicodechar{「}{\CJKPunctOpen{\char"300C}}
+\newunicodechar{」}{\CJKPunctClose{\char"300D}}
+
+\newunicodechar{『}{\CJKPunctOpen{\char"300E}}
+\newunicodechar{』}{\CJKPunctClose{\char"300F}}
+
+\newunicodechar{“}{\CJKPunctOpen{\char"201C}}
+\newunicodechar{”}{\CJKPunctClose{\char"201D}}
+
+\newunicodechar{‘}{\CJKPunctOpen{\char"2018}}
+\newunicodechar{’}{\CJKPunctClose{\char"2019}}
+
+% ------------------------------------------
+% 单体标点：顿号、逗号、句号、分号、冒号、问号、叹号、省略号
+% ------------------------------------------
+\newunicodechar{、}{\CJKPunctSingle{\char"3001}}
+\newunicodechar{，}{\CJKPunctSingle{\char"FF0C}}
+\newunicodechar{。}{\CJKPunctSingle{\char"3002}}
+\newunicodechar{；}{\CJKPunctSingle{\char"FF1B}}
+\newunicodechar{：}{\CJKPunctSingle{\char"FF1A}}
+\newunicodechar{？}{\CJKPunctSingle{\char"FF1F}}
+\newunicodechar{！}{\CJKPunctSingle{\char"FF01}}
+% 按字符码查看下一个记号；遇到连续两个省略号时吞掉第二个并整体输出。
+% 这里不用 \futurelet 构造活动字符，避免字体配置文件首次载入时辅助宏丢失。
+\ExplSyntaxOn
+\cs_new_protected:Npn \cjk_ellipsis:
+  {
+    \peek_charcode_remove:NTF …
+      { \CJKEllipsisPairOutput }
+      { \CJKEllipsisSingle }
+  }
+\newunicodechar{…}{\cjk_ellipsis:}
+\ExplSyntaxOff
+
+% ------------------------------------------
+% 可选：连接号 / 破折号
+% 这一类视觉差异较大，先给统一版本
+% ------------------------------------------
+\newunicodechar{—}{\CJKDash{\char"2014}}
+\newunicodechar{～}{\CJKPunctSingle{\char"FF5E}}

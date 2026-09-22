@@ -1,0 +1,35 @@
+% 组合层：只组合文字与图表，不重新实现任何原子。
+\newcommand{\AdvMacroLogoHorizontalCustom}[4]{%
+    \AdvMacroLogoChart{#1}{#2}%
+    \begin{scope}[xshift=\dimexpr\LogoChartLeft+\LogoChartXAxisLength+\LogoChartTextGap\relax]
+        \AdvMacroLogoText{#3}{#4}%
+    \end{scope}%
+}
+
+\newcommand{\AdvMacroLogoHorizontal}[2]{%
+    \AdvMacroLogoHorizontalCustom{#1}{#2}{#1}{#2}%
+}
+\let\AdvMacroLogo\AdvMacroLogoHorizontal
+
+\newcommand{\AdvMacroLogoPosterCustom}[4]{%
+    \AdvMacroLogoPosterChart{#1}{#2}%
+    \begin{scope}[
+        xshift=\dimexpr\PosterLogoChartWidth+\PosterLogoChartTextGap\relax,
+        yshift=\PosterLogoTextTopShift,
+        scale=\PosterLogoTextScale,transform shape]
+        \AdvMacroLogoText{#3}{#4}%
+    \end{scope}%
+}
+
+\newcommand{\AdvMacroLogoPoster}[2]{%
+    \AdvMacroLogoPosterCustom{#1}{#2}{#1}{#2}%
+}
+
+\newcommand{\AdvMacroLogoVertical}[2]{%
+    \AdvMacroLogoChart{#1}{#2}%
+    \begin{scope}[
+        xshift=\dimexpr\LogoChartLeft+\LogoChartXAxisLength/2\relax,
+        yshift=\dimexpr-\LogoChartTop-\LogoChartYAxisLength-\LogoVerticalGap\relax]
+        \AdvMacroLogoAMaN{#1}{#2}%
+    \end{scope}%
+}

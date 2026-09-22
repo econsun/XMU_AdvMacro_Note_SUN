@@ -1,0 +1,52 @@
+% !LW recipe = make all (XeLaTeX + SyncTeX)
+% Root document: AdvMacroNote_Sun.tex
+\documentclass[11pt,oneside,openany,UTF8,fontset=none]{ctexbook}
+\newcommand{\CourseRootDocument}{}
+
+\input{_config/core/shared-preamble}
+\input{_config/core/content-map}
+
+\begin{document}
+
+\frontmatter
+\notesideinfofalse
+\notesymmetriclayout
+\hypersetup{pageanchor=false}
+\pagenumbering{gobble}
+\UseSharedCourseCover
+\input{sections/frontmatter/01-cover}
+\UseMacroICourse
+\input{sections/frontmatter/02-dedication}
+
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\setcounter{page}{1}
+\input{sections/frontmatter/03-preface-second-edition}
+\input{sections/frontmatter/04-preface-first-edition}
+\input{sections/frontmatter/05-declaration}
+\input{sections/frontmatter/06-notation-guide}
+\renewcommand{\contentsname}{目\hspace{1em}录}
+\makecompacttableofcontents
+
+\notemainlayout
+\mainmatter
+\pagestyle{notefancy}
+\notesideinfotrue
+% Part、Chapter 与 Appendix 顺序由 _tools/build.py 根据源码元数据生成。
+\InputProjectContent
+
+% Close the appendix Part's local contents before whole-book back matter begins.
+\etocsetlocaltop.toc{part}
+\clearpage
+\notesideinfofalse
+\backmatter
+\pagestyle{symplain}
+\notesymmetriclayout
+\input{sections/backmatter/01-afterword}
+\input{sections/backmatter/02-acknowledgements}
+\input{sections/backmatter/03-changelog}
+\ifcoursebibliography
+    \printbibliography[heading=bibintoc,title={参考文献}]
+\fi
+
+\end{document}

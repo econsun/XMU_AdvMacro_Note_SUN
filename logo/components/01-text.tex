@@ -1,0 +1,34 @@
+% 文字原子：三行项目字标与单行 AMaN 字标。
+\newcommand{\AdvMacroLogoText}[2]{%
+    \begingroup
+    \coordinate (logo-initial-axis) at
+        (\LogoInitialColumnWidth,-\LogoTextTopOffset);
+    \def\LogoTextRow##1##2##3{%
+        \begin{scope}[shift={([yshift=##3]logo-initial-axis)}]
+            \node[anchor=base east,inner sep=0pt,text=#2,
+                opacity=\LogoShadowOpacity,
+                font=\sffamily\bfseries\fontsize{\LogoTextSize}{20}\selectfont]
+                at (\LogoShadowX,\LogoShadowY) {##1};
+            \node[anchor=base east,inner sep=0pt,text=#1,
+                font=\sffamily\bfseries\fontsize{\LogoTextSize}{20}\selectfont]
+                at (0,0) {##1};
+            \node[anchor=base west,inner sep=0pt,text=#2,
+                font=\sffamily\bfseries\fontsize{\LogoTextSize}{20}\selectfont]
+                at (\LogoColumnGap,-\LogoSuffixDrop) {##2};
+        \end{scope}%
+    }%
+    \LogoTextRow{A}{DV}{0mm}%
+    \LogoTextRow{Ma}{CRO}{-\LogoLineStep}%
+    \LogoTextRow{N}{OTE}{\dimexpr-\LogoLineStep-\LogoLineStep\relax}%
+    \endgroup
+}
+
+\newcommand{\AdvMacroLogoAMaN}[2]{%
+    \node[anchor=north,inner sep=0pt,text=#2,opacity=\LogoShadowOpacity,
+        xshift=\LogoShadowX,yshift=\LogoShadowY,
+        font=\sffamily\bfseries\fontsize{\LogoAMaNTextSize}{28}\selectfont]
+        at (0,0) {\LogoAMaNText};
+    \node[anchor=north,inner sep=0pt,text=#1,
+        font=\sffamily\bfseries\fontsize{\LogoAMaNTextSize}{28}\selectfont]
+        at (0,0) {\LogoAMaNText};
+}

@@ -1,0 +1,355 @@
+% !LW recipe = XeLaTeX once (current file)
+\ifdefined\CourseRootDocument
+\providecommand{\FinishStandaloneChapter}{}
+\else
+\documentclass[11pt,oneside,openany,UTF8,fontset=none]{ctexbook}
+\def\StandaloneChapterNumber{1}
+\def\StandaloneCourseSetup{\UseMacroICourse}
+\input{../../_config/core/chapter-standalone}
+\def\FinishStandaloneChapter{\end{document}}
+\fi
+
+
+% 为什么 d ln X / d t = g_X
+% 求增长率的两种方法：直接求导（像 Romer 获得 k 的运动方程），第二种是用增长率性质（可能放在全书附录）
+% 会不会收敛 > 怎么收敛（收敛方向） > 多快收敛
+
+\chapter{Solow 模型}\label{ch:01}
+
+Solow 模型把储蓄率、人口增长和技术进步视为外生变量，用一个资本积累方程解释经济如何从初始状态走向长期均衡。它不能回答家庭为什么储蓄，却清楚地区分了两个问题：资本积累如何改变经济的水平，技术进步如何决定人均变量的长期增长率。
+
+本章先建立生产与积累结构，再把总量变量转换为有效人均变量。这样，一个不断增长的经济体会被转写为一维动态系统，我们便能研究稳态、比较静态与收敛速度。
+
+\section{基础假设}\label{sec:SolowAssumptions}
+
+在《高级宏观经济学》中，所有模型都是动态的，即变量可以随时间变化，那么接触新模型时，我们有必要先明确时间是离散的还是连续的，具体讨论在 \ref{sec:SolowDiscreteContinuous}。
+
+\subsection{生产函数}\label{subsec:SolowProduction}
+
+Solow 模型的分析集中在生产端，生产函数举足轻重，所以我们有必要从生产函数开始本章内容。
+
+我们采用抽象的（不具有具体形式的）生产函数
+\begin{align}
+    Y\bkt=F\bkKALt\label{eq:SolowProductionFunction}
+\end{align}
+其中，\(K\) 是资本存量；\(L\) 是劳动；\(A\) 是技术；\(Y\) 是产出。生产函数意为：经济体使用劳动和资本，借助技术 \(A\) 的帮助生产出 \(Y\)。
+
+技术以 \(A\,L\) 的形式进入生产函数，可见技术进步作用于劳动而非资本，因此生产函数 \ref{eq:SolowProductionFunction} 属于\,\term{劳动增进型技术进步}{labor-augmenting technological progress}，也称 Harrod 中性技术进步。要求 \(K\bkt\geq 0\)、\(A\bkt>0\)、\(L\bkt>0\)、\(Y\bkt\geq 0\)。
+
+\subsection{规模报酬}\label{subsec:SolowCRS}
+
+生产函数满足\,\term{规模报酬不变}{constant returns to scale}性质：
+\begin{align}
+    F\bka{c\,K,c\,A\,L}=c\,F\bka{K,A\,L}\,,\qquad \forall\,c>0\label{eq:SolowCRS}
+\end{align}
+
+
+令 \(c=1\,/\bka{A\,L}\)，利用式 \ref{eq:SolowCRS} 得
+\begin{align*}
+    \frac{Y}{A\,L}
+    &=F\bka{\frac{K}{A\,L},1}
+\end{align*}
+定义\,\term{有效人均资本}{capital per effective worker}和\,\AccentTerm{有效人均产出}\,分别为
+\begin{align*}
+    k\coloneq\frac{K}{A\,L}
+    \qquad \& \qquad 
+    y\coloneq\frac{Y}{A\,L}
+\end{align*}
+再记 \(f\bkk\coloneq F\bka{k,1}\)，总量生产函数就被化为\,\term{集约形式}{intensive form}
+\begin{align}
+    y=f\bkk\label{eq:SolowIntensive}
+\end{align}
+我们最终关心的是 \(Y\islash L=A\,f\bkk\)，但先研究 \(k\) 和 \(y\) 能够剥离人口与技术的趋势，使动态问题变成一维问题。
+
+\subsection{新古典生产技术}\label{subsec:SolowTechnology}
+
+集约生产函数满足以下条件：
+\begin{align}
+    f\bko&=0\label{eq:SolowZeroInput}\\
+    f'\bkk&>0\label{eq:SolowPositiveMPK}\\
+    f''\bkk&<0\label{eq:SolowDiminishingMPK}\\
+    \lim_{k\to 0^+}f'\bkk&=+\infty\,,\qquad
+    \lim_{k\to+\infty}f'\bkk=0\label{eq:SolowInada}
+    \sidenote{Inada 条件是宏观模型的常见假设，后续保证 Solow 模型稳定性与唯一性}
+\end{align}
+前两条分别表示没有投入便没有产出、资本边际产出为正；第三条表示资本边际产出递减；最后一组是 Inada 条件，保证资本极少时的边际产出足够高、资本极多时的边际产出趋近于零。
+
+最常用的例子是 Cobb--Douglas 生产函数
+\begin{align}
+    F\bka{K,A\,L}&=K^\alpha\bka{A\,L}^{1-\alpha}\,,\qquad 0<\alpha<1\label{eq:SolowCD}\sidenote{CD 函数可以被写作 \(F\bka{AK,L}\)，但这不是目的}\\
+    f\bkk&=k^\alpha
+\end{align}
+它满足规模报酬不变、边际产出递减和 Inada 条件。
+
+\subsection{劳动、技术与资本的运动}\label{subsec:SolowInputDynamics}
+
+时间连续时，变量 \(X\bkt\) 的瞬时增长率为
+\begin{align}
+    g_X\bkt
+    &\coloneq\frac{\dot X\bkt}{X\bkt}
+    =\frac{\mathrm d\log X\bkt}{\mathrm d t}\label{eq:SolowGrowthRate}
+\end{align}
+Solow 模型假设人口与技术分别以外生常数 \(n\) 和 \(g\) 增长：
+\begin{align}
+    \frac{\dot L\bkt}{L\bkt}&=n
+    \means L\bkt=L\bko\,e^{n\,t}\label{eq:SolowLaborPath}\\
+    \frac{\dot A\bkt}{A\bkt}&=g
+    \means A\bkt=A\bko\,e^{g\,t}\label{eq:SolowTechnologyPath}
+\end{align}
+产出只在消费和投资之间分配。家庭储蓄固定比例 \(s\) 的收入，储蓄全部转化为投资；资本则以固定比例 \(\delta\) 折旧。因此
+\begin{align}
+    C\bkt&=\bka{1-s}Y\bkt\label{eq:SolowConsumption}\\
+    \dot K\bkt&=s\,Y\bkt-\delta\,K\bkt\label{eq:SolowCapitalLaw}
+\end{align}
+其中 \(0<s<1\)、\(0<\delta<1\)，并假设 \(n+g+\delta>0\)。储蓄率在这里是外生参数；把储蓄选择建立在家庭最优化之上，将是后续 RCK 模型的任务。
+
+\section{运动方程}\label{sec:SolowDynamics}
+
+\subsection{大 K 的运动方程}\label{subsec:SolowKLaw}
+
+\subsection{小 k 的运动方程}\label{subsec:SolowkLaw}
+
+在本小节，我们会用两种方法获得有效人均资本存量 \(k\) 的运动方程 —— 前者是 Romer 教材中的做法，后者是同样常用的、符合直觉的方式。
+
+\mysec{方法一：直接求导}
+
+让 \(k\equiv K\islash AL\) 两边对时间求导得
+\begin{align*}
+    \dot k\bkt &= \dfrac{\dot K\bkt}{A\bkt L\bkt}-\dfrac{K\bkt}{\bks{A\bkt L\bkt}^2}\bks{A\bkt\dot L\bkt+\dot A\bkt L\bkt}\\
+    &= \dfrac{\dot K\bkt}{A\bkt L\bkt}-\dfrac{K\bkt}{A\bkt L\bkt}\bks{\dfrac{\dot A\bkt}{A\bkt}+\dfrac{\dot L\bkt}{L\bkt}}
+\end{align*}
+代入 \(K\) 的运动方程
+\begin{align*}
+    \dot k\bkt&= \dfrac{s\,Y\bkt-\delta\,K\bkt}{A\bkt L\bkt}-n\,k\bkt-g\,k\bkt\\
+    &=s\,f\bks{k\bkt}-\qa{n+g+\delta}k\bkt
+\end{align*}
+
+\myskip
+\mysec{方法二：利用结论}
+
+\begin{align*}
+    \frac{\dot k}{k}=\frac{\dot K}{K}-\frac{\dot A}{A}-\frac{\dot L}{L}=\frac{s\,Y-\delta\,K}{K}-g-n
+\end{align*}
+利用 \(Y\islash\bka{A\,L}=f\bkk\) 和 \(K\islash\bka{A\,L}=k\)，得到 Solow 模型最重要的运动方程
+\begin{align}
+    \dot k=s\,f\bkk-\qa{n+g+\delta}k\label{eq:SolowKLaw}
+\end{align}
+式 \ref{eq:SolowKLaw} 右侧包含两股相反的力量。\(s\,f\bkk\) 是有效人均投资；\(\qa{n+g+\delta}k\) 是\,\term{收支平衡投资}{break-even investment}，它补偿人口增长、技术进步与折旧对有效人均资本的稀释。若前者更大，\(k\) 上升；若后者更大，\(k\) 下降。
+
+\subsection{稳态的存在、唯一与稳定}\label{subsec:SolowSteadyState}
+
+\,\term{稳态}{steady state}是有效人均资本不再变化的状态。正稳态 \(k^*>0\) 满足
+\begin{align}
+    s\,f\bkkstar&=\qa{n+g+\delta}k^*\label{eq:SolowSS}\\
+    \frac{f\bkkstar}{k^*}&=\frac{n+g+\delta}{s}\label{eq:SolowSSAverageProduct}
+\end{align}
+为了判断正稳态是否存在且唯一，定义资本平均产出 \(h\bkk\coloneq f\bkk\islash k\)。由 Inada 条件可得
+\begin{align*}
+    \lim_{k\to0^+}h\bkk=+\infty\,,\qquad
+    \lim_{k\to+\infty}h\bkk=0
+\end{align*}
+又因为 \(f\) 严格凹且 \(f\bko=0\)，切线斜率小于从原点出发的割线斜率，即 \(f'\bkk<f\bkk\islash k\)。因此
+\begin{align}
+    h'\bkk
+    &=\frac{k\,f'\bkk-f\bkk}{k^2}<0\label{eq:SolowAverageProductSlope}
+\end{align}
+连续且严格递减的 \(h\bkk\) 会且只会与常数 \(\qa{n+g+\delta}\islash s\) 相交一次，所以正稳态存在且唯一。
+
+稳定性直接来自运动方向：
+\begin{itemize}
+    \item 当 \(0<k<k^*\) 时，\(s\,f\bkk>\qa{n+g+\delta}k\)，所以 \(\dot k>0\)
+    \item 当 \(k>k^*\) 时，\(s\,f\bkk<\qa{n+g+\delta}k\)，所以 \(\dot k<0\)
+\end{itemize}
+因此，只要初始资本 \(k\bko>0\)，经济就会收敛到唯一正稳态 \(k^*\)。由于 \(f\bko=0\)，\(k=0\) 也是一个边界稳态：若经济恰好没有任何资本，它会停留在原点；但对任意足够小的正资本，Inada 条件都使 \(\dot k>0\)，所以 \(k=0\) 并不是从右侧局部稳定的稳态。
+
+\subsection{平衡增长路径}\label{subsec:SolowBGP}
+
+稳态只要求有效人均变量保持不变，并不意味着总量变量停止增长。当 \(\dot k=0\) 时，\(k\) 和 \(y=f\bkk\) 的增长率均为零。由 \(K=k\,A\,L\) 得
+\begin{align*}
+    \frac{\dot K}{K}
+    &=\frac{\dot k}{k}+\frac{\dot A}{A}+\frac{\dot L}{L}=n+g
+\end{align*}
+其余变量同理。所有变量以固定速率增长的轨道称为\,\term{平衡增长路径}{balanced growth path，BGP}，其增长率汇总如下。
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.35}
+    \begin{tabular}{>{\centering\arraybackslash}p{0.28\linewidth}>{\centering\arraybackslash}p{0.29\linewidth}>{\centering\arraybackslash}p{0.20\linewidth}}
+        \toprule
+        变量 & 定义 & BGP 增长率\\
+        \midrule
+        有效人均资本 & \(k=K\islash\bka{A\,L}\) & \(0\)\\
+        有效人均产出、消费 & \(y=Y\islash\bka{A\,L}\)、\(c=C\islash\bka{A\,L}\) & \(0\)\\
+        人均资本、产出、消费 & \(K\islash L\)、\(Y\islash L\)、\(C\islash L\) & \(g\)\\
+        劳动与知识 & \(L\)、\(A\) & \(n\)、\(g\)\\
+        资本、产出、消费总量 & \(K\)、\(Y\)、\(C\) & \(n+g\)\\
+        \bottomrule
+    \end{tabular}
+    \caption{Solow 模型平衡增长路径上的增长率}
+    \label{tab:SolowBGPRates}
+    \renewcommand{\arraystretch}{0}
+\end{table}
+\ref{tab:SolowBGPRates} 给出 Solow 模型的核心增长结论：资本积累能改变长期水平，却不能持续提高人均变量的增长率；长期人均增长率最终由外生技术进步 \(g\) 决定。
+
+\section{储蓄率变化的影响}\label{sec:SolowSavingShock}
+
+\subsection{资本与产出}\label{subsec:SolowSavingOutput}
+
+假设经济最初处在稳态，储蓄率在 \(t_0\) 时刻永久上升。有效人均资本 \(k\) 是存量，冲击发生时不能跳跃；投资流量 \(s\,f\bkk\) 却会立刻上升，因此 \(\dot k\) 向上跳跃，经济随后逐步走向更高的新稳态。
+
+稳态条件也直接说明 \(k^*\) 随 \(s\) 上升。储蓄率越高，给定 \(k\) 下投资曲线越高，与收支平衡投资的交点便越靠右。
+
+人均产出为 \(Y\islash L=A\,f\bkk\)，其增长率满足
+\begin{align}
+    \frac{\mathrm d\log\bka{Y\islash L}}{\mathrm d t}
+    &=g+\frac{f'\bkk}{f\bkk}\,\dot k \label{eq:SolowOutputGrowthTransition}
+\end{align}
+冲击发生前后，经济都位于平衡增长路径，\(\dot k=0\)，所以人均产出增长率都等于 \(g\)。转型期间 \(\dot k>0\)，人均产出暂时增长得更快；当 \(k\) 接近新稳态时，额外增长逐渐消失，增长率回落到 \(g\)。因此，储蓄率上升带来人均产出\AccentTerm{水平}的一次永久提高，却不改变其长期\AccentTerm{增长率}。
+
+\subsection{消费与黄金律}\label{subsec:SolowGoldenRule}
+
+有效人均消费为
+\begin{align}
+    c=\bka{1-s}f\bkk\label{eq:SolowEffectiveConsumption}
+\end{align}
+储蓄率上升时，\(1-s\) 立即下降而 \(k\) 尚未变化，所以消费会在冲击当期下降。此后资本积累推高产出，消费逐步回升；新稳态消费究竟高于还是低于原稳态，取决于最初是否储蓄不足或储蓄过度。
+
+在稳态条件下，\(s\,f\bkkstar=\qa{n+g+\delta}k^*\)，所以稳态消费可以写成
+\begin{align}
+    c^*=f\bkkstar-\qa{n+g+\delta}k^*\label{eq:SolowSSConsumption}
+\end{align}
+对储蓄率求导得
+\begin{align}
+    \frac{\p c^*}{\p s}
+    &=\bks{f'\bkkstar-\qa{n+g+\delta}}\frac{\p k^*}{\p s}\label{eq:SolowConsumptionSavingDerivative}
+\end{align}
+下一节将证明 \(\p k^*\islash\p s>0\)。因此，使稳态消费达到最大的\,\term{黄金律资本水平}{Golden Rule level of capital}满足
+\begin{align}
+    f'\bka{k_{\mathrm{GR}}}=n+g+\delta\label{eq:SolowGoldenRule}
+\end{align}
+黄金律要求资本的边际产出等于持有一单位有效人均资本的机会成本。若 \(k^*<k_{\mathrm{GR}}\)，提高储蓄率会增加长期消费；若 \(k^*>k_{\mathrm{GR}}\)，经济存在动态无效率，提高储蓄率反而减少长期消费。
+
+\section{定量结论}\label{sec:SolowQuantitative}
+
+\subsection{稳态对储蓄率的弹性}\label{subsec:SolowElasticity}
+
+对稳态条件式 \ref{eq:SolowSS} 关于 \(s\) 进行隐函数求导：
+\begin{align*}
+    f\bkkstar+s\,f'\bkkstar\frac{\p k^*}{\p s}
+    &=\qa{n+g+\delta}\frac{\p k^*}{\p s}
+\end{align*}
+整理得
+\begin{align}
+    \frac{\p k^*}{\p s}
+    &=\frac{f\bkkstar}{n+g+\delta-s\,f'\bkkstar}\label{eq:SolowKSavingDerivative}
+\end{align}
+定义资本的产出弹性，也就是资本收入份额
+\begin{align}
+    \alpha_K\bkk
+    &\coloneq\frac{k\,f'\bkk}{f\bkk}\label{eq:SolowCapitalShare}
+\end{align}
+由严格凹性可知 \(0<\alpha_K\bkk<1\)。再利用稳态关系 \(s=\qa{n+g+\delta}k^*\islash f\bkkstar\)，式 \ref{eq:SolowKSavingDerivative} 可写成
+\begin{align}
+    \frac{\p k^*}{\p s}
+    &=\frac{f\bkkstar}{\qa{n+g+\delta}\bks{1-\alpha_K\bkkstar}}>0\label{eq:SolowKSavingDerivativeShare}
+\end{align}
+于是稳态有效人均资本和产出对储蓄率的弹性分别为
+\begin{align}
+    \frac{s}{k^*}\frac{\p k^*}{\p s}
+    &=\frac{1}{1-\alpha_K\bkkstar}\label{eq:SolowKSavingElasticity}\\
+    \frac{s}{y^*}\frac{\p y^*}{\p s}
+    &=\frac{\alpha_K\bkkstar}{1-\alpha_K\bkkstar}\label{eq:SolowYSavingElasticity}
+\end{align}
+
+\begin{align*}
+    \dfrac{s}{y^*}\dfrac{\p y^*}{\p s}&=\dfrac s{f\bkkstar}\dfrac{f'\bkkstar f\bkkstar}{\qa{n+g+\delta}-s\,f'\bkkstar}\\
+    &=\dfrac{\dfrac{\MathHighlightA{\qa{n+g+\delta}}\,k^*}{f\bkkstar}}{\MathHighlightB{f\bkkstar}}\dfrac{f'\bkkstar \MathHighlightB{f\bkkstar}}{\MathHighlightA{\qa{n+g+\delta}}-\dfrac{\MathHighlightA{\qa{n+g+\delta}}\,k^*}{f\bkkstar}\,f'\bkkstar}
+\end{align*}
+
+导数依赖变量的计量单位，不便跨经济体比较；弹性消除了量纲，因此更适合描述储蓄率变化带来的长期数量效应。在 Cobb--Douglas 情形中，\(\alpha_K\bkk=\alpha\)，上述弹性都是常数，无论 \(k^*\) 是多少。更进一步，生产函数确定时，\(k^*\) 仅由参数决定，可以说 CD 时弹性和参数无关。
+
+\subsection{要素报酬与收入份额}\label{subsec:SolowFactorPayment}
+
+令 \(r\) 和 \(w\) 分别表示资本租金与每单位原始劳动的工资。完全竞争厂商选择资本和劳动以最大化利润：
+\begin{align*}
+    \max_{K,L} \quad & F\bka{K,A\,L}-r\,K-w\,L
+\end{align*}
+一阶条件要求要素价格等于边际产出：
+\begin{align}
+    r&=\frac{\p Y}{\p K}=f'\bkk\label{eq:SolowRentalRate}\\
+    w&=\frac{\p Y}{\p L}
+    =A\bks{f\bkk-k\,f'\bkk}\label{eq:SolowWage}
+\end{align}
+若把 \(A\,L\) 视为有效劳动投入，则每单位有效劳动的报酬为 \(f\bkk-k\,f'\bkk\)。规模报酬不变进一步给出 Euler 分解
+\begin{align}
+    Y=r\,K+w\,L\label{eq:SolowEulerDecomposition}
+\end{align}
+因此资本收入份额为
+\begin{align*}
+    \frac{r\,K}{Y}
+    &=\frac{k\,f'\bkk}{f\bkk}=\alpha_K\bkk
+\end{align*}
+劳动收入份额则为 \(1-\alpha_K\bkk\)。这也解释了式 \ref{eq:SolowAverageProductSlope} 的符号：\(f\bkk-k\,f'\bkk\) 是每单位有效劳动的边际产出，必为正数。
+
+\subsection{收敛速度}\label{subsec:SolowConvergence}
+
+把资本运动方程右侧记为
+\begin{align*}
+    \Phi\bkk\coloneq s\,f\bkk-\qa{n+g+\delta}k
+\end{align*}
+于是 \(\dot k=\Phi\bkk\)。在稳态附近对 \(\Phi\bkk\) 作一阶 Taylor 展开：
+\begin{align*}
+    \dot k
+    &=\Phi\bkkstar+\Phi'\bkkstar\bka{k-k^*}+o\bka{k-k^*}\approx-\lambda\bka{k-k^*}
+\end{align*}
+其中
+\begin{align}
+    \lambda
+    &\coloneq-\Phi'\bkkstar=n+g+\delta-s\,f'\bkkstar\\
+    &=\bks{1-\alpha_K\bkkstar}\qa{n+g+\delta}>0\label{eq:SolowConvergenceRate}
+\end{align}
+收敛速度完全用参数表示，是固定的，并且好校准的
+
+局部近似系统的解为
+\begin{align}
+    k\bkt-k^*
+    &\approx\bks{k\bko-k^*}e^{-\lambda\,t}\label{eq:SolowConvergencePath}
+\end{align}
+因此，\(\lambda\) 衡量偏离稳态部分消失的速度；其半衰期约为 \(\log 2\islash\lambda\)。收敛速度分析描述的是转型过程，属于短期动态；平衡增长路径上的固定增长率则是长期结论。
+
+不同经济体只有在储蓄率、人口增长率、技术增长率、折旧率和生产技术相同，从而拥有相同稳态时，贫穷经济体才会比富裕经济体增长得更快。这种结论称为\,\term{条件趋同}{conditional convergence}，并不意味着所有经济体都会无条件地收敛到同一收入水平。
+
+\section{扩展：技术门槛}\label{sec:SolowTechnologyThreshold}
+
+若生产技术在资本跨过门槛 \(\tilde k\) 后发生离散变化，可以用分段生产函数表示：
+\begin{align}
+    f\bkk
+    &=
+    \begin{cases}
+        \,A\,k^\alpha, & k<\tilde k\\
+        \,B\,k^\alpha-b, & k\geq\tilde k
+    \end{cases}\label{eq:SolowThresholdTechnology}
+\end{align}
+此时，技术门槛可能改变投资曲线与收支平衡投资的交点数量。是否出现多个稳态或所谓“中等收入陷阱”，取决于 \(A\)、\(B\)、\(b\) 和 \(\tilde k\) 的具体取值；仅有分段形式本身还不足以推出陷阱必然存在。
+
+\BeginChapterAppendix
+
+\section{离散与连续}\label{sec:SolowDiscreteContinuous}
+
+aaa
+
+\section{零散推导}\label{sec:SolowMiscDerivations}
+
+\myskip
+\mysec{规模报酬不变获得零利润}
+
+利用反证法，假设厂商获得非零最大利润，即
+\begin{align*}
+    \pi_{\text{max}}=P\,F\bka{K,L}-r\,K-w\,L>0
+\end{align*}
+将要素投入量扩大 \(\lambda>1\) 倍，根据规模报酬不变性质可得
+\begin{align*}
+    P\,F\bka{\lambda\,L,\lambda\,K} -w\,\lambda\,L-r\lambda\,K = \lambda\,P\,F\bka{L,K} -w\,\lambda\,L-r\,\lambda\,K = \lambda\,\pi _{\text{max}}>\pi_{\text{max}}
+\end{align*}
+说明通过扩大生产，厂商可以获得更大的利润，与假设相悖。于是，厂商最大利润为零。
+
+\FinishStandaloneChapter

@@ -1,0 +1,10 @@
+% Logo 独立版本的公共前导区；版本文件仍保留自己的参数覆盖。
+\usepackage{fontspec}
+\IfFontExistsTF{Source Han Sans SC}
+    {\setsansfont{Source Han Sans SC}[BoldFont=Source Han Sans SC Bold]}
+    {\setsansfont{Arial}[BoldFont=Arial Bold]}
+\usetikzlibrary{calc}
+\input{../../_config/setting-color.tex}
+\providecommand{\LogoRootPath}{..}
+\input{../logo}
+\standaloneconfig{border=\LogoExportBorder}

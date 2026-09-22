@@ -1,0 +1,86 @@
+% Rednote 海报的唯一排版母版；文档类由各章 poster-xx.tex 声明。
+\input{../preamble}
+
+\begin{document}
+\newcommand{\PosterCompileDate}{%
+    \number\year.\ifnum\month<10 0\fi\number\month.\ifnum\day<10 0\fi\number\day}
+\ifnum\RednoteChapterDisplayNumber<10
+    \def\PosterCurrentNumberWidth{\PosterTitleSingleDigitWidth}%
+\else
+    \def\PosterCurrentNumberWidth{\PosterTitleDoubleDigitWidth}%
+\fi
+% 两行标题分别使用各章字号，保持明确换行且绝不自动折行。
+\newcommand{\PosterTitleBlock}{%
+    \vbox{\offinterlineskip
+        \hbox{{\sffamily\bfseries
+            \fontsize{\RednotePosterFirstLineSize}{\RednotePosterFirstLineSize}\selectfont
+            \MakeUppercase{\RednotePosterFirstLine}}}%
+        \vskip\PosterTitleLineGap
+        \hbox{{\sffamily\bfseries
+            \fontsize{\RednotePosterSecondLineSize}{\RednotePosterSecondLineSize}\selectfont
+            \MakeUppercase{\RednotePosterSecondLine}}}%
+    }%
+}
+\begin{tikzpicture}[remember picture,overlay]
+    \fill[PosterAccent] (current page.south west) rectangle (current page.north east);
+
+    % Poster 特供长横版 Logo：共享 GDP 数据，柱图从左侧延伸至右侧文字。
+    \begin{scope}[
+        shift={([xshift=\PosterMargin,yshift=-\PosterLogoTop]current page.north west)}
+    ]
+        \AdvMacroPosterLogo
+    \end{scope}
+
+    \coordinate (title-origin) at
+        ([xshift=\dimexpr\PosterMargin+\PosterCurrentNumberWidth+\PosterTitleNumberGap\relax,
+          yshift=\PosterTitleVerticalShift]current page.west);
+    \node[
+        anchor=west,inner sep=0pt,text=BodyText,
+        opacity=\PosterTitleShadowOpacity
+    ] at ([xshift=\PosterTitleShadowX,yshift=\PosterTitleShadowY]title-origin)
+        {\PosterTitleBlock};
+    \node[
+        name=title-main,anchor=west,inner sep=0pt,text=PosterAccentText,
+        align=left
+    ] at (title-origin) {\PosterTitleBlock};
+
+    % 序号读取标题节点的实际高度，并限制在固定栏宽内，始终服从页面网格。
+    \path let \p1=(title-main.north), \p2=(title-main.south), \n1={\y1-\y2} in
+        node[anchor=east,inner sep=0pt,text=BodyText]
+        at ([xshift=-\PosterTitleNumberGap]title-main.west)
+        {\resizebox{\PosterCurrentNumberWidth}{\n1}{\sffamily\bfseries\RednoteChapterDisplayNumber}};
+
+    % 底部信息栏：作者与日期共享容器和基线，各自保持清楚的阅读入口。
+    \coordinate (footer-panel-sw) at
+        ([xshift=\PosterMargin,yshift=\PosterFooterBottom]current page.south west);
+    \coordinate (footer-panel-ne) at
+        ([xshift=-\PosterMargin,yshift=\dimexpr\PosterFooterBottom+\PosterFooterPanelHeight\relax]current page.south east);
+    \fill[PosterAccentText] (footer-panel-sw) rectangle (footer-panel-ne);
+    \fill[BodyText]
+        ([yshift=-\PosterInfoRuleHeight]footer-panel-ne -| footer-panel-sw)
+        rectangle (footer-panel-ne);
+
+    \node[
+        anchor=north west,inner sep=0pt,text=PosterAccent,align=left,
+        font=\sffamily\bfseries\fontsize{\PosterFooterMetaSize}{12}\selectfont
+    ] at ([xshift=\PosterInfoPanelPadding,yshift=-4mm]footer-panel-ne -| footer-panel-sw)
+        {AUTHOR};
+    \node[
+        anchor=south west,inner sep=0pt,text=BodyText,align=left,
+        font=\sffamily\bfseries\fontsize{\PosterAuthorSize}{21}\selectfont
+    ] at ([xshift=\PosterInfoPanelPadding,yshift=4mm]footer-panel-sw)
+        {Paul SUN};
+
+    \node[
+        anchor=north east,inner sep=0pt,text=PosterAccent,align=right,
+        font=\sffamily\bfseries\fontsize{\PosterFooterMetaSize}{12}\selectfont
+    ] at ([xshift=-\PosterInfoPanelPadding,yshift=-4mm]footer-panel-ne)
+        {COMPILED};
+    \node[
+        anchor=south east,inner sep=0pt,text=BodyText,align=right,
+        font=\sffamily\bfseries\fontsize{\PosterDateSize}{21}\selectfont
+    ] at ([xshift=-\PosterInfoPanelPadding,yshift=4mm]footer-panel-ne |- footer-panel-sw)
+        {\PosterCompileDate};
+\end{tikzpicture}
+\null
+\end{document}

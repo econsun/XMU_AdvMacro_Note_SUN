@@ -1,0 +1,92 @@
+% !TeX root = ../../AdvMacroNote_Sun.tex
+% Fonts and core typography.
+\usepackage{iftex}
+\ifPDFTeX
+    \PackageError{AdvMacro Notes}{This project requires XeLaTeX}{}
+\fi
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Source Han Serif SC}
+    {\setCJKmainfont{Source Han Serif SC}[
+        BoldFont=Source Han Serif SC Bold,
+        ItalicFont=Source Han Serif SC,
+        ItalicFeatures={FakeSlant=0.18},
+        BoldItalicFont=Source Han Serif SC Bold,
+        BoldItalicFeatures={FakeSlant=0.18}
+    ]}
+    {\setCJKmainfont{Songti SC}}
+\IfFontExistsTF{Source Han Sans SC}
+    {\setCJKsansfont{Source Han Sans SC}[BoldFont=Source Han Sans SC Bold]\setCJKmonofont{Source Han Sans SC}}
+    {\setCJKsansfont{Heiti SC}\setCJKmonofont{Heiti SC}}
+\setCJKfamilyfont{notekai}{FandolKai-Regular.otf}[BoldFont=FandolKai-Regular.otf]
+\providecommand{\kaiti}{}
+\renewcommand{\kaiti}{\CJKfamily{notekai}}
+\providecommand{\heiti}{}
+\renewcommand{\heiti}{\sffamily}
+\usepackage[scaled=1.02]{newpxtext}
+\usepackage[protrusion=true,expansion=false]{microtype}
+% 在中文标点被 newunicodechar 改成活动字符前载入 Palatino 配置；
+% 否则 microtype 会把省略号和破折号宏误判为未知字体槽位。
+\LoadMicrotypeFile{Palatino}
+
+% Mathematics.
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{newpxmath}
+\usepackage[scr=boondoxo]{mathalfa}
+\usepackage{empheq}
+\usepackage{bm}
+\usepackage{scalerel}
+\providecommand{\symbfit}[1]{\bm{#1}}
+
+% Page and document structure.
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{needspace}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage[bottom]{footmisc}
+\usepackage{marginnote}
+\usepackage{etoc}
+
+% Figures, tables, and diagrams.
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+% Lists, utilities, bibliography, and links.
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{xparse}
+\usepackage{etoolbox}
+\usepackage{xstring}
+\usepackage{mfirstuc}
+\usepackage{csquotes}
+\ifcoursebibliography
+    \usepackage[
+        backend=biber,
+        style=authoryear-comp,
+        sorting=nyt,
+        maxbibnames=99,
+        giveninits=true,
+        uniquename=init,
+        dashed=false,
+        natbib=true
+    ]{biblatex}
+    \addbibresource{references.bib}
+\else
+    \providecommand{\printbibliography}[1][]{}
+\fi
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage[nameinlink,noabbrev]{cleveref}

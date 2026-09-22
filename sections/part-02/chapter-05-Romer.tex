@@ -1,0 +1,14 @@
+% !LW recipe = XeLaTeX once (current file)
+\ifdefined\CourseRootDocument
+\providecommand{\FinishStandaloneChapter}{}
+\else
+\documentclass[11pt,oneside,openany,UTF8,fontset=none]{ctexbook}
+\def\StandaloneChapterNumber{5}
+\def\StandaloneCourseSetup{\UseMacroICourse}
+\input{../../_config/core/chapter-standalone}
+\def\FinishStandaloneChapter{\end{document}}
+\fi
+
+\chapter{Romer 模型}\label{ch:05}
+
+\FinishStandaloneChapter

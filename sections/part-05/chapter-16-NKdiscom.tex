@@ -1,0 +1,303 @@
+% !LW recipe = XeLaTeX once (current file)
+\ifdefined\CourseRootDocument
+\providecommand{\FinishStandaloneChapter}{}
+\else
+\documentclass[11pt,oneside,openany,UTF8,fontset=none]{ctexbook}
+\def\StandaloneChapterNumber{16}
+\def\StandaloneCourseSetup{\UseMacroIICourse}
+\input{../../_config/core/chapter-standalone}
+\def\FinishStandaloneChapter{\end{document}}
+\fi
+% Migrated chapter content.
+
+
+\chapter{NK 模型：时变与承诺}\label{ch:16}
+
+在多阶段决策中有条经典结论：一个追求每阶段最优的路径通常不是最优路径，因为这么做的玩家是短视的，
+\sidenote{短视非贬义}
+他只注重眼前而不愿意牺牲现在的利益去换取未来的更大收益。
+
+我们将围绕以两类政策制定者所代表的最优化问题展开分析。一类是短视的，他们在每期都做静态最优化以寻求最大收益，擅长 \term{时变}{discretion}\sidenote{“时变”还可被称作相机抉择、斟酌处置}；另一类是有远见的，他们根据动态最优化的结果制定政策、释放可信的 \term{承诺}{commitment}，不再更改政策。
+
+\section{供给侧的无效率}
+
+由于垄断竞争等机制存在，即使价格可以灵活调整，经济中资源配置仍存在无效率，即 \(\hat y_t^n\ne \hat y_t^e\)。另一方面，短期经济中存在供给冲击，
+\sidenote{如曼昆的《宏观经济学》，现代菲利普斯曲线含供给冲击项}
+央行常常要在稳定通胀和稳定产出间权衡，通常产出缺口为正，\(\hat y_t\ne \hat y_t^n\)。鱼和熊掌不可得兼，既然不能同时稳定通胀和产出，必然有部分福利在不稳定中流失，我们用损失函数衡量经济中的福利水平。
+
+之前我们关注的产出缺口为 \(\tilde y_t\coloneq\hat y_t-\hat y_t^n\)，既然现在要分析福利，就要如下用产出和有效产出定义新的产出缺口
+\begin{align*}
+    \hat x_t&\coloneq\hat y_t-\hat y_t^e\\
+    &=\bka{\log Y_t-\log \bar Y}-\bka{\log Y_t^e-\log \bar Y} \\
+    &=\log Y_t-\log Y_t^e
+\end{align*}
+其中，假设长期经济中（稳态）政府通过有效手段消除了无效率，\(\bar Y = \bar Y^n = \bar Y^e\)。根据 \(\tilde y_t\) 的定义亦有 \(\tilde y_t=\hat x_t+\hat y_t^e-\hat y_t^n\)。
+
+接下来，将 \(\hat x_t\) 代入 NK 线性系统，替换掉 \(\tilde y_t\)。首先是 NKPC 方程
+\begin{align*}
+    & \hat \pi_t = \beta\,\meant\,\hat\pi\nt+\kappa\,\hat x_t+u_t\\
+    & u_t \coloneq \kappa\bka{\hat y_t^e-\hat y_t^n}
+\end{align*}
+\(u_t\) 是外生供给冲击，如能源价格波动、最低工资水平波动。因其外生，假设 \(u_t\) 满足 AR(1) 过程 \(u_t=\varrho_u\,u\nt+\varepsilon_t^u\)。
+
+然后是 DIS 方程，处理从欧拉方程开始
+\begin{align*}
+    \tilde y_t&=-\dfrac1{\sigma}\bka{\hat\imath_t-\meant\,\pi\nt-\hat r_t^n}+\meant\,\tilde y\nt\\
+    \Rightarrow\quad\hat x_t&=-\dfrac1{\sigma}\bka{\hat\imath_t-\meant\,\pi\nt-\hat r_t^n}+\meant\,\hat x\nt+\meant\bkd{\hat y\nt^e-\hat y\nt^e}-\meant\bkd{\hat y\nt^n-\hat y\nt^n}\\
+    &= -\dfrac1\sigma\bka{\hat\imath_t-\meant\,\pi\nt-\hat r_t^n+\sigma\,\meant\bkd{\D \hat y\nt^n}-\sigma\,\meant\bkd{\D \hat y\nt^e}}+\meant\,\hat x\nt
+    \sidenote{此处 \sidemath{\(\hat r_t^n\)} 是第 \scalebox{0.95}{\(8\)} 章推导 \sidemath{\(\n{DIS}\)} 方程时通过定义而得的变量；\sidemath{\(\hat r_t^e\)} 采用相似定义方式}
+    \\
+    &= -\dfrac1\sigma\bka{\hat\imath_t-\meant\,\pi\nt-\hat r_t^n+\hat r_t^n-\hat r_t^e}+\meant\,\hat x\nt\\
+    &=-\dfrac1\sigma\bka{\hat\imath_t-\meant\,\pi\nt-\hat r_t^e}+\meant\,\hat x\nt
+\end{align*}
+有效产出缺口现已被引入 NK 模型
+\begin{empheq}[left=\empheqlbrace]{align}
+    & \ \hat\pi_t = \beta\,\meant\,\hat\pi\nt+\kappa\,\hat x_t+u_t \label{eq:nkpc-u}\\
+    & \ \hat x_t = -\dfrac1\sigma\bka{\hat\imath_t-\meant\,\pi\nt-\hat r_t^e}+\meant\,\hat x\nt \label{eq:dis-x}
+\end{empheq}
+
+\section{时变下的最优货币政策}
+
+\subsection{最优时变政策}
+
+善时变的央行只关注当期社会福利，所以他面临的最优化问题是
+\begin{align*}
+    \min_{\hat x_t,\,\hat\pi_t} \quad & \hat \pi_t^2 + \alpha_x\,\hat x_t^2
+    \sidenote{福利损失函数的由来略，记住形式即可；显然 \sidemath{\(\hat x_t=\hat\pi_t=0\)} 是最好的解，但该解常不可实现，福利必有损}\\
+    \n{s.t.} \quad & \hat \pi_t = \kappa\,\hat x_t + \underbrace{\beta\,\meant\,\hat\pi\nt + u_t}_{=\;v_t}
+\end{align*}
+即，央行要确定能够让当期社会福利损失最小的 \(\hat x_t\) 和 \(\hat \pi_t\)。该最优化受到 NKPC 方程的约束，原因是 NKPC 方程体现通胀和产出缺口的权衡 —— 二者同高同低，而我们希望产出高、通胀低。DIS 方程描述的是需求侧\sidenote{不考虑货币时没有 \sidemath{\(\n{LM}\)} 方程，\sidemath{\(\n{DIS}\)} 就是 \sidemath{\(\n{AD}\)} 方程}利率和产出缺口的关系，不含通胀且无法分析供给冲击，故不构成约束。
+
+求解最优化问题。构造拉格朗日函数
+\begin{align*}
+    \mathscr L = \hat \pi_t^2 + \alpha_x\,\hat x_t^2 - \lambda\bka{\hat \pi_t - \kappa\,\hat x_t - v_t}
+    \sidenote{单期内的优化是静态优化，为避免混淆，乘子不带时间角标}
+\end{align*}
+计算偏导数获得一阶条件
+\begin{align*}
+    & \dfrac{\p\mathscr L}{\p \hat\pi_t} = 2\,\hat \pi_t - \lambda = 0\\
+    & \dfrac{\p\mathscr L}{\p \hat x_t} = 2\,\alpha_x\,\hat x_t + \lambda\,\kappa = 0
+\end{align*}
+整理解得
+\begin{align}
+    \hat x_t = -\dfrac{\kappa}{\alpha_x}\,\hat \pi_t\qquad
+    \forall\,t \label{eq:d-rule}
+\end{align}
+该结果被称作 \term{目标规则}{targeting rule}—— 央行不似锚定 \(\pi_t=0\) 目标不变，而是动态地选择通胀和产出缺口的最优组合，旨在最小化当前福利损失。如果供给冲击推高通胀，根据该规则，系数为负，则产出要小于有效水平，体现了央行在二者间权衡。
+
+有了目标规则后，我们使用 NKPC 方程求解最优路径
+\begin{align*}
+    & \hat \pi_t = \beta\,\meant\,\hat\pi\nt + \kappa\,\hat x_t + u_t
+    = \beta\,\meant\,\hat\pi\nt - \dfrac{\kappa^2}{\alpha_x}\,\hat \pi_t + u_t
+\end{align*}
+猜测差分方程解形如 \(\hat\pi_t = A\,u_t\)，代入后用待定系数法解得
+\sidenote{亦可采用向前迭代求解，向前有无穷期}
+\begin{empheq}[left=\empheqlbrace]{align}
+    & \ \hat \pi_t = \alpha_x\,\psi\,u_t=\dfrac\kappa\varepsilon\cdot\dfrac1{\kappa^2+\alpha_x\bka{1-\beta\,\varrho_u}}\cdot u_t \label{eq:d-pi}\\
+    & \ \hat x_t = -\kappa\,\psi\,u_t=-\kappa\cdot\dfrac1{\kappa^2+\alpha_x\bka{1-\beta\,\varrho_u}}\cdot u_t \label{eq:d-x}
+\end{empheq}
+可见如果正向冲击发生，\sidenote{如美国，通胀时有发生且程度不轻，和产出波动比，价格变动更容易被民众感知，控制通胀是民生所系}央行不急于使用强硬的政策来消除通胀，因为这同时会造成严重的衰退；放任通胀上升亦不佳，最好的做法是让通胀以冲击的固定比例上升，同时让产出缺口为负，抑制通胀上升的幅度。
+
+下图绘出了 \(\varrho_u\) 为 0 和 0.8 两种情况下的时变政策脉冲响应路径。不难看出，\(\varrho_u\) 越大，冲击持续时间越长，通胀和产出缺口的持续时间也越长。脉冲响应图给出的更重要信息是，正向供给冲击带来通胀上升和负产出缺口，在冲击消退后，通胀和产出缺口回归零，但价格水平不会回落。这就是所谓的 \term{滞胀}{stagflation}现象。
+
+\begin{figure}[H]
+    \centering
+    \MaybeIncludeGraphics[width=0.8\textwidth]{chapter-16-discretion-irf.png}
+    \caption{成本推动冲击下时变政策的脉冲响应路径}
+    \label{fig:disc-irf}
+\end{figure}
+
+\subsection{实现时变政策}
+
+在本小节，我们会在最优化结果的指导下，考查央行如何设定名义利率。首先想到根据 DIS 方程，将最优反应 \ref{eq:d-pi} 和 \ref{eq:d-x} 代入 \ref{eq:dis-x} 并整理得
+\begin{align}
+    \hat \imath_t = \hat r_t^e + \psi_i\,u_t\,,
+    \qquad \psi_i=\psi\bks{\kappa\,\sigma\bka{1-\varrho_u}+\alpha_x\,\varrho_u}\label{eq:d-i}
+\end{align}
+这是前文提到过的目标规则，传导路径为：正向供给冲击引起的通货膨胀，央行选择扩张性货币政策来冷却需求，\(\hat x_t\) 下降，通胀有下降的压力。
+
+更进一步，考虑通胀目标规则货币规则
+\begin{align*}
+    \hat\imath_t=\hat r_t^e+\phi_\pi\,\hat\pi_t
+\end{align*}
+然后用最优路径与 \ref{eq:d-i} 计算其系数 \(\phi_\pi\)
+\begin{align}
+    \begin{cases}
+        \ \hat\imath_t=\hat r_t^e+\psi_i\,u_t\\[4pt]
+        \ \hat\pi_t=\alpha_x\,\psi\,u_t
+    \end{cases}
+    \Rightarrow\quad
+    \hat\imath_t=\hat r_t^e+\dfrac{\psi_i}{\alpha_x\,\psi}\,\hat\pi_t=\hat r_t^e+\bks{\bka{1-\varrho_u}\dfrac{\kappa\,\sigma}{\alpha_x}+\varrho_u}\hat\pi_t\label{eq:pi-rule}
+\end{align}
+如果采用该规则，NK 系统稳定解唯一条件 \(\kappa\bka{\phi_\pi-1}+\phi_y\bka{1-\beta}>0\) \sidenote{源自朱瑞条件，参考 \ref{eq:Jury-condition}}只需考虑第一项，系统解唯一当且仅当 \(\phi_\pi>1\)。根据 \(\phi_\pi\) 的表达式，\(\phi_\pi>1\) 由 \(\kappa\,\sigma>\alpha_x\) 保证（可能不成立）。
+
+以上发展出的规则都以经济出于最优路径上为前提\sidenote{因为推导过程是从代入最优路径开始的}，如果偏离最优路径，要怎么确定名义利率？现在提出更一般的去中心规则
+\begin{align*}
+    \hat \imath_t &= \hat r_t^e +\psi_i\,u_t+\phi_\pi\bka{\hat\pi_t-\alpha\,\psi\,u_t}\\
+    &= \hat r_t^e + \Theta_i\,u_t + \phi_\pi\,\hat\pi_t\,,\qquad \Theta_i=\psi\bks{\kappa\,\sigma\bka{1-\varrho_u}-\alpha_x\bka{\phi_\pi-\varrho_u}}
+\end{align*}
+该规则下稳定解唯一仍依赖于 \(\phi_\pi>1\)，但 \(\phi_\pi\) 的值不由参数得出，可自由设定。
+
+总结我们遇到的两种政策规则。一种是目标规则，它告诉央行 \(\hat x_t\) 和 \(\hat\pi_t\) 应当满足什么关系、二者与冲击相关的最优路径是什么；另一种则是 \term{工具规则}{instrument rule}，它把名义利率视作工具，在最优路径的指导下确定名义利率。相当于：前者告诉你做事的目标是什么，后者告诉你当下该怎么做。
+
+\section{承诺下的最优货币政策}
+
+\subsection{最优承诺政策}
+
+如果央行一定会执行承诺、不反悔，那么它面临如下最优化问题
+\begin{align*}
+    \min_{\bkd{\hat x_t,\,\hat\pi_t}^\infty_{t=0}}
+    \quad &
+    \dfrac12\,\meano\sum_{t=0}^\infty\, \beta^t\bka{\hat \pi_t^2+\alpha_x\,\hat x_t^2}\\
+    \n{s.t.}
+    \quad &
+    \hat \pi_t=\beta\,\meant\,\hat\pi\nt+\kappa\,\hat x_t+u_t
+\end{align*}
+构建拉格朗日函数
+\begin{align*}
+    \mathscr L=\meano\sum_{t=0}^\infty\, \beta^t\bks{\dfrac12\bka{\hat\pi_t^2+\alpha_x\,\hat x^2_t}+\gamma_t\bka{\hat\pi_t-\kappa\,\hat x_t-\beta\,\hat\pi\nt-u_t}}
+\end{align*}
+计算偏导数获得一阶条件
+\begin{align*}
+    & \dfrac{\p\scr L}{\p \hat x_t} = \alpha_x\,\hat x_t-\kappa\,\gamma_t = 0 \\
+    & \dfrac{\p\scr L}{\p \hat\pi_t} = \hat\pi_t+\gamma_t-\gamma\lt = 0
+\end{align*}
+结合两式消去 \(\gamma_t\) 得 \(\bkd{x_t}\) 的差分方程并作迭代
+\begin{align*}
+    \hat x_t &= \hat x\lt - \dfrac\kappa{\alpha_x}\,\hat\pi_t\\
+    &= \hat x\llt - \dfrac\kappa{\alpha_x}\bka{\hat\pi_t+\hat\pi\nt}=\cdots= \hat x_{-1} - \dfrac\kappa{\alpha_x}\bka{\hat\pi_t+\hat\pi\lt+\cdots+\hat\pi_0}\\
+    &= 0 - \dfrac\kappa{\alpha_x}\bks{\bka{\log P_t-\log P\lt}+\bka{\log P\lt-\log P\llt}+\cdots+\bka{\log P_0-\log P_{-1}}}\\
+    &=-\dfrac\kappa{\alpha_x}\bka{\log P_t-\log P_{-1}}\eqcolon-\dfrac\kappa{\alpha_x}\,\check p_t
+\end{align*}
+如果央行相机抉择，\(\hat x_t=-\bka{\kappa\islash\alpha_x}\hat\pi_t\)，有效产出缺口和 \(\hat \pi_t=\log P_t-\log P\lt\) 有关；如果央行承诺，则是 \(\hat x_t=-\bka{\kappa\islash\alpha_x}\check p_t\)，有效产出缺口和 \(\check p_t=\log P_t-\log P_{-1}\) 有关，直接锚定到初始价格水平。
+
+同样的，将最优条件代入 NKPC 方程
+\begin{align*}
+    \hat\pi_t &= \beta\,\meant\,\hat\pi\nt + \kappa\,\hat x_t + u_t\\
+    \check p_t - \check p\lt &= \beta\,\meant\,\bka{\check p\nt - \check p_t} - \dfrac{\kappa^2}{\alpha_x}\,\check p_t + u_t \\
+    \check p_t &= \xi\,\check p\lt + \xi\,\beta\,\meant\,\check p\nt + \xi\,u_t
+\end{align*}
+其中 \(\xi\coloneq\alpha_x\islash[\kappa^2+\alpha_x\,(1+\beta)]\)。使用待定系数法，假设 \(\check p_t = \delta\,\check p\lt + \eta\,u_t\)，代入上式并匹配系数有
+\begin{align*}
+    \begin{cases}
+        \ 1-\dfrac\xi\delta-\xi\,\beta\,\delta=0\\[10pt]
+        \ \dfrac{\xi\,\eta}\delta-\xi\,\beta\,\eta\,\varrho_u-\xi=0
+    \end{cases}\Rightarrow\quad
+    \begin{cases}
+        \ \delta=\dfrac{1-\dsq{1-4\,\xi^2\,\beta}}{2\,\xi\,\beta}\in\bka{0,1}\\[10pt]
+        \ \eta=\dfrac{\delta}{1-\beta\,\delta\,\varrho_u}
+    \end{cases}
+\end{align*}
+所得结果代回一阶条件
+\begin{align*}
+    \hat x_t=\delta\,\hat x\lt-\dfrac{\kappa\,\delta}{\alpha_x\bka{1-\beta\,\delta\,\varrho_u}}\,u_t
+\end{align*}
+
+画出承诺下的脉冲响应路径，可以发现它和时变下最大的区别在于：承诺可信时，央行能够影响人们对未来通胀的预期，价格水平不会像时变下那样持续走高，而是会逐渐回到较低水平。向前迭代 NKPC 方程得
+\begin{align*}
+    \hat\pi_t
+    =\kappa\,\hat x_t
+    +\kappa\sum_{k=1}^{\infty}\beta^k\,\meant\,\hat x_{t+k}
+    +u_t+\sum_{k=1}^{\infty}\beta^k\,\meant\,u_{t+k}
+\end{align*}
+若暂时不展开未来冲击项，关键在于第二项：可信承诺使未来的负产出缺口能够压低当前通胀预期。于是，央行不必只依靠当期严重衰退来压低通胀，而是可以通过承诺未来政策路径来分摊调整压力。由于损失函数是凸的，分散调整通常比集中调整带来更小的福利损失。
+
+这也体现了所谓的 \term{时间不一致性}{time inconsistency}：承诺计划在未来到来时未必仍是当期最优，因此缺乏可信承诺的央行会倾向于每期重新优化，无法利用未来政策承诺来稳定当前预期；而可信央行可以承诺未来路径，从而以较小的社会成本控制通胀。
+
+\begin{figure}[H]
+    \centering
+    \MaybeIncludeGraphics[width=0.8\textwidth]{chapter-16-persistent-policy-irf.png}
+    \caption{成本推动冲击下时变和承诺对比}
+\end{figure}
+
+\subsection{实现承诺政策}
+
+上图中考虑了持续冲击的情况，作为对比，现在转向暂时冲击，\(\varrho_u=0\)。首先将 \(\hat x_t=-\bka{\kappa\islash\alpha_x}\check p_t\) 代入 DIS 方程并做整理得
+\begin{align*}
+    \hat\imath_t &= \hat r_t^e + \meant\,\hat\pi\nt-\dfrac{\kappa\,\sigma}{\alpha_x}\underbrace{\bka{\meant\,\check p\nt-\check p_t}}_{=\;\meant\,\hat\pi\nt}= \hat r_t^e + \bka{1-\dfrac{\kappa\,\sigma}{\alpha_x}}\bka{\meant\,\check p\nt-\check p_t}
+\end{align*}
+为获得更纯净的表达式，计算 \(\meant\,\check p\nt-\check p_t\)。在 \(\varrho_u=0\) 条件下
+\begin{align*}
+    \check p_t = \delta\,\check p\lt + \dfrac{\delta}{1-\beta\,\delta\,\varrho_u}\,u_t = \delta\,\check p\lt + \delta\,u_t
+    \sidenote{该式为差分方程，可以向后迭代进行求解}
+\end{align*}
+不难计算得 \(\meant\,\check p\nt=\delta\,\check p_t\)，于是
+\begin{align*}
+    \hat\imath_t &= \hat r_t^e - \underbrace{\bka{1-\delta}\bka{1-\dfrac{\kappa\,\sigma}{\alpha_x}}}_{\eqcolon\;\theta}\check p_t=\hat r_t^e - \theta\sum_{k=0}^{t}\delta^{k+1}\,u_{t-k}
+\end{align*}
+依以上推导结果，我们发展出货币政策规则
+\begin{align*}
+    \hat\imath_t = \hat r_t^e - \bka{\phi_p+\theta}\check p_t+\phi\,\check p_t
+\end{align*}
+但该政策在唯一稳定解推导过程中会发现，它和 \ref{eq:pi-rule} 的一样要通过特定参数才能实现，这对政策制定来说是麻烦的。具体推导略。
+
+\section{稳态扭曲}
+
+本篇至此都假设 \(\bar Y^n=\bar Y^e\)，这给我们带来极大的简化分析，方便定义出有效产出缺口 \(\hat x_t\)。现在考虑永久的供给侧扭曲，即 \(\bar Y^n\ne \bar Y^e\)。
+
+在有效率时，\(\n{MRS}_{C,N,t}=\n{MPN}_{t}\)；因无效率的存在，我们人为增加系数
+\begin{align*}
+    \n{MRS}_{C,N,t}=\bka{1-\omega}\n{MPN}_{t}\,,\quad\omega=1-\dfrac1\mu
+    \sidenote{此处 \sidemath{\(\mu\)} 即加成系数}
+\end{align*}
+同法定义 \(\hat x_t\)，形式不如之前简洁但后续不会再使用到 DIS 方程，所以影响不大。NKPC 方程也保持不变，福利损失函数增加惩罚项 \(\Lambda\,\hat x_t\)，其中 \(\Lambda=\lambda\,\omega\islash\varepsilon\)，具体损失函数形式见后文。
+
+\subsection{最优时变政策}
+
+最优化
+\begin{align*}
+    \min_{\hat x_t,\,\hat\pi_t} \quad & \dfrac12\bka{\hat \pi_t^2 + \alpha_x\,\hat x_t^2} - \Lambda\,\hat x_t\\
+    \n{s.t.} \quad & \hat \pi_t = \kappa\,\hat x_t + \beta\,\meant\,\hat\pi\nt + u_t
+\end{align*}
+一阶条件为
+\begin{align*}
+    \hat x_t=-\dfrac{\kappa}{\alpha_x}\,\hat \pi_t+\dfrac\Lambda{\alpha_x}
+\end{align*}
+代入 NKPC 方程
+\begin{align*}
+    \hat \pi_t = \dfrac{\alpha_x\,\beta}{\alpha_x+\kappa^2}\,\meant\,\hat\pi\nt + \dfrac{\alpha_x}{\alpha_x+\kappa^2}\,u_t + \dfrac{\kappa\,\Lambda}{\alpha_x+\kappa^2}
+\end{align*}
+猜测 \(\hat \pi_t=A\,u_t+B\) 并代入求解得
+\begin{align*}
+    \hat\pi_t^*=\underbrace{\dfrac{\alpha_x}{\kappa^2+\alpha\bka{1-\beta\,\varrho_u}}}_{\eqcolon\;\xi}\,u_t+\dfrac{\kappa\,\Lambda}{\kappa^2+\alpha_x\bka{1-\beta}}
+\end{align*}
+与长期经济中有效率的情况 \ref{eq:d-pi} 相比，该结果多了与时间无关的正常数项，代表是固定存在的扭曲。实际上，各国央行通常不会坚持零通胀目标，而是设定一个较低的正通胀目标，这正是因为经济中无效率不可避免。
+
+\subsection{最优承诺政策}
+
+最优化
+\begin{align*}
+    \min_{\bkd{\hat x_t,\,\hat\pi_t}^\infty_{t=0}}
+    \quad &
+    \meano\sum_{t=0}^\infty\, \beta^t\bks{\dfrac12\bka{\hat \pi_t^2+\alpha_x\,\hat x_t^2} - \Lambda\,\hat x_t}\\
+    \n{s.t.}
+    \quad &
+    \hat \pi_t=\kappa\,\hat x_t+\beta\,\meant\,\hat\pi\nt+u_t
+\end{align*}
+一阶条件为
+\begin{align}
+    \hat x_t=\hat x\lt-\dfrac\kappa{\alpha_x}\,\hat\pi_t=-\dfrac\kappa{\alpha_x}\,\check p_t+\dfrac\Lambda{\alpha_x}\label{eq:x-commit-distort}
+\end{align}
+后续和之前的承诺分析类似，最终结果为
+\begin{align}
+    \check p_t = \delta\,\check p\lt + \dfrac\delta{1-\beta\,\delta\,\varrho_u}\, u_t + \dfrac{\kappa\,\delta\,\Lambda}{\alpha\bka{1-\beta\,\delta}}\label{eq:p-commit-distort}
+\end{align}
+在这个情形中，央行仍然能保持零通胀率，但是价格会长期固定高于初始水平
+\begin{align*}
+    \lim_{t\to\infty}\,P_T=P_{-1}+\dfrac{\kappa\,\delta\,\Lambda}{\bka{1-\delta}\bka{1-\beta\,\delta\,\varrho_u}}
+\end{align*}
+
+\ref{eq:p-commit-distort} 代入 \ref{eq:x-commit-distort} 有
+\begin{align*}
+    \hat x_t = \underbrace{\delta\,\hat x\lt}_{\n{历史}} - \underbrace{\dfrac{\kappa\,\delta}{\alpha_x\bka{1-\beta\,\delta\,\varrho_u}}\,u_t}_{\n{冲击响应}} + \underbrace{\dfrac{\Lambda}{\alpha_x}\bks{1-\delta-\dfrac{\delta\,\kappa^2}{\alpha_x\bka{1-\beta\,\delta}}}}_{\n{对稳态偏离}}
+\end{align*}
+实施承诺的央行可以获得如下好处
+\begin{itemize}
+    \item 因为 \(\bar Y^n<\bar Y^e\)，那么央行可以将产出控制在二者之间，有助于提高社会福利
+    \item 承诺通过预期管理来更温和地应对供给冲击，减缓经济衰退
+    \item 承诺可以避免通胀预期的自我实现，抑制通胀上升的压力
+\end{itemize}
+
+% \PrintChapterBibliography
+
+\FinishStandaloneChapter

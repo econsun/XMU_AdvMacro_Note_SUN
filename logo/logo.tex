@@ -1,0 +1,24 @@
+% AdvMacroNote Logo 总入口。需要 Logo 时只载入本文件。
+% 从项目根目录载入时默认 LogoRootPath=logo；其他工作目录可在此前覆盖。
+%
+% 公共命令：
+%   \AdvMacroLogoHorizontal{主色}{辅色}   横向完整 Logo
+%   \AdvMacroLogoPoster{主色}{辅色}       Poster 特供完整 Logo
+%   \AdvMacroLogoChart{柱色}{轴色}        普通图表
+%   \AdvMacroLogoPosterChart{柱色}{轴色}  Poster 长图表
+%   \AdvMacroLogoText{首字色}{其余字色}   三行文字
+%   \AdvMacroLogoVertical{主色}{辅色}     上下组合 Logo
+%   \AdvMacroLogoAMaN{主色}{辅色}         单行 AMaN 字标
+%
+% 新变体只应覆盖 settings 中的参数并调用上述命令，不复制 components 实现。
+\ifdefined\AdvMacroLogoLibraryLoaded
+    \expandafter\endinput
+\fi
+\def\AdvMacroLogoLibraryLoaded{}
+\providecommand{\LogoRootPath}{logo}
+\input{\LogoRootPath/settings}
+\input{\LogoRootPath/poster-settings}
+\input{\LogoRootPath/gdp-data}
+\input{\LogoRootPath/components/01-text}
+\input{\LogoRootPath/components/02-chart}
+\input{\LogoRootPath/components/03-layouts}

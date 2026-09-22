@@ -1,0 +1,686 @@
+% !LW recipe = XeLaTeX once (current file)
+\ifdefined\CourseRootDocument
+\providecommand{\FinishStandaloneChapter}{}
+\else
+\documentclass[11pt,oneside,openany,UTF8,fontset=none]{ctexbook}
+\def\StandaloneChapterNumber{14}
+\def\StandaloneCourseSetup{\UseMacroIICourse}
+\input{../../_config/core/chapter-standalone}
+\def\FinishStandaloneChapter{\end{document}}
+\fi
+
+
+\chapter{NK 模型：基本情况}\label{ch:14}
+
+在 N. Gregory Mankiw 著经典教材《Macroeconomics》（第 10 版）中，第 15.5 章的中文名为“结论：向 DSGE 模型迈进”，让对这章一知半解的我着迷：“到底是什么东西迈向如雷贯耳的 DSGE 呢？”
+
+\term{卢卡斯批判}{Lucas critique}指出，传统宏观模型中由历史数据估计得到的总量关系依赖于既定政策环境；一旦政策规则改变，私人部门预期和行为随之调整，这些关系便可能不再稳定。新凯恩斯学派在理性预期和微观最优化框架下引入垄断竞争、价格黏性等名义摩擦，从而为分析短期的名义冲击（如货币政策）产生的经济波动提供框架。\sidenote{\sidemath{\(\n{RBC}\)} 模型是实际冲击的分析框架}
+
+实际上，Mankiw 在第 15 章讨论的正是本章要展开的新凯恩斯（new Keynesian，NK）模型。身处今日的我们，或许难以感同身受 NK 模型诞生时追随凯恩斯步尘的后人能勇敢面对卢卡斯批判的振奋，但我们仍可以通过本章学习，感受到流派争论把人类智慧推向更高处的魅力。现在，是时候揭开面纱了！
+
+\section{模型设定}
+
+\subsection{从部门到经济体}\label{subsec:from-sector-to-economy}
+
+假设经济体中有多个部门各自生产不同的商品，用 \(i\in\bks{0,1}\) 对部门进行编号。在微观层面，我们关注每个部门商品的价格 \(P_t\bki\) 和消费量 \(C_t\bki\)；在宏观层面，则要考虑整体价格水平 \(P_t\) 和消费水平 \(C_t\)，这让我们好奇：如何使用易得的微观数据计算出抽象的宏观变量？
+
+首先，对于 \(C_t\) 我们直接使用 Dixit 和 Stiglitz (1977) \footnote{Avinash K. Dixit and Joseph E. Stiglitz, ``Monopolistic Competition and Optimum Product Diversity'', \emph{American Economic Review}, 1977} 提出的 CES 聚合函数来定义：
+\begin{equation*}
+    C_t\coloneq\bks{\int^1_0 C_t\bki^{\frac{\varepsilon-1}\varepsilon}\mathrm{d}i}^{\frac\varepsilon{\varepsilon-1}}
+\end{equation*}
+称 \(C_t\) 是 \term{聚合的}{aggregate}消费。接着，价格水平 \(P_t\) 是为获得 1 单位 \(C_t\) 所需的最小支出\sidenote{\sidemath{\(P_t\)} 还以可被称作价格指数，将其视为消费的“单价”有助于理解总支出}，因此先求解支出最小化问题：
+\begin{align*}
+    E_t =\;&P_t\,C_t= \min_{C_t} \ \int^1_0 P_t\bki \, C_t\bki \mathrm{d}i \\
+    \text{s.t.} &\quad C_t=\bks{\int^1_0 C_t\bki^{\frac{\varepsilon-1}\varepsilon}\mathrm{d}i}^{\frac\varepsilon{\varepsilon-1}} \\
+    \text{or} & \quad C_t^{\frac{\varepsilon-1}{\varepsilon}}=\int^1_0 C_t\bki^{\frac{\varepsilon-1}\varepsilon}\mathrm{d}i
+\end{align*}
+构建拉格朗日函数
+\begin{align*}
+    \scr L &=\int^1_0 P_t\bki \, C_t\bki\mathrm di+\lambda\bks{C_t^{\frac{\varepsilon-1}\varepsilon}-\int^1_0C_t\bki ^{\frac{\varepsilon-1}\varepsilon}\mathrm di}\\
+    &= \int^1_0 \bks{P_t\bki \, C_t\bki-\lambda C_t\bki ^{\frac{\varepsilon-1}\varepsilon}}\mathrm di+\lambda\,C_t^{\frac{\varepsilon-1}\varepsilon}
+\end{align*}
+根据变分法，一阶条件为被积函数需满足\sidenote{拉格朗日函数是含积分的泛函，无法直接常规求导}
+\begin{align*}
+    P_t\bki=\lambda\cdot\dfrac{\varepsilon-1}\varepsilon\cdot C_t\bki ^{-\frac1\varepsilon}
+\end{align*}
+对一阶条件操作：1. 两边同乘以 \(C_t\bki\) 有 \(P_t\bki \, C_t\bki\)；2. 两边施 \(1-\varepsilon\) 次幂有 \(C_t\bki^{\frac{\varepsilon-1}\varepsilon}\)。得两个新式后再分别作积分
+\begin{equation*}
+    \begin{gathered}
+        \begin{cases}
+            \ P_t\bki \, C_t\bki=\lambda\cdot\dfrac{\varepsilon-1}\varepsilon\cdot C_t\bki ^{\frac{\varepsilon-1}{\varepsilon}}\\[6pt]
+            \ C_t\bki^{\frac{\varepsilon-1}{\varepsilon}}=\bka{\lambda\cdot\dfrac{\varepsilon-1}\varepsilon}^{\varepsilon-1}\,P_t\bki^{1-\varepsilon}
+        \end{cases}\\[8pt]
+        \Downarrow\\[4pt]
+        \begin{cases}
+            \ P_t\,C_t=\lambda\cdot\dfrac{\varepsilon-1}\varepsilon\cdot C_t^{\frac{\varepsilon-1}{\varepsilon}} & (1)\\[6pt]
+            \ \dis C_t^{\frac{\varepsilon-1}{\varepsilon}}=\bka{\lambda\cdot\dfrac{\varepsilon-1}\varepsilon}^{\varepsilon-1}\int^1_0 P_t\bki^{1-\varepsilon}\mathrm di & (2)
+        \end{cases}
+    \end{gathered}
+\end{equation*}
+根据前文所述价格水平 \(P_t\) 有“单价”含义\sidenote{该价格水平表达式依赖聚合消费的定义，不同定义会引出不同价格水平表达式}，取 \(C_t=1\)，将 (2) 代入 (1) 得到在 CES 聚合函数下价格水平
+\begin{align}
+    P_t=\bks{\int^1_0 P_t\bki^{1-\varepsilon}\mathrm di}^{\frac1{1-\varepsilon}}\label{eq:price-level}
+\end{align}
+再将该结果代入 (2) 有
+\begin{align*}
+    C_t^{\frac{\varepsilon-1}{\varepsilon}}=\bka{\lambda\cdot\dfrac{\varepsilon-1}\varepsilon}^{\varepsilon-1}\,P_t^{1-\varepsilon} \quad\Rightarrow\quad \lambda\cdot\dfrac{\varepsilon-1}\varepsilon\cdot=P_t \, C^{\frac{1}{\varepsilon}}_t
+\end{align*}
+代回一阶条件
+\begin{align}
+    P_t\bki \, C_t\bki ^{\frac1\varepsilon}=P_t\,C_t^{\frac1\varepsilon} \quad\text{or}\quad C_t\bki=\bks{\frac{P_t\bki}{P_t}}^{-\varepsilon}C_t\label{eq:CES-demand}
+    \sidenote{易得 \scalebox{0.75}{\(\dfrac{C_t\bki}{C_t\bkj}=\bks{\dfrac{P_t\bki}{P_t\bkj}}^{-\varepsilon}\)}\\[6pt]计算 \scalebox{0.75}{\(\sigma_{ij}=\dfrac{\p dC_t\bki}{\p dP_t\bkj}\dfrac{P_t\bkj}{C_t\bki}\)}\\[4pt]可验证 \(\varepsilon\) 是替代弹性}
+\end{align}
+推导结束。
+
+实际上厂商也有类似的支出（成本）最小化问题
+\begin{align*}
+    \n{Cost}_t =\;&P_t\,Y_t= \min_{Y_t} \ \int^1_0 P_t\bki Y_t\bki \mathrm{d}i \\
+    \text{s.t.} & \quad Y_t^{\frac{\varepsilon-1}{\varepsilon}}=\int^1_0 Y_t\bki^{\frac{\varepsilon-1}\varepsilon}\mathrm{d}i
+\end{align*}
+结果与 \ref{eq:CES-demand} 相同，只是将 \(C\) 换为 \(Y\)。所以 \(Y\) 版本不是从 \(C\) 的直接使用市场出清条件得到，而是 \(C\)、 \(Y\) 都有相同形式的式子，并且市场出清告诉我们它们相等。
+
+接下来，我们到经济整体层面求解家的决策问题。
+
+\subsection{家庭行为}
+
+可存活无穷期的代表性家庭面临如下跨期最优化问题
+\begin{align*}
+    \max_{\bkd{C_t,N_t,B_t}}\quad & \meant\sum^\infty_{t=0}\,\beta^t\,U\bka{C_t,N_t}\\
+    \text{s.t.}\quad & P_t\,C_t+Q_t\,B_t=B\lt+W_t\,N_t+T_t
+\end{align*}
+家庭的效用函数中包含消费和劳动，要在二者间权衡，故而是跨期消费-劳动选择问题。经过前面的努力，我们已知约束条件中 \(C_t\) 和 \(P_t\) 的表达式。
+
+构建拉格朗日函数
+\begin{align*}
+    \scr L=\meant \sum^\infty_{t=0}\,\beta^t\bkd{U\bka{C_t,N_t}+\lambda_t\bka{B\lt+W_t\,N_t+T_t-P_t\,C_t-Q_t\,B_t}}
+\end{align*}
+一阶条件有
+\begin{align*}
+    & \dfrac{\p \scr L}{\p C_t}=U_{C,t}-\lambda_t\,P_t=0\\
+    & \dfrac{\p \scr L}{\p N_t}=U_{N,t}+\lambda_t\,W_t=0\\
+    & \dfrac{\p \scr L}{\p B_t}=-\beta^t\,\lambda_t\,Q_t+\beta^{t+1}\,\lambda_{t+1}=0
+\end{align*}
+将第一式代入第二、第三式，一阶条件被整合为
+\begin{empheq}[left=\empheqlbrace]{align*}
+    & \ -\dfrac{U_{N,t}}{U_{C,t}}=\dfrac{W_t}{P_t}\\
+    & \ Q_t=\beta\,\meant\bkd{\dfrac{U_{C,t+1}}{U_{C,t}}\dfrac{P_t}{P_{t+1}}}=\beta\,\meant\bkd{\dfrac{U_{C,t+1}}{U_{C,t}}\dfrac{1}{\Pi_{t+1}}}
+\end{empheq}
+假设效用函数为 CRRA 形式，直接写出对数线性化系统，同\ref{sec:CMM-fluctuation}
+\begin{empheq}[left=\empheqlbrace]{align}
+    & \ \hat w_t-\hat p_t=\sigma\,\hat c_t+\phi\,\hat n_t\label{eq:log-linearized-FOC-labor}\\
+    & \ \hat c_t=\meant\,\hat c\nt-\dfrac1\sigma\bka{\hat\imath_t-\meant\,\hat\pi\nt}\notag
+\end{empheq}
+
+\subsection{厂商行为}
+
+引入垄断竞争结构是 NK 模型的重要微观机制之一。厂商有定价权才有后续价格黏性，才有部门间价格差异、分散。
+
+在中级微观经济学中，我们会先学习成本最小化问题（成本是要素的函数），知道它和产量最大化是对偶问题，然后再学习利润最大化问题（利润是产出的函数）。实际上，如果利润函数用要素表示而非产出，那么它和成本最小化问题也是等价的。
+
+\mysec{成本最小化问题}
+
+部门 \(i\) 的厂商面临如下成本最小化要素选择问题
+\begin{align*}
+    \min_{N_t\bki}\quad & W_t\,N_t\bki\\[-4pt]
+    \text{s.t.}\quad & Y_t\bki=A_t\,N_t\bki^{1-\alpha}\sidenote{生产函数可见不要求规模报酬不变}
+\end{align*}
+严格来说，约束应为不等式，根据最优化问题的标准形式写作 \(Y_t-A_t\,N_t\bki^{1-\alpha}\le0\)，故有后续拉格朗日函数的写法；此处的严谨事关后续 \(\mu_t\) 的符号
+
+构建拉格朗日函数
+\begin{align*}
+    \scr L=W_t\,N_t\bki+\mu_t\bks{Y_t\bki-A_t\,N_t\bki^{1-\alpha}}
+\end{align*}
+一阶条件为
+\begin{align*}
+    & \dfrac{\p \scr L}{\p N_t\bki}=0 \quad\Rightarrow\quad W_t=\mu_t\cdot\bka{1-\alpha}A_t\,N_t\bki^{-\alpha}
+\end{align*}
+根据拉格朗日乘子代表“放松约束引起的最优值变化”可知：\(\mu_t\) 代表增加 1 单位产出 \(Y_t\bki\) 而多付出的成本，即边际成本。那么边际成本（\(\mu_t\)）的表达式为
+\begin{align}
+    \n{MC}_t\bki=\dfrac{W_t}{\bka{1-\alpha}A_t\,N_t\bki^{-\alpha}}=\dfrac{W_t}{\n{MPN}_t\bki}\label{eq:MC}
+\end{align}
+
+NK 模型是我们首次接触到有垄断势力的市场结构，我们之前习惯的 \(W_t^r=\n{MPN}_t\bki\) 在此变成类似 \(W_t=\n{MC}_t\cdot\n{MPN}_t\)，多了边际成本。实际上，这并不冲突，我们通过同时在上式中两边除以 \(P_t\bki\) 引入实际变量
+\begin{align}
+    \dfrac{\n{MC}_t\bki}{P_t\bki}=\dfrac{W_t/P_t\bki}{\n{MPN}_t\bki}=\dfrac{W_t^r}{\n{MPN}_t\bki}\label{eq:MC-competitive}
+\end{align}
+如果完全竞争市场成立，\(P_t\bki=\n{MC}_t\bki\)，则左侧等于 1，就见到了熟悉的表达式，逻辑闭环。所以我们在此得到的是更为一般的方程，同时其中 \(\n{MC}_t\bki\) 是名义变量。
+
+\mysec{利润最大化问题}
+
+具有市场势力的厂商能在生产中控制产量或控制价格，但不能二者都控制。在本模型中，厂商通过控制价格实现利润最大化 —— 这是后续价格黏性能重新定价的前提，否则无价格黏性可言。厂商的利润最大化问题如下
+\begin{align*}
+    \max_{P_t\bki} \ \n{Profit}_t\bki= P_t\bki \,Y_t\bki-W_t\bks{\dfrac{Y_t\bki}{A_t}}^{\frac1{1-\alpha}}
+    \sidenote{具有市场势力利润最大化问题可以将需求函数代入利润函数；控制价格的问题中，产量是价格的函数，所以一阶条件中有对产量求导}
+\end{align*}
+一阶条件为
+\begin{align*}
+    \dfrac{\p\n{Profit}_t\bki}{\p P_t\bki}=Y_t\bki+P_t\bki\dfrac{\p Y_t\bki}{\p P_t\bki}-W_t\cdot\dfrac1{1-\alpha}\bks{\dfrac{Y_t\bki}{A_t}}^{\frac\alpha{1-\alpha}}\dfrac1{A_t}\dfrac{\p Y_t\bki}{\p P_t\bki}=0
+\end{align*}
+使用产品市场出清条件 \(Y_t\bki=C_t\bki\) 和 产品需求 \ref{eq:CES-demand}，再标准化 \(P_t=1\)（不影响结论）有
+\begin{align}
+    \dfrac{\p Y_t\bki}{\p P_t\bki}=\dfrac{\p P_t\bki^{-\varepsilon}\,Y_t}{\p P_t\bki}=-\varepsilon\,P_t\bki^{-\varepsilon-1}\,Y_t=-\varepsilon\cdot\dfrac{Y_t\bki}{P_t\bki}\sidenote{代入需求函数说明市场是非完全竞争的；本式结合 \ref{eq:CES-demand} 的旁注，不难发现 \sidemath{\(-\varepsilon\)} 是需求价格弹性}\label{eq:dYdP}
+\end{align}
+代回一阶条件得
+\begin{align*}
+    Y_t\bki-\varepsilon\,Y_t\bki+W_t\cdot\dfrac1{1-\alpha}\bks{\dfrac{Y_t\bki}{A_t}}^{\frac\alpha{1-\alpha}}\dfrac\varepsilon{A_t}\dfrac{Y_t\bki}{P_t\bki}&=0
+\end{align*}
+将由 \ref{eq:MC} 得到的下式代入上式
+\begin{align*}
+    W_t=\bka{1-\alpha}A_t\,N_t\bki^{-\alpha}\cdot\n{MC}_t\bki=\bka{1-\alpha}A_t\bks{\dfrac{Y_t\bki}{A_t}}^{-\alpha}\cdot\n{MC}_t\bki
+\end{align*}
+最终整理得到
+\begin{align*}
+    P_t\bki=\dfrac{\varepsilon}{\varepsilon-1}\cdot\n{MC}_t\bki\eqcolon\mu\cdot\n{MC}_t\bki
+\end{align*}
+它是垄断厂商的 \term{加成定价法则}{markup pricing rule}，它表明厂商会根据弹性索取高于边际成本的价格。如果不同部门产品毫无差异，商品间极富替代性（\(\varepsilon\to\infty\)），那么价格就趋近于边际成本；反之，部门可以任意高索取价格。
+
+\subsection{黏性价格}\label{sec:sticky-price}
+
+当冲击发生时，我们根据价格水平完全反应、完全不反应、二者之间三种情况，称价格水平具有弹性、刚性、\term{黏性}{sticky}。显然，黏性更符合现实，并且在理论上可以兼顾弹性和刚性两种极端情况。
+
+对黏性的刻画，我们采用 Calvo (1983) \footnote{Guillermo A. Calvo, ``Staggered Prices in a Utility-Maximizing Framework'', \emph{Journal of Monetary Economics}, 1983} 提出的 \term{交错定价}{staggered pricing}机制：假设在每期的经济波动中，有 \(\theta\) 比例厂商完全不改动价格，\(P_t\bki=P\lt\bki\)；\(1-\theta\) 比例厂商重新设定价格 \(P^*_t\bki\)。根据价格水平的定义 \ref{eq:price-level} 有
+\begin{align*}
+    P_t^{1-\varepsilon}&=\int_{\n{stay}} P_t\bki^{1-\varepsilon}\mathrm di+\int_{\n{reset}} P_t\bki^{1-\varepsilon}\mathrm di\\&=\theta\,\int^1_0 P\lt\bki^{1-\varepsilon}\mathrm di+\bka{1-\theta}\int^1_0 P_t^*\bki^{1-\varepsilon}\mathrm di\\&=\theta\,P\lt^{1-\varepsilon}+\bka{1-\theta}\bka{P_t^*}^{1-\varepsilon}
+\end{align*}
+由 \(\hat\pi_t=\pi_t=\hat P_t-\hat P\lt\) 知该式对数线性化结果
+\begin{align}
+    \hat p_t&=\theta\,\hat p\lt+\bka{1-\theta}\hat p^*_t\label{eq:staggered-price-level}\\
+    \Rightarrow\quad\hat\pi_t&=\bka{1-\theta}\bka{\hat p^*_t-\hat p\lt}\notag
+\end{align}
+该式表明，在交错定价机制下\sidenote{通货紧缩同理}，只有能重新定价并定出更高价格的厂商会推动价格水平上升，这是显然的；\(1-\theta\) 是传导系数，影响通胀程度（即通胀率）
+\begin{align*}
+    0<P^*_t-P\lt=\bka{P^*_t-\bar P}-\bka{P\lt-\bar P}=\hat P^*_t-\hat P\lt>0
+\end{align*}
+
+\mysec{黏性价格下的厂商行为}
+
+当价格具有黏性时，\(\theta\) 也能被理解为是不能调整价格概率，那么厂商应当把未来不能重新定价的风险纳入决策；而一旦能够重新定价，相当于重来相同决策，所以不考虑未来能调整价格的情况。依此，我们重做利润最大化问题。令
+\begingroup\small
+\begin{align*}
+    V_t\bki &\coloneq \max_{P_t^*\bki} \ \n{Profit}_t\bki+\theta\,\meant\bkd{Q_{t,t+1}\cdot\n{Profit}\nt\bki}+\theta^2\,\meant\bkd{Q_{t,t+2}\cdot\n{Profit}\nnt\bki}+\cdots
+\end{align*}
+\endgroup
+虽然生产是分部门的\sidenote{厂商要先确定产量再确定劳动投入，所以不是劳动投入相同导致产出相同}，但技术、工资、需求等都是部门间无差异的，要在当期重新定价的不同部门面临相同最优化问题，从而做出相同的定价决策，所以我们在目标函数中省略 \(i\)，直接写出该问题不含 \(i\) 的表达式
+\begin{align*}
+    V_t=\max_{P_t^*}& \ \ \meant\bkd{\sum^\infty_{k=0}\,\theta^k\,Q_{t,t+k}\bks{P_t^*\, Y_{t+k\ivbar t}-\psi_{t+k}\bka{Y_{t+k\ivbar t}}}}
+\end{align*}
+其中，\(Q_{t,t+k}=\beta^k\bka{C_{t+k}/C_t}^{-\sigma}\bka{P_t/P_{t+k}}\) 是从 \(t+k\) 期贴现到 \(t\) 期的因子，表达式由欧拉方程导出；\(\psi_{t+k}\) 是 \(t+k\) 期的成本函数；\(Y_{t+k\ivbar t}\) 是给定 \(t\) 期价格 \(P_t^*\) 在 \(t+k\) 期产量；\(\theta^k\) 可以衡量要多大程度上在当下的决策中重视 \(k\) 期后利润。
+
+开始对目标函数求导
+\begin{align*}
+    \dfrac{\p V_t}{\p P^*_t}=\meant\bkd{\sum^\infty_{k=0}\theta^k\,Q_{t,t+k}\bka{Y_{t+k\ivbar t}+P_t^*\cdot\dfrac{\p Y_{t+k\ivbar t}}{\p P^*_t}-\dfrac{\p \psi_{t+k}}{\p Y_{t+k\ivbar t}}\dfrac{\p Y_{t+k\ivbar t}}{\p P^*_t}}}
+\end{align*}
+模仿 \ref{eq:dYdP} 有
+\begin{align*}
+    \dfrac{\p Y_{t+k\ivbar t}}{\p P^*_t}=-\varepsilon\cdot\dfrac{Y_{t+k\ivbar t}}{P^*_t}
+\end{align*}
+再根据经济含义 \(\n{MC}_{t+k\ivbar t}\coloneq\dfrac{\p \psi_{t+k}}{\p Y_{t+k\ivbar t}}\)。改写求导结果得一阶条件
+\begin{align*}
+    \dfrac{\p V_t}{\p P^*_t}=\meant\bkd{\sum^\infty_{k=0}\theta^k\,Q_{t,t+k}\bks{Y_{t+k\ivbar t}-\varepsilon\cdot\dfrac{Y_{t+k\ivbar t}}{P^*_t}\cdot\bka{P_t^*-\n{MC}_{t+k\ivbar t}}}}=0
+\end{align*}
+再整理，最终得到（两个加和指标都为 \(k\) 但属不同运算）
+\begin{align}
+    P_t^*&=\dfrac{\varepsilon}{\varepsilon-1}\cdot\dfrac{\meant\sum\limits^\infty_{k=0}\theta^k\,Q_{t,t+k}\,Y_{t+k\ivbar t}\,\n{MC}_{t+k\ivbar t}}{\meant\sum\limits^\infty_{k=0}\theta^k\,Q_{t,t+k}\,Y_{t+k\ivbar t}}\label{eq:staggered-markup}\\
+    &=\underbrace{ \ \dfrac{\varepsilon}{\varepsilon-1} \ }_{\n{markup}}\cdot \ \meant\sum^\infty_{k=0}\underbrace{ \ \dfrac{\theta^k\,Q_{t,t+k}\,Y_{t+k\ivbar t}}{\meant\sum\limits^\infty_{s=0}\theta^s\,Q_{t,t+k}\,Y_{t+k\ivbar t}} \ }_{\n{weight}}\cdot \ \underbrace{ \ \n{MC}_{t+k\ivbar t} \ }_{\n{MC}}\notag\sidenote{为避免混淆，在此修改分母的加和指标；\sidemath{\(\n{MC}_{t+k\ivbar t}\)} 同属加和内容}
+\end{align}
+该式为交错定价机制下的加成定价法则。如果 \(\theta\) 趋近 0 或 1，上式会退化为之前讨论的加成法则。其中直觉：加成定价是从利润最大化中得到的法则，是厂商定价的唯一法则；引入交错定价对对利润最大化问题进行扩展并不改变这一法则的本质。就如引入完全竞争假设，加成定价依旧适用，能进一步退化。
+
+\mysec{对数线性化加成法则}
+
+我们的处理从 \ref{eq:staggered-markup} 开始，根据结构简化记号为
+\begin{align*}
+    P^*_t=\mu\cdot\meant\sum^\infty_{k=0}\bka{\Xi_{k,t}\cdot\n{MC}_{k,t}}
+    \sidenote{\sidemath{\(\Xi\)} 与 \sidemath{\(\xi\)} 为一组希腊字母大小写（实在是找不到没用过的符号）}
+\end{align*}
+使用性质 \(\dis\sum_{k=0}^\infty X_k\) 对数线性化结果为 \(\dis\sum_{k=0}^\infty\dfrac{X_k}{\sum\limits_{s=0}^\infty X_s}\,\hat x_k\)，那么
+\begin{align}
+    \hat p^*_t=\meant\sum^\infty_{k=0}\dfrac{\bar \Xi_k\,\overline{\n{MC}}_k}{\sum\limits^{\infty}_{s=0}\bar \Xi_s\,\overline{\n{MC}}_s}\bka{\hat \xi_{k,t}+\widehat{\n{mc}}_{k,t}}=\meant\sum^\infty_{k=0}\bar \Xi_k\bka{\hat \xi_{k,t}+\widehat{\n{mc}}_{k,t}} \sidenote{此处建议直接照公式写，自己计算公式中元素容易出错；注意分式右侧属于分子，所以权重系数不为 1}\label{eq:log-linear-staggered-markup}
+\end{align}
+其中有两个推导步骤：1. 虽然上下 MC 都各自带角标，但在稳态处劳动投入稳定、生产函数稳定，所以它们是相等的，我们在分式中消去 \(\overline{\n{MC}}\)；2. \(\bar \Xi_s\) 作为 \ref{eq:staggered-markup} 中的权重系数，在分母中满足 \(\sum_s\, \bar \Xi_s=1\)。现在计算 \(\bar \Xi\) 的具体值，这里要先回顾 \(Q_{t,t+k}\) 的定义
+\begin{align*}
+    Q_{t,t+k}&=\beta^k\bka{\dfrac{C_{t+k}}{C_t}}^{-\sigma}\bka{\dfrac{P_t}{P_{t+k}}}\quad\Rightarrow\quad \bar Q_k=\beta^k
+\end{align*}
+那么结合等比数列求和公式
+\begin{align*}
+    \Xi_{k,t}&=\dfrac{\theta^k\cdot Q_{t,t+k}\,Y_{t+k\ivbar t}}{\meant\sum\limits^\infty_{s=0}\theta^s\cdot Q_{t,t+k}\,Y_{t+k\ivbar t}}\notag\\
+    \bar \Xi_k&=\dfrac{\theta^k\cdot \bar Q_k\,\bar Y_k}{\sum\limits^{\infty}_{s=0}\theta^s\cdot \bar Q_s\,\bar Y_s}
+    =\dfrac{\theta^k\cdot \beta^k}{\sum\limits^{\infty}_{s=0}\theta^s\cdot \beta^s}
+    =\bka{1-\theta\,\beta}\cdot\bka{\theta\,\beta}^k
+\end{align*}
+
+接着，再次使用性质，计算 \ref{eq:log-linear-staggered-markup} 中的 \(\hat \xi_{k,t}\)
+\begin{align*}
+    \hat \xi_{k,t}&=\hat q_{k,t}+\hat y_{k,t}-\meant \sum^\infty_{k=0}\,\overbrace{\dfrac{\theta^k\,\bar Q_k\bar Y_k}{\sum\limits^{\infty}_{s=0}\theta^s\,\bar Q_s\bar Y_s}}^{=\;\bar \Xi_k}\bka{\hat q_{k,t}+\hat y_{k,t}}
+\end{align*}
+对数线性化初步结果 \ref{eq:log-linear-staggered-markup} 要求我们计算 \(\sum\,\bar\Xi_k\,\hat\xi_{k,t}\)，代入上式有
+\begin{align*}
+    \meant\sum^\infty_{k=0}\,\bar \Xi_k\,\hat \xi_{k,t}&=\meant\sum^\infty_{k=0}\,\bar \Xi_k\bka{\hat q_{k,t}+\hat y_{k,t}}-\meant \sum^\infty_{k=0}\bks{\bar \Xi_k \sum^\infty_{h=0}\,\bar \Xi_h\bka{\hat q_{h,t}+\hat y_{h,t}}}
+    \sidenote{\sidemath{\(\hat\xi_{k,t}\)} 表达式中的加和与此处独立，为避免混淆，修改加和符号}\\
+    &=\meant\sum^\infty_{k=0}\,\bar \Xi_k\bka{\hat q_{k,t}+\hat y_{k,t}}-\bka{\sum^\infty_{k=0}\bar \Xi_k} \cdot \meant \sum^\infty_{h=0}\,\bar \Xi_h\bka{\hat q_{h,t}+\hat y_{h,t}}\\
+    &=\meant\sum^\infty_{k=0}\,\bar \Xi_k\bka{\hat q_{k,t}+\hat y_{k,t}}-\meant \sum^\infty_{h=0}\,\bar \Xi_h\bka{\hat q_{h,t}+\hat y_{h,t}}=0
+\end{align*}
+意味着 \(\hat \xi_{k,t}\) 的加权平均为 0，那么 \ref{eq:log-linear-staggered-markup} 中的 \(\hat \xi_{k,t}\) 项就被消去，得到
+\begin{align*}
+    \hat p^*_t&=\meant\sum^\infty_{k=0}\bar \Xi_k\,\hat \xi_{k,t}+\meant\sum^\infty_{k=0}\bar \Xi_k\,\widehat{\n{mc}}_{t+k\ivbar t}=\meant\sum^\infty_{k=0}\bka{1-\theta\,\beta}\bka{\theta\,\beta}^k\bka{\widehat{\n{mc}}_{t+k\ivbar t}^r-\hat p_{t+k}}
+\end{align*}
+该式告诉我们：未来的边际成本变化也会影响到当期的重新定价，而且随着时间推移这种影响会衰减。
+
+\subsection{市场出清}
+
+\TopicLabel{产品市场}
+
+产品市场\sidenote{前文出现的总产出水平由各部门产出相等得来，无具体表达式}的出清条件为 \(C_t\bki=Y_t\bki\)。此前我们没有定义过 \(Y_t\)，为了条件简洁，我们同样定义为 CES 聚合形式，则 \(C_t=Y_t\)。
+
+\mysec{劳动市场}
+
+\(N_t\) 同为 \(N_t\bki\) 的 CES 聚合变量，结合生产函数与 \ref{eq:CES-demand} 式，有
+\begin{align}
+    N_t&=\int^1_0\bkd{\dfrac{1}{A_t}\cdot\bks{\dfrac{P_t\bki}{P_t}}^{-\varepsilon}Y_t}^{\frac1{1-\alpha}}\mathrm di 
+    \label{eq:CES-labor-aggregation}\\
+    \Rightarrow\quad &N^{1-\alpha}_t=\bka{\dfrac{Y_t}{A_t}}^{\frac1{1-\alpha}}\int^1_0\bks{\dfrac{P_t\bki}{P_t}}^{-\frac\varepsilon{1-\alpha}}\mathrm di\notag
+\end{align}
+
+\section{新凯恩斯菲利普斯曲线}
+
+我们知道，\term{菲利普斯曲线}{Philips curve，PC}是描述通胀率和失业率间关系的曲线，通过 \term{奥肯定律}{Okun's law}可将其转化为描述通胀率和产出缺口间关系的曲线。在本节，我们会试图找到这两大元素，构建起新 \term{凯恩斯菲利普斯曲线}{NKPC}。
+
+\subsection{价格分散}
+
+根据 \(Y_t\) 的 CES 表达式，以及 \ref{eq:CES-labor-aggregation} 的结果，\(Y_t\) 的表达式改写为
+\begin{align*}
+    Y_t&=\bkd{\int^1_0 \bks{A_t\,N_t\bki^{1-\alpha}}^{\frac{\varepsilon-1}\varepsilon}\mathrm di}^{\frac\varepsilon{\varepsilon-1}}=A_t\,N_t^{1-\alpha}\underbrace{\bkd{\int^1_0 \bks{\dfrac{P_t\bki}{P_t}}^{-\frac\varepsilon{1-\alpha}}\mathrm di}^{-\bka{1-\alpha}}}_{\eqcolon D_t}\\
+    &\eqcolon A_t\,N_t^{1-\alpha}\,D_t\eqcolon A_t\,N_t^{1-\alpha}\exp\bkd{d_t}
+\end{align*}
+上式表明了个有趣的事实：各部门层面 \(Y_t\bki=A_t\,N_t\bki^{1-\alpha}\)，但经济整体层面 \(Y_t\ne A_t\,N_t^{1-\alpha}\)，而要掺入相对价格 \(P_t\bki/\,P_t\)。为此，我们设置 \(D_t\) 来捕获价格在部门间的 \term{分散}{dispersion}程度。存在价格分散时
+\begin{align*}
+    D_t<1\means Y_t<A_t\,N_t^{1-\alpha}\sidenote{\sidemath{\(D_t<1\)} 可以被证明，在此省略}
+\end{align*}
+即资源配置不够有效。我们将对该现象展开分析。
+
+首先定义 \(p_t\bki\coloneq\log P_t\bki\)，\(p_t\coloneq\log P_t\)，则
+\begin{align*}
+    d_t&=-\bka{1-\alpha}\log\int^1_0 \exp\bkd{-\frac\varepsilon{1-\alpha}\bks{p_t\bki-p_t}}\mathrm di
+\end{align*}
+暂时简记 \(x_t\bki\coloneq p_t\bki-p_t\)。假设经济体 \(\bar \Pi=1\)\sidenote{零通胀率是简化推导之举，设为他值不会影响结果} 且有对称稳态，\(\bar P\bki=\bar P\)（稳态无价格分散），此时使用泰勒近似对被积函数在其稳态附近展开至二阶有
+\begin{align}
+    \exp\bkd{-\frac\varepsilon{1-\alpha}\cdot x_t\bki}&\approx 1-\dfrac\varepsilon{1-\alpha}\cdot x_t\bki+\dfrac12\bka{\dfrac\varepsilon{1-\alpha}}^2x_t^2\bki\notag\\
+    \int^1_0 \exp\bkd{-\frac\varepsilon{1-\alpha}\,x_t\bki}\mathrm di&\approx 1-\dfrac\varepsilon{1-\alpha}\,\underbrace{\int^1_0 x_t\bki\,\mathrm di}_{\approx\;0}\;+\;\dfrac12\bka{\dfrac\varepsilon{1-\alpha}}^2 \,\underbrace{\int^1_0 x_t^2\bki\,\mathrm di}_{\eqcolon\;\var\, x_t\bki}\label{eq:int-exp-approximation}
+\end{align}
+其中一阶项积分为
+\begin{align*}
+    \int^1_0p_t\bki-p_t\,\mathrm di&=\int^1_0\log P_t\bki\mathrm di-\int^1_0\log P_t\,\mathrm di\\
+    &=\int^1_0\log P_t\bki\mathrm di-\int^1_0\frac1{1-\varepsilon}\log{\int^1_0P_t\bkj^{1-\varepsilon}\mathrm dj}\,\mathrm di\\
+    &=\int^1_0\log P_t\bki\mathrm di-\frac1{1-\varepsilon}\log{\int^1_0\exp\bks{\bka{1-\varepsilon}\log P_t\bkj}\mathrm dj}
+\end{align*}
+同样对等式右侧第二项的被积函数在 \(0\) 附近进行泰勒近似\sidenote{泰勒近似可以在任何位置进行，只是近似效果好坏差异}，得上式整体结果近似为 0。
+
+回到 \ref{eq:int-exp-approximation}，将其代入 \(d_t\) 的表达式，得
+\begin{align}
+    d_t&\approx -\bka{1-\alpha}\log\bks{1+\dfrac12\bka{\dfrac\varepsilon{1-\alpha}}^2\var\, x_t\bki}\propto-\var\bks{p_t\bki-p_t}\label{eq:dispersion-approximation}
+\end{align}
+说明：\(d_t\) 与价格偏离的二阶项（方差）负相关，
+
+再回到我们的出发点 \(Y_t=A_t\,N_t^{1-\alpha}\,D_t\)，对数线性化它
+\begin{align*}
+    \hat y_t=\hat a_t+\bka{1-\alpha}\hat n_t+\hat d_t
+\end{align*}
+虽然上式中 \(\hat d_t\) 的系数为正，但从 \ref{eq:dispersion-approximation} 可知：价格分散程度和 \(\hat d_t\) 负相关，即价格越分散，\(\hat d_t\) 越小。所以，价格分散不利于产出增加。如果我们继续假设 \(\bar\Pi=1\) 且不考虑二阶项，就有 \(\hat d_t\approx0\) 以及
+\begin{align}
+    \hat y_t\approx\hat a_t+\bka{1-\alpha}\hat n_t\label{eq:output-approximation}
+\end{align}
+
+\subsection{实际边际成本}
+
+在本小节，我们想将有条件 \(t+k\ivbar t\) 转为无条件 \(t+k\)\sidenote{去除条件是将可重新定价部门变量和总体变量进行链接}，从局部（可重新定价）价格水平 \(P^*_t\) 过渡到整体价格水平 \(P_t\)，最终获得通胀率波动的表达式。首先，做一些预备工作。
+
+同 \ref{eq:MC-competitive}，在不区分部门的总体层面有
+\begin{align*}
+    \n{MC}^r_t&=\dfrac{W_t}{P_t}\dfrac1{\n{MPN}_t}=\dfrac{W_t}{P_t}\dfrac1{\bka{1-\alpha}A_t\,N_t^{-\alpha}}
+\end{align*}
+我们将其对数线性化，过程中需要使用从 \ref{eq:output-approximation} 得到的 \(\hat n_t\) 表达式
+\begin{align}
+    \widehat{\n{mc}}^r_t&=\hat w_t-\hat p_t+\alpha\,\hat n_t-\hat a_t\notag\\
+    &\approx\hat w_t-\hat p_t-\dfrac{1}{1-\alpha}\bka{\hat a_t-\alpha\,\hat y_t}
+    \sidenote{利用本式可写出 \sidemath{\(\widehat{\n{mc}}\)} 在 \sidemath{\(t+k\)} 和 \sidemath{\(t+k\ivbar t\)} 的表达式}
+    \label{eq:real-mc-approximation}
+\end{align}
+
+对于在 \(t\) 期重新定价的厂商，他们在 \(t+k\) 期的条件产量为
+\begin{align}
+    Y_{t+k\ivbar t}=Y_{t+k\ivbar t}\bki=\bka{\dfrac{P^*_{t+k}}{P_{t+k}}}^{-\varepsilon}Y_{t+k}=\bka{\dfrac{P^*_{t}}{P_{t+k}}}^{-\varepsilon}Y_{t+k}\label{eq:conditional-output}
+    \sidenote{因为对称均衡，可重新定价的产量不会有部门差异；\sidemath{\(t+k\ivbar t\)} 代表可重新定价部门，勿与总体混淆}
+\end{align}
+我们在此得到如何用总体产出水平来表示可重新定价部门的产出水平。
+
+利用 \ref{eq:real-mc-approximation} 和 \ref{eq:conditional-output}，我们为 \(\widehat{\n{mc}}_{t+k\ivbar t}^r\) 去除条件
+\begin{align*}
+    \widehat{\n{mc}}_{t+k\ivbar t}^r&=\hat w_{t+k}-\hat p_{t+k}-\dfrac{1}{1-\alpha}\bka{\hat a_{t+k}-\alpha\,\hat y_{t+k\ivbar t}}\\
+    &=\hat w_{t+k}-\hat p_{t+k}-\dfrac1{1-\alpha}\bka{\hat a_{t+k}-\alpha\,\hat y_{t+k}+\alpha\,\hat y_{t+k}-\alpha\,\hat y_{t+k\ivbar t}}\\
+    &=\widehat{\n{mc}}^r_{t+k}-\dfrac{\alpha}{1-\alpha}\bka{\hat y_{t+k}-\hat y_{t+k\ivbar t}}\\
+    &=\widehat{\n{mc}}^r_{t+k}-\dfrac{\alpha\,\varepsilon}{1-\alpha}\bka{\hat p^*_{t}-\hat p_{t+k}}
+\end{align*}
+
+回到交错定价规则下加成法则对数线性化结果 \ref{eq:log-linear-staggered-markup}，使用以上推导通胀率的波动
+\begin{align*}
+    \hat p^*_t&=\bka{1-\beta\,\theta}\meant\bkd{\sum^\infty_{k=0}\bka{\beta\,\theta}^k\bka{\widehat{\n{mc}}^r_{t+k\ivbar t}-\hat p_{t+k}}}\\
+    &=\bka{1-\beta\,\theta}\meant\bkd{\sum^\infty_{k=0}\bka{\beta\,\theta}^k\bks{\widehat{\n{mc}}^r_{t+k}-\dfrac{\alpha\,\varepsilon}{1-\alpha}\bka{\hat p^*_{t}-\hat p_{t+k}}-\hat p_{t+k}}}\\
+    &=-\bka{1-\beta\,\theta}\underbrace{\sum^\infty_{k=0}\bka{\beta\,\theta}^k}_{=\;1\islash(1-\beta\,\theta)}\dfrac{\alpha\,\varepsilon}{1-\alpha}\,\hat p^*_{t}\notag\\
+    &\quad+\bka{1-\beta\,\theta}\meant\bkd{\sum^\infty_{k=0}\bka{\beta\,\theta}^k\bka{\widehat{\n{mc}}^r_{t+k}-\dfrac{1-\alpha+\alpha\,\varepsilon}{1-\alpha}\hat p_{t+k}}}\\
+    &=-\dfrac{\alpha\,\varepsilon}{1-\alpha}\,\hat p^*_t\notag\\
+    &\quad+\bka{1-\beta\,\theta}\meant\bkd{\sum^\infty_{k=0}\bka{\beta\,\theta}^k\bka{\widehat{\n{mc}}^r_{t+k}-\dfrac{1-\alpha+\alpha\,\varepsilon}{1-\alpha}\hat p_{t+k}}}
+\end{align*}
+记新符号 \(\Theta\coloneq\bka{1-\alpha}/\bka{1-\alpha+\alpha\,\varepsilon}\le1\)
+\begin{align*}
+    \hat p^*_t&=\bka{1-\beta\,\theta}\meant\bkd{\sum^\infty_{k=0}\bka{\beta\,\theta}^k\bka{\Theta\,\widehat{\n{mc}}^r_{t+k}-\hat p_{t+k}}}
+\end{align*}
+接下去，我们试图为通胀率整理出 \(\hat p^*\nt\)，这会有些麻烦，请仔细观察。处理从将以上加和式写成第一项和尾项相加开始
+\begingroup\small
+\begin{align*}
+    \hat p^*_t&=\bka{1-\beta\,\theta}\cdot\bka{\beta\,\theta}^0\bka{\Theta\,\widehat{\n{mc}}_{t+0}^r+\hat p_{t+0}}+\bka{1-\beta\,\theta}\meant\bkd{\sum^\infty_{k=1}\bka{\beta\,\theta}^k\bka{\Theta\,\widehat{\n{mc}}^r_{t+k}-\hat p_{t+k}}}\\
+    &=\bka{1-\beta\,\theta}\bka{\Theta\,\widehat{\n{mc}}^r_{t}+\hat p_{t}}+\underbrace{\beta\,\theta}_{\n{extra item}}\;\underbrace{\bka{1-\beta\,\theta}\meant\bkd{\sum^\infty_{k=0}\bka{\beta\,\theta}^{k}\bka{\Theta\,\widehat{\n{mc}}^r_{t+k+1}-\hat p_{t+k+1}}}}_{=\;\hat p^*\nt}
+    \sidenote{角标中 \sidemath{\(1\)} 由指标 \sidemath{\(k\)} 重组引出，但现在将其归为 \sidemath{\(\bka{t+1}+k\)}，这就引出了 \(\hat p\nt\) 的角标}\\
+    &=\bka{1-\beta\,\theta}\bka{\Theta\,\widehat{\n{mc}}^r_{t}+\hat p_{t}}+\beta\,\theta\,\hat p\nt^*
+\end{align*}
+\endgroup
+使用交错定价机制价格水平对数线性化结果 \ref{eq:staggered-price-level}，实现局部（带 \(\ast\)）向整体（不带 \(\ast\)）转换
+\begin{align*}
+    \hat p_t&=\theta\,\hat p\lt+\bka{1-\theta}\hat p_t^*\\
+    &=\theta\,\hat p\lt+\bka{1-\theta}\bka{1-\beta\,\theta}\bka{\Theta\,\widehat{\n{mc}}^r_{t}+\hat p_{t}}+\beta\,\theta\bka{1-\theta}\hat p\nt^*
+\end{align*}
+先对等式左右作 \(\meant\) 运算（这是引出通胀率预期的关键操作），再使用一次 \ref{eq:staggered-price-level}，将 \(\meant\,\hat p^*\nt\) 替换掉，并作精细的整理
+\begin{align*}
+    &\hat p_t=\theta\,\hat p\lt+\bka{1-\theta}\bka{1-\beta\,\theta}\bka{\Theta\,\widehat{\n{mc}}^r_t+\hat p_t}+\beta\,\theta\,\meant\,\hat p\nt-\beta\,\theta^2\,\hat p_t\\
+    &\hspace{3em}\hat p_t-\hat p\lt={\dfrac{\bka{1-\theta}\bka{1-\beta\,\theta}}\theta\,\Theta}\,\widehat{\n{mc}}^r_t+\beta\bka{\meant\,\hat p\nt-\hat p_t}
+    \sidenote{将 \sidemath{\(\widehat{\n{mc}}^r_t\)} 系数记作 \sidemath{\(\lambda>0\)}}
+    \\
+    &\hspace{9em}\hat\pi_t=\lambda\,\widehat{\n{mc}}^r_t+\beta\,\meant\,\hat\pi\nt
+\end{align*}
+菲利普斯方程描述的是通胀率与产出缺口之间的关系，上式已经初具雏形，下一步我们将努力让产出缺口进入方程。
+
+\subsection{产出缺口}
+
+显然，让产出缺口进入菲利普斯方程的最好方式，就是找到产出缺口与 \(\widehat{\n{mc}}^r_t\) 之间的关系。结合 \ref{eq:log-linearized-FOC-labor} 和 \ref{eq:real-mc-approximation} 进行以下操作
+\begin{align}
+    \begin{cases}
+        \ \hat w_t-\hat p_t=\sigma\,\hat y_t+\phi\,\hat n_t\\[6pt]
+        \ \widehat{\n{mc}}^r_t=\hat w_t-\hat p_t-\dfrac{1}{1-\alpha}\bka{\hat a_t-\alpha\,\hat y_t}
+    \end{cases}
+     \ \Rightarrow\quad
+     \widehat{\n{mc}}_t^r=\dfrac{\phi+\alpha+\sigma\bka{1-\alpha}}{1-\alpha}\,\hat y_t-\dfrac{1+\phi}{1-\alpha}\,\hat a_t\label{eq:mc-output-gap}
+\end{align}
+如果 \(\hat y_t\) 能被替换为产出缺口 \(\tilde y_t\coloneq\hat y_t-\hat y_t^n\)，那么任务完成。\term{自然产出水平}{natural output，\(\hat y_t^n\)}是在价格具有完全弹性时的产出水平，那么所有厂商会采用相同加成策略\sidenote{相当于 \sidemath{\(\theta=0\)} 的情形，所有部门定价差异}，此时
+\begin{align*}
+    P_t\bki=\mu\cdot\n{MC}_t=P_t
+    \qquad\n{and}\qquad
+    \n{MC}^r_t=\dfrac{\n{MC}_t}{P_t}=\dfrac1\mu
+\end{align*}
+那么 \(\widehat{\n{mc}}^r_t=0\) 且
+\begin{align}
+    \hat y_t^n=\dfrac{1+\phi}{\phi+\alpha+\sigma\bka{1-\alpha}}\,\hat a_t\sidenote{将 \sidemath{\(\hat a_t\)} 系数记作 \sidemath{\(\psi^n_{ya}>0\)}}\label{eq:natural-output}
+\end{align}
+回到 \ref{eq:mc-output-gap}
+\begin{align*}
+    \widehat{\n{mc}}^r_t&=\dfrac{\phi+\alpha+\sigma\bka{1-\alpha}}{1-\alpha}\bka{\hat y^n_t+\tilde y_t}-\dfrac{1+\phi}{1-\alpha}\,\hat a_t\\
+    &=\dfrac{1+\phi}{1-\alpha}\,\hat a_t+\dfrac{\phi+\alpha+\sigma\bka{1-\alpha}}{1-\alpha}\,\tilde y_t-\dfrac{1+\phi}{1-\alpha}\,\hat a_t\\
+    &=\dfrac{\phi+\alpha+\sigma\bka{1-\alpha}}{1-\alpha}\,\tilde y_t\sidenote{\sidemath{\(\tilde y_t\)} 的定义暗含 \sidemath{\(\hat a_t\)} 项会被消去}
+\end{align*}
+\begingroup\emergencystretch=1em
+最终我们得到了著名的 \term{新凯恩斯菲利普斯方程}{New Keynesian Phillips Curve，NKPC}\par
+\endgroup
+\begin{align}
+    &\hat\pi_t=\beta\,\meant\,\hat\pi\nt+\lambda\,\widehat{\n{mc}}^r_t=\beta\,\meant\,\hat\pi\nt+\kappa\,\tilde y_t\label{eq:nkpc}\\
+    &\kappa=\underbrace{\underbrace{\dfrac{1-\alpha}{1-\alpha+\alpha\,\varepsilon}}_{\eqcolon\;\Theta}\;\cdot\dfrac{\bka{1-\theta}\bka{1-\beta\,\theta}}{\theta}}_{\eqcolon\;\lambda}\;\cdot\dfrac{\phi+\alpha+\sigma\bka{1-\alpha}}{1-\alpha}>0\notag
+\end{align}
+我们曾在中级宏观经济学（如曼昆 \footnote{N. 格里高利\hspace{0.35em}\textperiodcentered\hspace{0.35em}曼昆，《宏观经济学》，卢远瞩译，中国人民大学出版社，2020}）中知道：“菲利普斯曲线（PC）和总供给曲线（AS）是一纸两面”，自打\ref{sec:sticky-price} 开始，我们的关注点都在供给侧，至此得到供给侧的核心方程，下面我们将转向需求侧，分析推导总需求（AD）的动态方程。
+
+\section{动态 IS 曲线}\label{sec:dynamic-is}
+
+需求侧分析自然从欧拉方程开始
+\begin{align*}
+    \hat y_t&=\meant\,\hat y\nt-\dfrac1\sigma\bka{\hat\imath_t-\meant\,\hat\pi\nt}
+\end{align*}
+同样尝试代入产出缺口 \(\hat y_t=\hat y_t^n+\tilde y_t\) 得
+\begin{align}
+    \tilde y_t=\meant\bkd{\hat y\nt^n-\hat y_t^n}+\meant\,\tilde y\nt-\dfrac1\sigma\bka{\hat\imath-\meant\,\hat\pi\nt}\label{eq:dynamic-is}
+\end{align}
+根据费雪方程定义实际利率波动
+\begin{align*}
+    \hat r_t\coloneq\hat\imath-\meant\,\hat\pi\nt
+\end{align*}
+再定义自然实际利率波动
+\begin{align}
+    \hat r^n_t\coloneq\sigma\,\meant\bkd{\hat y\nt^n-\hat y^n_t}=\sigma\cdot\underbrace{\dfrac{\bka{1+\phi}}{\phi+\alpha+\sigma\bka{1-\alpha}}}_{\eqcolon\;\psi^n_{ya}}\,\meant\bkd{\D\hat a\nt}
+    \sidenote{使用 \sidemath{\(\hat y^n_t\)} 表达式 \ref{eq:natural-output}}\label{eq:natural-real-rate}
+\end{align}
+回到 \ref{eq:dynamic-is}
+\begin{align}
+    \tilde y_t=-\dfrac1\sigma\bka{\hat r_t-\hat r^n_t}+\meant\,\tilde y\nt\label{eq:dynamic-is-gap}
+\end{align}
+这就是表示实际利率和产出缺口关系的 \term{动态 IS 曲线}{Dynamic IS Curve，DIS}\sidenote{因目前不考虑货币，没有 \sidemath{\(\n{LM}\)} 曲线，所以 \sidemath{\(\n{IS}\)} 曲线就是 \sidemath{\(\n{AD}\)} 曲线}。实际上，NKPC 和 DIS 都是（带期望）一阶线性方程，解得
+\begin{equation*}
+    \begin{cases}\ \hat\pi_t=\beta\,\meant\,\hat\pi\nt+\kappa\,\tilde y_t&(\n{NKPC}) \\[8pt]
+        \ \tilde y_t=-\dfrac1\sigma\bka{\hat r_t-\hat r^n_t}+\meant\,\tilde y\nt&(\n{DIS})
+    \end{cases}\means\begin{cases}\ \dis\hat\pi_t=\kappa\sum^\infty_{k=0}\beta^k\,\meant\,\tilde y\nt \\[12pt]
+        \ \dis\tilde y_t=-\dfrac1\sigma\sum^\infty_{k=0}\meant\bkd{\hat r\nt-\hat r^n\nt}
+    \end{cases}
+\end{equation*}
+NKPC 帮助我们在给定产出缺口情况下确定通胀率，而 DIS 则是帮助我们在给定实际利率缺口情况下确定产出缺口，两者结合，我们可以分析货币政策对产出和通胀的影响。
+
+货币政策可以通过调整名义利率对经济体产生影响，需要我们在系统中增加关于名义利率的方程。增加方程还有个更重要的好处：结合费雪方程，名义利率可以向实际利率和通胀率转换，并非新增变量；而多这一个方程，我们形成三方程、三变量（利率、价格、产出）系统，确保有解。
+
+\section{动态货币政策}\label{sec:dynamic-monetary-policy}
+
+本节也是 NK 模型的稳定性分析。
+
+% phi_pi > 1 是对黏性的克服
+
+John B. Taylor 从实际数据中总结经验，在 1993 年提出了个形式简单的货币政策规则，被称作 \term{泰勒规则}{Taylor principle}。他认为：中央银行应该根据通胀率和产出缺口的变化来确定名义利率目标，为制定货币政策提供方向。现泰勒规则被总结为
+\begin{align*}
+    \hat\imath_t=\phi_\pi\,\hat\pi_t+\phi_y\,\hat y_t+v_t\sidenote{\sidemath{\(\psi\)} 是传导系数，由众多参数代数表示；\sidemath{\(\phi\)} 是与 \sidemath{\(\psi\)} 不同的参数，不被其他参数表示}
+\end{align*}
+其中 \(v_t\) 是均值为零的政策扰动项；\(\phi_\pi\) 和 \(\phi_y\) 都为正数。目前 NK 系统为
+\begin{equation*}
+    \begin{cases}
+        \ \hat\pi_t=\beta\,\meant\,\hat\pi\nt+\kappa\,\tilde y_t&(\n{NKPC}) \\[8pt]
+        \ \tilde y_t=-\dfrac1\sigma\bka{\hat\imath_t-\meant\,\hat\pi\nt-\hat r^n_t}+\meant\,\tilde y\nt&(\n{DIS}) \\[8pt]
+        \ \hat\imath_t=\phi_\pi\,\hat\pi_t+\phi_y\,\hat y_t+v_t&(\n{Policy})
+    \end{cases}
+\end{equation*}
+
+继续无通胀假设（\(\bar\Pi=1\)），将泰勒规则应用到 DIS 中
+\begin{align}
+    &\tilde y_t=-\dfrac1\sigma\bks{\phi_\pi\,\hat\pi_t+\phi_y\,\tilde y_t-\meant\,\hat\pi\nt-\bka{\hat r^n_t-v_t}}+\meant\,\tilde y\nt\label{eq:dis-taylor}
+\end{align}
+二者结合的目的也是为了把三方程系统降为两方程系统，方便分析。将上式的整理结果和 NKPC 联立得到
+\begin{align*}
+    -\kappa\,\tilde y_t+\hat\pi_t&=\beta\,\meant\,\hat\pi\nt\\
+    \bka{1+\dfrac{\phi_y}{\sigma}}\tilde y_t+\dfrac{\phi_\pi}{\sigma}\,\hat\pi_t&=\meant\,\tilde y\nt+\dfrac1\sigma\meant\,\hat\pi\nt+\dfrac1\sigma\bka{\hat r^n_t-v_t}
+\end{align*}
+改写为 \(\qs{\tilde y_t\quad\hat\pi_t}\tra\) 的线性系统
+\begin{align*}
+    \underbrace{\matbks{
+        1+\dfrac{\phi_y}\sigma   &   \dfrac{\phi_\pi}{\sigma} \\[6pt]
+        -\kappa   &   1
+    }}_{\eqcolon\;\bsM}
+    \matbks{
+        \tilde y_t \\[6pt]
+        \hat \pi_t
+    } =
+    \matbks{
+        1   &   \dfrac1\sigma \\[12pt]
+        0   &   \beta
+    }
+    \matbks{
+        \meant\,\tilde y\nt \\[6pt]
+        \meant\,\hat\pi\nt
+    } +
+    \matbks{
+        \dfrac1\sigma \\[12pt]
+        0
+    }\bka{\hat r^n_t-v_t}
+\end{align*}
+计算 \(\bsM\) 的逆矩阵
+\begin{align*}
+    \bsM\inv=\dfrac1{\sigma+\phi_y+\kappa\,\phi_\pi}
+    \matbks{
+        \sigma   &   -\phi_\pi\\
+        \kappa\,\sigma & \sigma+\phi_y
+    }
+    \sidenote{\scalebox{0.8}{\(\bsM=\matbks{a&b\\c&d}\)}\\[6pt]\scalebox{0.8}{\(\bsM\inv=\dfrac1{ad-bc}\matbks{d&-b\\-c&a}\)}}
+\end{align*}
+将系统两侧同时乘以该结果，并记系数矩阵为新的 \(\bsA_T\) 和 \(\bs B_T\)
+\begin{align*}
+    \matbks{
+        \tilde y_t \\[6pt]
+        \hat \pi_t
+    } =
+    \underbrace{\Omega\matbks{
+        \sigma & 1-\beta\,\phi_\pi \\[6pt]
+        \kappa\,\sigma & \kappa+\beta\bka{\sigma+\phi_y}
+    }}_{\eqcolon\;\bsA_T}\matbks{
+        \meant\,\tilde y\nt \\[6pt]
+        \meant\,\hat\pi\nt
+    } + \underbrace{\Omega\matbks{1 \\[6pt] \kappa}}_{\eqcolon\;\bs B_T} \bka{\hat r^n_t-v_t}
+\end{align*}
+
+这一结果不符合我们在介绍 BK 条件时使用的标准形式，如 \(\meant\,\hat{\bsx}\nt=\bsA\,\hat{\bsx}_t\)，所以真正决定稳定性的雅可比转移矩阵是 \(\bsA=\bsA\inv_T\)。在系统中，\(\tilde y_t\) 和 \(\hat \pi_t\) 都是跳跃变量，那么系统稳定要求 \(\bsA_T\inv\) 有两个不稳定特征根，即 \(\bsA_T\) 有两个稳定特征根\sidenote{逆矩阵的特征根为原矩阵特征根的倒数}，而这个要求又由 \term{朱瑞条件}{Jury criteria}保证：
+\begin{align*}
+    (1)\qquad & 1-\det \bsA_T>0\\
+    (2)\qquad & 1-\tr \bsA_T+\det \bsA_T>0\\
+    (3)\qquad & 1+\tr \bsA_T+\det \bsA_T>0
+\end{align*}
+计算 \(\bsA_T\) 的行列式和迹
+\begin{align*}
+    \det \bsA_T=\dfrac{\beta\,\sigma}{\sigma+\phi_y+\kappa\,\phi_\pi}\qquad\n{and}\qquad\tr \bsA_T=\dfrac{\sigma+\kappa+\beta\bka{\sigma+\phi_y}}{\sigma+\phi_y+\kappa\,\phi_\pi}
+\end{align*}
+注意验证上述三个条件
+\begin{align*}
+    (1)\qquad & 1-\det \bsA_T=\dfrac{\sigma\bka{1-\beta}+\phi_y+\kappa\,\phi_\pi}{\sigma+\phi_y+\kappa\,\phi_\pi}>0\\
+    (2)\qquad & 1-\tr \bsA_T+\det \bsA_T=\dfrac{\kappa\bka{\phi_\pi-1}+\phi_y\bka{1-\beta}}{\sigma+\phi_y+\kappa\,\phi_\pi} \quad ? \quad 0\\
+    (3)\qquad & 1+\tr \bsA_T+\det \bsA_T=\dfrac{\kappa\bka{\phi_\pi+1}+\phi_y\bka{1-\beta}+2\,\sigma\bka{1+\beta}}{\sigma+\phi_y+\kappa\,\phi_\pi}>0
+\end{align*}
+朱瑞条件成立当且仅当 (2) 中
+\begin{align}
+    \kappa\bka{\phi_\pi-1}+\phi_y\bka{1-\beta}>0 \label{eq:Jury-condition}
+\end{align}
+
+\section{冲击分析}
+
+\subsection{政策冲击}
+
+假设政策扰动项 \(v_t\) 服从 AR(1) 过程
+\begin{align*}
+    v_t=\varrho_v\,v\lt+\varepsilon_t^v\,,\qquad\varrho_v\in\bksa{0,1}
+\end{align*}
+将 \(\varepsilon^v_t<0\) 的情况称为 \term{紧缩}{contractionary}政策冲击；\(\varepsilon^v_t>0\) 的情况称为 \term{扩张}{expansionary}政策冲击。
+
+为排除技术冲击的影响，我们将其设为 0，那么根据前文表达式 \ref{eq:natural-output} 和 \ref{eq:natural-real-rate}，有 \(\hat y^n_t=0\) 和 \(\hat r^n_t=0\)，此时我们的 NK 系统为
+\begin{align*}
+    &\hat\pi_t=\beta\,\meant\,\hat\pi\nt+\kappa\,\tilde y_t\\
+    &\tilde y_t=-\dfrac1\sigma\bka{\phi_\pi\,\hat\pi_t+\phi_y\,\tilde y_t-\meant\,\hat\pi\nt+v_t}+\meant\,\tilde y\nt
+\end{align*}
+不放设 \(\hat\pi_t=\psi_{\pi v}\cdot v_t\) 和 \(\tilde y_t=\psi_{yv}\cdot v_t\)，将其代入上式通过待定系数法解得
+\begin{align*}
+    &\begin{cases}
+        \ \hat\pi_t=\psi_{\pi v}\cdot v_t=-\kappa\,\Lambda_v\cdot v_t\\[6pt]
+        \ \tilde y_t=\psi_{yv}\cdot v_t=-\bka{1-\beta\,\varrho_v}\Lambda_v\cdot v_t
+    \end{cases}\\
+    &\Lambda_v=\dfrac1{\bka{1-\beta\,\varrho_v}\bks{\sigma\bka{1-\varrho_v}+\phi_y}+\kappa\bka{\psi_\pi-\varrho_v}}>0
+\end{align*}
+根据泰勒规则
+\begingroup\small
+\begin{align*}
+    \hat\imath_t&=\phi_\pi\,\hat\pi_t+\phi_y\,\tilde y_t+v_t
+    =\bka{1+\phi_\pi\,\psi_{\pi v}+\phi_y\,\psi_{yv}}\cdot v_t\\
+    &=\bks{1-\kappa\,\phi_\pi\,\Lambda_v-\phi_y\bka{1-\beta\,\varrho_v}\Lambda_v}\cdot v_t\\
+    &=\bkd{\bka{1-\beta\,\varrho_v}\bks{\sigma\bka{1-\varrho_v}+\phi_y}+\kappa\bka{\psi_\pi-\varrho_v}-\kappa\,\phi_\pi\,\Lambda_v-\phi_y\bka{1-\beta\,\varrho_v}\Lambda_v}\Lambda_v\cdot v_t\\
+    &=\bks{\sigma\bka{1-\varrho_v}\bka{1-\beta\,\varrho_v}-\kappa\,\varrho_v}\Lambda_v\cdot v_t
+\end{align*}
+\endgroup
+应用到费雪方程
+\begin{align*}
+    \hat r_t&=\hat\imath_t-\meant\hat\pi\nt=\phi_\pi\,\hat\pi_t+\phi_y\,\tilde y_t+v_t-\meant\hat\pi\nt\\
+    &=\sigma\bka{1-\varrho_v}\bka{1-\beta\,\varrho_v}\Lambda_v\cdot v_t
+\end{align*}
+总结政策冲击的影响，假设 \(v_t>0\)，那么
+\begin{equation*}
+    \begin{cases}
+        \ \hat\pi_t=-\kappa\,\Lambda_v\cdot v_t<0\\[6pt]
+        \ \tilde y_t=-\bka{1-\beta\,\varrho_v}\Lambda_v\cdot v_t<0\\[6pt]
+        \ \hat r_t=\sigma\bka{1-\varrho_v}\bka{1-\beta\,\varrho_v}\Lambda_v\cdot v_t>0\\[6pt]
+        \ \hat\imath_t=\bks{\sigma\bka{1-\varrho_v}\bka{1-\beta\,\varrho_v}-\kappa\,\varrho_v}\Lambda_v\cdot v_t \ ? \ 0
+    \end{cases}
+\end{equation*}
+
+\subsection{技术冲击}
+
+假设技术波动 \(\hat a_t\) 服从 AR(1) 过程
+\begin{align*}
+    \hat a_t=\varrho_a\,\hat a\lt+\varepsilon_t^a\,,\qquad\varrho_a\in\bksa{0,1}
+\end{align*}
+反过来，设置不存在政策冲击，分析技术冲击的影响。在以下系统中
+\begin{align*}
+    \matbks{
+        \tilde y_t \\[6pt]
+        \hat \pi_t
+    } =
+    \bsA_T\matbks{
+        \meant\,\tilde y\nt \\[6pt]
+        \meant\,\hat\pi\nt
+    } +
+    \bs B_T\bka{\hat r^n_t-v_t}
+\end{align*}
+冲击项为 \(v_t\)（技术冲击）和 \(\hat r^n_t\)（利率冲击）。前者的影响我们已经分析过，现在来看后者，用 \(\hat a_t\) 来表示 \(\hat r^n_t\)，以便技术冲击进入系统，分析其影响。
+
+在推导 DIS 曲线方程时，我们得到 \ref{eq:natural-real-rate}，从这里继续计算
+\begin{align*}
+    \hat r^n_t=\sigma\,\psi^n_{ya}\,\meant\bkd{\D\hat a\nt}=-\sigma\,\psi^n_{ya}\bka{1-\varrho_a}\hat a_t
+    % 待完善：为什么技术进步会让利率下降
+\end{align*}
+在线性系统中，两种冲击有相同地位但符号不同。具体来说，不考虑技术冲击时的 1 单位政策冲击，等价于不考虑政策冲击时的 -1 单位利率冲击。因此，在本小节假设下，利率冲击对系统影响的传导系数 \(\psi_{yr}\) 和 \(\psi_{\pi r}\) 和上节的结论相同但符号相反\sidenote{结论相同不代表传导系数相同}
+\begingroup\small
+\begin{align*}
+    \begin{cases}
+        \ \tilde y_t=\psi_{yr}\cdot\hat r^n_t\\[6pt]
+        \ \hat\pi_t=\psi_{\pi r}\cdot\hat r^n_t
+    \end{cases} \Rightarrow \ \
+    \begin{cases}
+        \ \tilde y_t=-\sigma\,\psi_{yr}\,\psi^n_{ya}\bka{1-\varrho_a}\hat a_t=-\sigma\,\psi^n_{ya}\bka{1-\varrho_a}\bka{1-\beta\,\varrho_a}\Lambda_a\,\hat a_t\\[6pt]
+        \ \hat\pi_t=-\sigma\,\psi_{\pi r}\,\psi^n_{ya}\bka{1-\varrho_a}\hat a_t=-\sigma\,\kappa\,\psi^n_{ya}\bka{1-\varrho_a}\Lambda_a\,\hat a_t
+    \end{cases}
+\end{align*}
+\endgroup
+
+劳动是生产中最重要的投入，不禁好奇：技术进步会如何影响到它？这需要我们先计算出 \(\hat y_t\)。从产出缺口的定义开始
+\begin{align*}
+    \hat y_t &= \hat y_t^n+\tilde y_t=\psi^n_{ya}\,\hat a_t-\sigma\,\psi^n_{ya}\bka{1-\varrho_a}\bka{1-\beta\,\varrho_a}\Lambda_a\,\hat a_t\\
+    &=\psi^n_{ya}\bks{1-\dfrac{\sigma\bka{1-\varrho_a}\bka{1-\beta\,\varrho_a}}{\sigma\bka{1-\varrho_a}\bka{1-\beta\,\varrho_a}+\psi_y\bka{1-\beta\,\varrho_a}+\kappa\bka{\psi_\pi-\varrho_a}}}\hat a_t
+\end{align*}
+在以上最大的分式的分母中，我们为了朱瑞条件的成立假设
+\begin{equation*}
+    \kappa\bka{\psi_\pi-1}+\phi_y\bka{1-\beta}>0,.
+\end{equation*}
+因此分母大于分子，分式小于 1。最终得到 \(\hat a_t\) 的系数大于 0。接着到 \(\hat n_t\)，考虑不存在价格分散
+\begin{align*}
+    \bka{1-\alpha}\hat n_t=\hat y_t-\hat a_t=\bks{\bka{\psi^n_{ya}-1}-\sigma\,\psi^n_{ya}\bka{1-\varrho_a}\bka{1-\beta\,\varrho_a}\Lambda_a}\hat a_t\sidenote{\scalebox{0.85}{\(\psi_{ya}^n=\dfrac{1+\phi}{\phi+\alpha+\sigma\bka{1-\alpha}}\)}}
+\end{align*}
+假设 \(\sigma=1\)，有 \(\psi^n_{ya}=1\)，那么整体系数为负，技术进步引起劳动需求下降；假设 \(\sigma=0\)，有 \(\psi^n_{ya}=\bka{1+\phi}/\,\bka{\phi+\alpha}\)，那么系数为正，技术进步引起劳动需求上升。总之，技术进步对劳动需求的影响取决于家庭对消费和闲暇的替代弹性。
+
+\subsection{货币冲击}
+
+不作要求，待完成。
+
+% \section{带货币的均衡}
+
+% 这一次，我们尝试把货币加入 NK 模型的线性系统。引用\ref{sec:MIU-household}中的对数线性化结果
+% \begin{align*}
+%     \hat{\mathcal M}_t=\hat m_t-\hat p_t=\hat y_t-\eta\,\hat\imath_t\means\hat\imath_t=\dfrac1\eta\bka{\tilde y_t+\hat y_t^n+\hat{\cal M}_t}
+% \end{align*}
+% 代入 DIS 方程 \ref{eq:dynamic-is} 中
+% \begin{align*}
+%     \tilde y_t&=\meant\bkd{\hat y\nt^n-\hat y_t^n}+\meant\,\tilde y\nt-\dfrac1\sigma\bka{\hat\imath_t-\meant\,\hat\pi\nt}\\
+% \end{align*}
+
+% \PrintChapterBibliography
+
+\FinishStandaloneChapter

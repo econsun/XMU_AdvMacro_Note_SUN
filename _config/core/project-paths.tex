@@ -1,0 +1,22 @@
+% !TeX root = ../../AdvMacroNote_Sun.tex
+% 项目资源路径。正文插图可直接写文件名，例如：
+% \includegraphics{chapter-10-irf.png}
+
+% 主文档从项目根目录构建；独立 chapter/appendix 会在其前导区中覆盖此值。
+\providecommand{\ProjectRootPath}{.}
+
+% 仅保留经常使用的资源目录变量，避免正文散落硬编码路径。
+\newcommand{\AssetRootPath}{\ProjectRootPath/_assets}
+\newcommand{\FigurePath}{\AssetRootPath/figures}
+\newcommand{\ImagePath}{\AssetRootPath/images}
+\newcommand{\MatlabPath}{\AssetRootPath/matlab}
+
+% 非图片资源可通过下面的命令拼接路径。
+\newcommand{\AssetFile}[1]{\AssetRootPath/#1}
+\newcommand{\FigureFile}[1]{\FigurePath/#1}
+\newcommand{\ImageFile}[1]{\ImagePath/#1}
+\newcommand{\MatlabFile}[1]{\MatlabPath/#1}
+
+% graphicx 会依次在 figures 与 images 中查找，因此插图时只需写文件名。
+\edef\CourseGraphicSearchPath{{\FigurePath/}{\ImagePath/}}
+\expandafter\graphicspath\expandafter{\CourseGraphicSearchPath}

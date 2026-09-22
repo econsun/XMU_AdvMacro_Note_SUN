@@ -1,0 +1,21 @@
+% !LW recipe = XeLaTeX once (current file)
+\ifdefined\CourseRootDocument
+\providecommand{\FinishStandaloneChapter}{}
+\else
+\documentclass[11pt,oneside,openany,UTF8,fontset=none]{ctexbook}
+\def\StandaloneChapterNumber{13}
+\def\StandaloneCourseSetup{\UseMacroIICourse}
+\input{../../_config/core/chapter-standalone}
+\def\FinishStandaloneChapter{\end{document}}
+\fi
+
+
+\chapter{CIA 模型}\label{ch:13}
+
+\section{待补充}\label{sec:chap07-todo}
+
+本章内容待补充。
+
+% \PrintChapterBibliography
+
+\FinishStandaloneChapter

@@ -1,0 +1,23 @@
+% 单章/单附录构建前导区。
+% 文档类声明保留在源文件中，便于 LaTeX Workshop 将当前文件识别为根文件；
+% 本文件只补充共享前导区和正文环境。
+
+% 单文件配方以源文件所在目录为工作目录；将项目根目录加入搜索路径，
+% 因而文件名可包含空格和中文，也无需写入绝对的 iCloud 路径。
+\makeatletter
+\def\input@path{{../../}}
+\makeatother
+\newcommand{\ProjectRootPath}{../..}
+
+\input{_config/core/shared-preamble}
+
+\begin{document}
+\notemainlayout
+\mainmatter
+\pagestyle{notefancy}
+\notesideinfotrue
+\StandaloneCourseSetup
+\ifdefined\StandaloneIsAppendix
+    \BeginBookAppendix
+\fi
+\setcounter{chapter}{\numexpr\StandaloneChapterNumber-1\relax}

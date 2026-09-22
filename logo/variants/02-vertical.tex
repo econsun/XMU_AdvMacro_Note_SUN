@@ -1,0 +1,10 @@
+% !LW recipe = XeLaTeX once (current file)
+\documentclass[tikz]{standalone}
+\providecommand{\LogoVariantPrimaryColor}{InstitutionMark}
+\providecommand{\LogoVariantSecondaryColor}{SecondaryText}
+\input{00-variant-preamble}
+\begin{document}
+\begin{tikzpicture}
+    \AdvMacroLogoVertical{\LogoVariantPrimaryColor}{\LogoVariantSecondaryColor}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,53 @@
+% !TeX root = ../AdvMacroNote_Sun.tex
+% 主封面重要参数。没有单位的数值均表示 pt 字号。
+
+% 顶部校徽模块：距页面顶部、校徽尺寸及图文水平距离。
+% 文字以校徽的垂直中心定位，改变校徽尺寸时不需要重新调整文字高度。
+\newcommand{\CoverIdentityTop}{22mm}
+\newcommand{\CoverEmblemSize}{19mm}
+\newcommand{\CoverEmblemTextGap}{6mm}
+\newcommand{\CoverIdentityInstitutionSize}{14.5}
+\newcommand{\CoverIdentityInstitutionLeading}{18}
+\newcommand{\CoverIdentityAffiliationSize}{9.5}
+\newcommand{\CoverIdentityAffiliationLeading}{12}
+\newcommand{\CoverIdentityLevelSize}{10.5}
+\newcommand{\CoverIdentityLevelLeading}{13}
+
+% 右上角横向 AMaN Logo：与校徽模块共用顶边，与页面右侧网格对齐。
+\newcommand{\CoverBrandLogoScale}{0.90}
+\newcommand{\CoverBrandLogoTop}{\CoverIdentityTop}
+\newcommand{\CoverBrandLogoRight}{\CoverGridLeftX}
+
+% 主标题字号、行距，以及灰色辅助词的字号和行距。
+\newcommand{\CoverTitleMainSize}{39}
+\newcommand{\CoverTitleMainLeading}{38}
+\newcommand{\CoverTitleMetaSize}{26}
+\newcommand{\CoverTitleMetaLeading}{29}
+\newcommand{\CoverTitleLineGap}{22pt}
+
+% 两个学期课程模块的主题、学期和教师信息字号。
+\newcommand{\CoverTopicSize}{22}
+\newcommand{\CoverTermSize}{13}
+\newcommand{\CoverInstructorSize}{12}
+
+% 左侧统一网格：标题、II 的左边界与作者信息从第一列开始，课程文字从第二列开始。
+\newcommand{\CoverGridLeftX}{24mm}
+\newcommand{\CoverGridTextX}{52mm}
+
+% 主标题与两个课程模块的位置；数值越大，位置越靠右或靠下。
+\newcommand{\CoverTitleTop}{70mm}
+\newcommand{\CoverModuleTextX}{\CoverGridTextX}
+\newcommand{\CoverFirstModuleY}{140mm}
+\newcommand{\CoverSecondModuleY}{190mm}
+\newcommand{\CoverModuleLineStep}{8.5mm}
+
+% TikZ 绘制的 I、II 的右边界、笔画粗细和 II 两笔之间的距离。
+\newcommand{\CoverNumeralRightX}{40mm}
+\newcommand{\CoverNumeralStrokeWidth}{5.5mm}
+\newcommand{\CoverNumeralGap}{5mm}
+
+% 底部作者与版本信息共用三条基线；两侧每一行始终等高。
+\newcommand{\CoverFooterBottomY}{21mm}
+\newcommand{\CoverFooterRowStep}{9mm}
+\newcommand{\CoverFooterLabelSize}{10.5}
+\newcommand{\CoverFooterMainSize}{16}

@@ -1,0 +1,95 @@
+% !LW recipe = XeLaTeX once (current file)
+\ifdefined\CourseRootDocument
+\providecommand{\FinishStandaloneChapter}{}
+\else
+\documentclass[11pt,oneside,openany,UTF8,fontset=none]{ctexbook}
+\def\StandaloneChapterNumber{2}
+\def\StandaloneCourseSetup{\UseMacroIICourse}
+\def\StandaloneIsAppendix{}
+\input{../../_config/core/chapter-standalone}
+\def\FinishStandaloneChapter{\end{document}}
+\fi
+% Migrated appendix content.
+
+\chapter{2026.09.15 附录}
+
+\section{推导要素价格}\sidenote{请熟练掌握本节，不仅其本身重要，而且会在推导弹性时反复用到相似手法}
+
+假设生产函数为（省略时间）
+\begin{align*}
+    Y = F\bka{K,AL}
+\end{align*}
+其具有 Solow 模型所要求的各个性质。根据规模报酬不变，对要素乘以 \(1\,/\bka{AL}\) 倍数得
+\begin{align*}
+    F\bka{\dfrac K{AL},1}=\dfrac1{AL}\cdot F\bka{K,AL}=\dfrac Y{AL}
+\end{align*}
+定义有效人均变量 \(y\) 和 \(k\) 得生产函数的集约式 \(y=f\bkk\)。后续我们会反复利用以下表达式
+\begin{align*}
+    Y=AL\cdot f\bkk=AL\cdot f\bka{\dfrac K{AL}}
+\end{align*}
+
+在完全竞争的要素市场中，要素根据边际产出定价，即
+\begin{align*}
+    r = F_{K}\bka{K,AL}
+    \qquad\&\qquad
+    w = F_{AL}\bka{K,AL}
+\end{align*}
+接下来我们开始求导二者表达式。
+
+\subsection{推导租金水平}
+
+直接从求导开始
+\begin{align*}
+    r = \dfrac{\p Y}{\p K} = \dfrac{\partial\bks{AL\cdot f\bka{k}}}{\p k}\dfrac{\p k}{\p K}=\MathHighlightC{f'\bkk}
+\end{align*}
+
+\subsection{推导工资水平}
+
+我们要首先明确一件事：工资是支付给工人的，还是有效工人的？这影响到我们对 \(L\) 求导还是 \(AL\)。这里我们不对这个问题进行回答，同时给出两个表达式。
+
+首先是对 \(L\) 求导的工资水平
+\begin{align*}
+    w &= \dfrac{\p Y}{\p L} = \dfrac{\partial\bks{AL\cdot f\bka{k}}}{\p L}= A\,f\bkk + AL\,\dfrac{\p f\bkk}{\p k}\dfrac{\p k}{\p L} \\
+    &= A\,f\bkk + AL\,f'\bkk\cdot\bka{-\dfrac K{AL^2}} = \MathHighlightC{A\,f\bkk - f'\bkk\cdot k}
+\end{align*}
+
+接着是对 \(AL\) 求导的工资水平，讨巧地使用链式法则
+\begin{align*}
+    w = \dfrac{\p Y}{\p AL} = \dfrac{\p Y}{\p L}\dfrac{\p L}{\p AL}=\dfrac1A\cdot\dfrac{\p Y}{\p L} = \MathHighlightC{f\bkk - f'\bkk\cdot k}
+\end{align*}
+
+\section{增长率}
+
+在本节，我们会说明课堂中反复出现的取对数操作，是取以自然对数 \(e\) 为底对数，并且这个底不是随意取的。
+
+假设某国的 GDP 增长率保持在 5\%，该数值的计算方式是
+\begin{align*}
+    g \coloneq \dfrac{Y\nt-Y_t}{Y_t} = \dfrac{Y\nt}{Y_t}-1=5\%
+\end{align*}
+这是离散时间轴上的增长率，注意它的分母为前一时期变量。
+
+GDP 是典型的复合增长变量，即经济总是在过往的基础上增长的，过去的发展成果不会凭空消失。那么过去 \(t\) 年后，该国的 GDP 将达到
+\begin{equation*}
+    Y_t = Y_0 \cdot \bka{1+0.05}\cdot  \cdots\cdot \bka{1+0.05}=Y_0 \cdot 1.05^t\notag\sidenote{这里暗示了 GDP 是指数增长的}
+\end{equation*}
+如果我们把复合增长压榨到极值，会发生什么结果？考虑一年内有 \(n\) 个单位时间，增长率 \(g\) 被平均分成 \(n\) 份，得到每个单位时间的增长率，再进行复合增长，得到
+\begin{align}
+    Y_1 &= Y_0 \cdot \bka{1+\frac{g}{n}} \cdot \dots \cdot \bka{1+\frac{g}{n}}= Y_0 \cdot \bka{1+\frac{g}{n}}^n\to Y_0 \cdot e^{g}\,, \quad \nti\notag
+    \sidenote{取自然对数来自于该极限结果}
+\end{align}
+以上只计算了一年内的连续增长，若计算 \(t\) 年内的连续增长，则 \(Y_t=Y_0 \cdot e^{g\,t}\)，我们称其中 \(g\) 为\,\AccentTerm{连续增长率}\,或\,\AccentTerm{瞬时增长率}。解 \(e^g=1.05\)，不难得到以 \(g=\ln 1.05\) 连续增长，即可实现 5\% 的年增长率。
+
+连续增长率 \(g\) 与年增长率 \(g'\) 的关系为
+\begin{equation*}
+    g' = e^g - 1 \quad \Leftrightarrow \quad g = \ln\bka{1+g'}
+\end{equation*}
+当 \(g'\) 很小时，\(g'=e^g-1\approx g\)，连续增长率和年增长率几乎没有区别；当 \(g'\) 较大时，\(g\) 会明显小于 \(g'\)，连续增长率和年增长率的差异就比较大，说明“复利”发挥了作用。
+
+另外，增长率有常见性质：两变量相乘，增长率为各自增长率相加。应用这个性质我们能快速对生产率进行核算
+\begin{align*}
+    A = \dfrac{Y}{K^{\alpha}\,L^{1-\alpha}} \quad\Rightarrow\quad
+    \grt A = \grt Y - \alpha\,\grt K - \bka{1-\alpha}\grt L
+\end{align*}
+该性质的直觉是指数函数 \(e^A\cdot e^B = e^{A+B}\)。
+
+\FinishStandaloneChapter

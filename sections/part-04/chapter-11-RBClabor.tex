@@ -1,0 +1,324 @@
+% !LW recipe = XeLaTeX once (current file)
+\ifdefined\CourseRootDocument
+\providecommand{\FinishStandaloneChapter}{}
+\else
+\documentclass[11pt,oneside,openany,UTF8,fontset=none]{ctexbook}
+\def\StandaloneChapterNumber{11}
+\def\StandaloneCourseSetup{\UseMacroIICourse}
+\input{../../_config/core/chapter-standalone}
+\def\FinishStandaloneChapter{\end{document}}
+\fi
+
+
+\chapter{RBC 模型：含劳动}\label{ch:11}
+
+毫无疑问，劳动是经济中的关键变量，而使用劳动建模一直是宏观经济中的难题，尤其在理论与数据匹配上。本章会讨论两种含劳动的 RBC 模型 —— Long-Plosser 模型 \footnote{John B. Long Jr. and Charles I. Plosser, ``Real Business Cycles,'' \emph{Journal of Political Economy}, 1983} 和 Hansen 模型 \footnote{Gary D. Hansen, ``Indivisible Labor and the Business Cycle,'' \emph{Journal of Monetary Economics}, 1985} ，分析它们的优缺点以及与数据的匹配情况。最后，我们还会简要介绍一些其他类型的效用函数，这些函数在 RBC 模型中被用来更好地捕捉劳动供给的行为特征。
+
+\section{Long-Plosser 模型}\label{sec:long-plosser}
+
+\subsection{模型概况}\label{sec:chap05-model}
+
+以下是社会规划者面临的问题 \footnote{2026 年 5 月 7 日勘误：此前资本存量运动方程有误}
+\begin{align*}
+    \max_{C_t,\,L_t,\,K_t}\quad & U=\meano\bkd{\sum_{t=0}^{\infty}\,\beta^t\bks{\theta\ln C_t+\bka{1-\theta}\ln L_t}}\\
+    \text{s.t.}\quad & K_t=Z_t\,K\lt^\alpha\,N_t^{1-\alpha}-C_t\\
+        & \log Z_t=\bka{1-\psi}\log\bar{Z}+\psi\log Z\lt+\varepsilon_t\\
+        & L_t=1-N_t
+\end{align*}
+\begin{itemize}
+    \item 效用函数满足（对数）Cobb-Douglas 形式
+    \item 资本是完全折旧的，所以资源约束中不含 \(\bka{1-\delta}K_{t-1}\)
+    \item LP 模型构建社会规划者问题，故不区分家庭和厂商两大主体
+\end{itemize}
+
+构建拉格朗日函数
+\begin{equation*}
+    \mathcal{L}=\meano\sum^\infty_{t=0}\,\beta^t\bks{\theta\ln C_t+\bka{1-\theta}\ln\bka{1-N_t}+\lambda_t\bka{Z_t\,K\lt^\alpha\,N_t^{1-\alpha}-C_t-K_t}}
+\end{equation*}
+最优化的一阶条件为（省略截断条件）\footnote{2026 年 5 月 7 日勘误：此前对资本存量求导结果有误}
+\begin{align}
+    \frac{\partial\mathcal{L}}{\p C_t}&=\frac{\theta}{C_t}-\lambda_t=0\label{eq:chap05-1}\sidenote{类似 \sidemath{\(\n{MUC}_t=\lambda_t\)}}\\
+    \frac{\partial\mathcal{L}}{\p N_t}&=-\frac{1-\theta}{1-N_t}+\lambda_t\bka{1-\alpha}Z_t\,K\lt^\alpha\,N_t^{-\alpha}=0\label{eq:chap05-2}\sidenote{类似 \sidemath{\(\n{MUN}_t=\lambda_t\,W_t\)}}\\
+    \frac{\partial\mathcal{L}}{\p K_t}&=-\beta^t\,\lambda_t+\beta^{t+1}\,\meant\bka{\lambda_{t+1}\,\alpha \,Z_{t+1}\,K_{t}^{\alpha-1}\,N_{t+1}^{1-\alpha}}=0\label{eq:chap05-3}
+\end{align}
+
+接下来我们要消去一阶条件中的 \(\lambda_t\)，最终获得劳动供给的均衡 \(\bar N\)。首先将 \ref{eq:chap05-1} 代入 \ref{eq:chap05-3} 欧拉方程，得到
+\begin{align}
+    \dfrac{\theta}{C_t}&=\beta\,\meant\bks{\dfrac{\theta}{C_{t+1}}\dfrac{\alpha\,Y\nt}{K_t}}\notag\\
+    \frac{1}{C_t}&=\alpha\,\beta\,\meant\bks{\frac{Y\nt}{C_{t+1}}\frac{1}{K_t}}
+    \label{eq:chap05-4}
+\end{align}
+由于在 LP 模型中，效用函数和生产函数都是 Cobb-Douglas 型函数，并且资本是完全折旧的，所以我们猜测：在最优路径上，储蓄率是固定的\sidenote{待未来证明储蓄率固定}。假设 \(K_t=s\,Y_t\)，则 \(C_t=\bka{1-s}Y_t\)，将它们代入 \ref{eq:chap05-4}，得到
+\begin{align*}
+    \dfrac{1}{\bka{1-s}Y_t}&=\alpha\,\beta\,\meant\bks{\dfrac{1}{\bka{1-s}}\cdot\dfrac{1}{s\,Y_t}}\quad\Rightarrow\quad s=\alpha\,\beta
+\end{align*}
+若 \(\alpha\) 上升，资本回报增加，下一期进行更多投资，储蓄率上升；若 \(\beta\) 上升，资产在未来会有更高价值，也会增加投资，储蓄率上升。
+
+再看 \ref{eq:chap05-2} 劳动-闲暇选择，同理得
+\begin{align*}
+    \dfrac{1-\theta}{1-N_t}&=\bka{1-\alpha}\dfrac\theta{C_t}\dfrac{Y_t}{N_t}\\
+    \dfrac{1-\theta}{1-N_t}&=\bka{1-\alpha}\dfrac\theta{\bka{1-\alpha\,\beta}}\dfrac{1}{N_t}
+\end{align*}
+从中我们可以解出 \(N_t\) 的最优路径且其不受时间影响
+\begin{equation}
+    N_t=\bar N\coloneq\frac{\theta\bka{1-\alpha}}{\theta\bka{1-\alpha}+\bka{1-\theta}\bka{1-\alpha\,\beta}}
+\end{equation}
+
+\subsection{波动分析}\label{sec:chap05-cycle}
+
+从前文得知
+\begin{equation*}
+    K_t=\alpha\,\beta\,Y_t\qquad C_t=\bka{1-\alpha\,\beta}Y_t\qquad N_t=\bar N
+\end{equation*}
+显然有 \(\hat k_t=\hat c_t=\hat y_t\) 且 \(\hat n_t=0\)。因此，资本、产出和消费的波动完全由技术冲击引起，而劳动供给没有波动。对数线性化资源约束
+\begin{equation*}
+    \hat k_t=\hat z_t+\alpha\,\hat k\lt+\bka{1-\alpha}\hat n_t=\hat z_t+\alpha\,\hat k\lt
+\end{equation*}
+技术冲击可以引起产出、消费、投资的波动，但是
+\begin{itemize}
+    \item 无法引起劳动波动（无论生产多先进，该工作还是工作）
+    \item 数据无法印证产出、消费、投资 1:1 波动，通常消费更平滑、投资更波动
+    \item 根据模型，\(\widehat{(Y/N)}_t=\hat y_t\)，真实数据显示 \(\sigma_{Y/N}\ll\sigma_Y\) 且 \(\n{Corr}\bka{Y/N,\,Y}=0.55\)
+    \item 如 MRS、MRT、MPN、MPK 等 “价格” 和产出或 TPF 关系太过紧密，无法解释：现实中工资只有微弱的顺周期性，利率有逆周期性
+\end{itemize}
+简言之，LP 模型虽然在理论上是一个完整的 RBC 模型，但它无法解释劳动供给的波动以及一些重要的统计特征，因此我们需要对含有劳动的 RBC 模型再做其它尝试。
+
+\subsection{均衡分析}\label{sec:chap05-equilibrium}
+
+目光放到劳动力市场的均衡上，构建劳动和工资的关系。首先，劳动供给函数为
+\begin{equation*}
+    -\dfrac{u_{N,t}}{u_{C,t}}=W_t \quad \Rightarrow\quad W_t=\frac{1-\theta}{\theta}\cdot\frac{C_t}{1-N_t}=\dfrac{1-\theta}{\theta}\cdot\frac{\bka{1-\alpha\,\beta}Z_t\,K\lt^\alpha\,N_t^{1-\alpha}}{1-N_t}\sidenote{此时等式消费，代表存在财富效应}
+\end{equation*}
+劳动需求函数为
+\begin{equation*}
+    W_t=\bka{1-\alpha}Z_t\,K\lt^\alpha\,N_t^{-\alpha}
+\end{equation*}
+以上结果来自于区分家庭和厂商两大经济主体的各自最优化问题，而不是 LP 模型。具体来说，劳动供给函数是家庭的劳动-闲暇选择；劳动需求函数则是我们熟悉 \(W=\n{MPN}\)。在 \(\bka{N,W}\) 平面中将供需曲线绘出\ref{fig:chap05-labor-market}。
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        x=1.02cm,
+        y=1.02cm,
+        line cap=round,
+        line join=round,
+        >=Latex
+    ]
+        \def\xaxismax{6.90}
+        \def\yaxismax{5.5}
+        \def\xleft{0.85}
+        \def\xright{6.15}
+        \def\Nbar{3.65}
+        \def\Wone{2.00}
+        \def\DeltaW{1.22}
+        \pgfmathsetmacro{\Wtwo}{\Wone+\DeltaW}
+        \def\SlopeS{0.43}
+        \def\SlopeD{0.5}
+        \def\Curv{0.015}
+        \def\BaseLineWidth{0.85pt}
+        \def\GuideLineWidth{0.60pt}
+
+        % Supply and demand schedules are explicit functions of labor N.
+        \draw[-{Latex[length=2.8mm,width=2mm]}, line width=\BaseLineWidth] (0,0) -- (\xaxismax,0) node[right] {\(N_t\)};
+        \draw[-{Latex[length=2.8mm,width=2mm]}, line width=\BaseLineWidth] (0,0) -- (0,\yaxismax) node[left] {\(W_t\)};
+
+        \draw[line width=\BaseLineWidth, DiagramPrimary, domain=\xleft:\xright, samples=220]
+            plot (\x, {\Wone + \SlopeS*(\x-\Nbar) + \Curv*(\x-\Nbar)^2})
+            node[right] {\(S_1\)};
+        \draw[line width=\BaseLineWidth, DiagramPrimary, domain=\xleft:\xright, samples=220]
+            plot (\x, {\Wtwo + \SlopeS*(\x-\Nbar) + \Curv*(\x-\Nbar)^2})
+            node[right] {\(S_2\)};
+        \draw[line width=\BaseLineWidth, DiagramPrimary, domain=\xleft:\xright, samples=220]
+            plot (\x, {\Wone - \SlopeD*(\x-\Nbar) + \Curv*(\x-\Nbar)^2})
+            node[right] {\(D_1\)};
+        \draw[line width=\BaseLineWidth, DiagramPrimary, domain=\xleft:\xright, samples=220]
+            plot (\x, {\Wtwo - \SlopeD*(\x-\Nbar) + \Curv*(\x-\Nbar)^2})
+            node[right] {\(D_2\)};
+
+        \fill (\Nbar,\Wone) circle (2pt);
+        \fill (\Nbar,\Wtwo) circle (2pt);
+
+        \draw[DiagramPrimary, densely dashed, line width=\GuideLineWidth] (0,\Wone) -- (\Nbar,\Wone);
+        \draw[DiagramPrimary, densely dashed, line width=\GuideLineWidth] (0,\Wtwo) -- (\Nbar,\Wtwo);
+        \draw[DiagramPrimary, densely dashed, line width=\GuideLineWidth] (\Nbar,0) -- (\Nbar,\Wtwo);
+
+        \node[left] at (0,\Wone) {\(W_1\)};
+        \node[left] at (0,\Wtwo) {\(W_2\)};
+        \node[below] at (\Nbar,0) {\(\bar N\)};
+    \end{tikzpicture}
+    \caption{劳动市场均衡分析}
+    \label{fig:chap05-labor-market}
+\end{figure}
+
+在\ref{fig:chap05-labor-market} 中，\(S_1\) 和 \(D_1\) 分别是初始的劳动供给和需求曲线，交点 \(\bka{\bar N, W_1}\) 是均衡点。技术进步发生后，根据供需曲线会同步上移（LP 模型的结论）。新的均衡点 \(\bka{\bar N, W_2}\) 仍然在 \(\bar N\) 上，但工资水平上升了。
+
+\term{财富效应}{wealth effect}指：财富（工资收入）增加时，人们会感到自己更加富有而增加消费。我们可以用财富效应来解释为什么在 LP 模型中，技术进步会导致劳动供给不变：技术进步提高了工资水平，增加了劳动者的财富，劳动者因此更倾向于享受闲暇而不是工作，从而抵消了技术进步带来的工作激励。
+
+\section{Hansen 模型：连续劳动}\label{sec:hansen-continuous-labor}
+
+接下来，我们会讨论 Gary Hansen 在博士毕业之前的 1985 年发表的论文中 3.1 节的模型：劳动仍然可以在 \(\bka{0,1}\) 范围内连续选择，但 \(\hat n_t\ne0\)。
+
+% 家庭和厂商一起做决策，所以储蓄率固定，N 不变；分开做决策就不会有这个问题
+% 而且现在不是完全折旧了
+
+\subsection{模型概况}\label{sec:hansen-continuous-labor-model}
+
+当前的模型和我们过往所学较为相似，所以不再展开详细步骤。
+
+家庭最优化问题
+\begin{align*}
+    \max_{C_t,\,N_t}\quad & U=\meano\bks{\sum^\infty_{t=0}\,\beta^t\,u\bka{C_t,1-N_t}}\\
+    \text{s.t.}\quad & C_t+K_t=W_t\,N_t+R_t\,K_{t-1}+\bka{1-\delta}K\lt
+\end{align*}
+一阶条件为
+\begin{align*}
+    \frac{\partial\mathcal{L}}{\p C_t}&=u_{C,t}-\lambda_t=0\\
+    \frac{\partial\mathcal{L}}{\p N_t}&=u_{N,t}+\lambda_t\,W_t=0\\
+    \frac{\partial\mathcal{L}}{\p K_t}&=-\lambda_t+\beta\,\meant\bks{\lambda_{t+1}\bka{R_{t+1}+1-\delta}}=0
+\end{align*}
+整理得
+\begin{align*}
+    u_{C,t}&=\beta\,\meant\bks{u_{C,t+1}\bka{R_{t+1}+1-\delta}}\\
+    -u_{N,t}&=u_{C,t}\,W_t
+\end{align*}
+
+厂商最优化问题
+\begin{align*}
+    \max_{K_{t-1},\,N_t}\quad & \Pi_t=Y_t-R_t\,K_{t-1}-W_t\,N_t\\
+    \text{s.t.}\quad & Y_t=Z_t\,K_{t-1}^\alpha\,N_t^{1-\alpha}
+\end{align*}
+一阶条件为
+\begin{align*}
+    &\frac{\p\Pi_t}{\p K_{t-1}}=\alpha\,Z_t\,K_{t-1}^{\alpha-1}\,N_t^{1-\alpha}-R_t=0\\
+    &\frac{\p\Pi_t}{\p N_t}=(1-\alpha)\,Z_t\,K_{t-1}^\alpha\,N_t^{-\alpha}-W_t=0
+\end{align*}
+整理得
+\begin{align*}
+    R_t&=\alpha\,Z_t\,K_{t-1}^{\alpha-1}\,N_t^{1-\alpha}=\alpha\,\dfrac{Y_t}{K\lt}\\
+    W_t&=\bka{1-\alpha}\,Z_t\,K_{t-1}^\alpha\,N_t^{-\alpha}=\bka{1-\alpha}\dfrac{Y_t}{N_t}
+\end{align*}
+
+% 为什么工作都带来负效用了，还会工作
+
+假设效用函数为
+\begin{align*}
+    &u\bka{C_t,N_t}=\ln C_t+A\ln\bka{1-N_t}\\
+    &u_{C,t}=\frac{1}{C_t} \qquad u_{N,t}=-\frac{A}{1-N_t}\sidenote{\sidemath{\(u_{N,t}<0\)} 代表工作会带来负效用}
+\end{align*}
+模型均衡由以下方程组表示
+\begin{empheq}[left=\empheqlbrace]{align}
+        & \ 1=\beta\,\meant\bks{\dfrac{C_t}{C\nt}\bka{\alpha\,Z\nt\,K_t^{\alpha-1}\,N\nt^{1-\alpha}+1-\delta}}\notag\\
+        & \ A\,C_t=\bka{1-N_t}\bka{1-\alpha}\,Z_t\,K_{t-1}^\alpha\,N_t^{-\alpha}\label{eq:chap05-5}\\
+        & \ K_t=Z_t\,K_{t-1}^\alpha\,N_t^{1-\alpha}+\bka{1-\delta}K_{t-1}-C_t\notag\\
+        & \ \log Z_t=\bka{1-\psi}\log\bar{Z}+\psi\log Z\lt+\varepsilon_t\notag
+\end{empheq}
+从前三个式子中解出模型的稳态
+\begin{equation*}
+    \begin{cases}
+        \ \bar N=\bkd{1+\dfrac A{1-\alpha}\bks{1-\dfrac{\alpha\,\beta\,\delta}{1-\beta\bka{1-\delta}}}}\inv\\[3ex]
+        \ \bar K=\bar N\bks{\dfrac{\alpha\,\beta\,\bar Z}{1-\beta\bka{1-\delta}}}^{\frac{1}{1-\alpha}}\\[3ex]
+        \ \bar C=\bar N\,\bar Z^{\frac1{1-\alpha}}\bkd{\bks{\dfrac{\alpha\,\beta}{1-\beta\bka{1-\delta}}}^{\frac{\alpha}{1-\alpha}}-\delta\bks{\dfrac{\alpha\,\beta}{1-\beta\bka{1-\delta}}}^{\frac{1}{1-\alpha}}}
+    \end{cases}
+\end{equation*}
+定义 \(\tilde\delta\coloneq1-\beta\bka{1-\delta}\)。对数线性化模型
+\begin{empheq}[left=\empheqlbrace]{align}
+    & \ \hat c_t=\meant\,\hat c\nt-\tilde\delta\cdot\meant\bks{\hat z\nt-\bka{1-\alpha}\hat k_t+\bka{1-\alpha}\hat n\nt}\\
+    & \ \hat n_t=\bka{\alpha+\dfrac{\bar N}{1-\bar N}}\inv\bks{\hat z_t+\alpha\,\hat k_{t-1}-\hat c_t}\\
+    & \ \hat k_t=\bka{\alpha\,\dfrac{\bar Y}{\bar K}+1-\delta}\hat k\lt+\bka{1-\alpha}\dfrac{\bar Y}{\bar K}\cdot\hat n_t+\dfrac{\bar Y}{\bar K}\cdot\hat z_t-\dfrac{\bar C}{\bar K}\cdot\hat c_t\\
+    & \ \hat z_t=\psi\,\hat z_{t-1}+\varepsilon_t
+\end{empheq}
+
+尽管这一版 Hansen 劳动模型相较于 LP 模型已经前进了一步 —— 产出、消费、投资不再同步波动且 \(\hat n_t\ne0\)，但是从定量表现看，它仍然无法令人满意地匹配商业周期数据。其主要问题可以概括为以下几点：
+\begin{itemize}
+    \item 对消费波动的刻画相对较好。消费不会像产出那样剧烈起伏，这与现实较为一致。
+    \item 对产出、劳动、投资波动的解释不足。若希望模型匹配现实中产出、劳动、投资的波动幅度，往往需要假定极大的技术冲击；换言之，按常规校准得到的技术冲击只能产生相对微弱的产出波动。
+\end{itemize}
+因此，这个模型虽然比 Long--Plosser 更进一步，它至少允许 \(N_t\) 随技术冲击波动，但在当前这组偏好与技术设定下，它仍然无法生成相对于产出而言足够大的劳动与投资波动。这也正是 Hansen 接下来转向离散劳动设定的直接动机。
+
+
+\section{Hansen 模型：离散劳动}\label{sec:hansen-indivisible-labor}
+
+我们过去认为劳动者选择工作多久的范围是 \(\bks{0,1}\)，然而现实中劳动没有完全弹性，劳动者不可能想工作多久就多久。因此，Hansen 在他的论文中提出个人的劳动时长是不可分割的，并且开始关注整个经济体的劳动时长。
+
+本模型有三个重要假设
+\begin{itemize}
+    \item 劳动者要么不工作，要么工作固定时长，所以他的劳动时长 \(\tilde n_t\in\bkd{0,n^*}\)
+    \item 经济体的失业率为 \(1-\pi_t\)，含义是：有 \(\pi_t\) 比例的劳动者在工作
+    \item 社会中有完善的失业保险，以至于即使失业，劳动者也能维持消费水平不变
+\end{itemize}
+因此，经济体中总劳动供给为 \(H_t\coloneq\pi_t\cdot n^*\cdot \bar L\)，其中 \(\bar L\) 是总劳动力人口；平均劳动时长 \(n_t=H_t/\,\bar L=\pi_t\cdot n^*\)。
+
+根据古典概型，\(\pi_t\) 也可视为一种 “概率”\sidenote{视 \sidemath{\(\pi_t\)} 为概率不代表是否工作是随机的，这仍然可以由劳动者自己选择}，在是否工作的不确定下，劳动者关于工作的期望效用是
+\begin{align*}
+    \meant\,v\bka{\tilde n_t}&=\pi_t\cdot v\bka{n^*}+\bka{1-\pi_t}\cdot v\bka{0}\\
+    &= \pi_t\bka{-A\cdot n^*}+\pi_t\cdot0=-A\cdot n_t
+\end{align*}
+其中有一些不影响结论的标准化处理：假设 \(v\bko=0\)；由于 \(n^*\) 是固定值，所以设 \(v\bka{n^*}\) 是 \(n^*\) 的 \(-A<0\) 倍。再设消费的效用为 \(\ln C_t\)，最终得到的效用函数为
+\begin{align*}
+    &U=u\bka{C_t}+\meant\, v\bka{\tilde n_t}=\ln C_t-A\cdot n_t\sidenote{前文假设失业也不会降低消费，所以消费没有不确定性，不用求期望}\\
+    &U_{C,t}=\frac{1}{C_t}\qquad U_{N,t}=-A
+\end{align*}
+
+如此效用函数对应的 RBC 模型均衡为
+\begin{empheq}[left=\empheqlbrace]{align}
+    & \ 1=\beta\,\meant\bks{\dfrac{C_t}{C\nt}\bka{\alpha\,Z\nt\,K_t^{\alpha-1}\,N\nt^{1-\alpha}+1-\delta}}\notag\\
+    & \ A\,C_t=\bka{1-\alpha}\,Z_t\,K_{t-1}^\alpha\,N_t^{-\alpha}\label{eq:chap05-6}\\
+    & \ K_t=Z_t\,K_{t-1}^\alpha\,N_t^{1-\alpha}+\bka{1-\delta}K_{t-1}-C_t\notag\\
+    & \ \log Z_t=\bka{1-\psi}\log\bar{Z}+\psi\log Z\lt+\varepsilon_t\notag
+\end{empheq}
+和连续劳动版本几乎相同，唯一区别在：对比 \ref{eq:chap05-5} 式，\ref{eq:chap05-6} 式中系数少了 \(\bka{1-N_t}\)。
+
+当劳动时长没法自由调节，只能在 \(0\) 和 \(n^*\) 间跳跃，那么在技术冲击来临时，工资水平上升，参加和退出劳动市场的收入差距随之扩大，闲暇的机会成本上升，更多人会选择工作，此时的 \(\hat n_t\) 比连续劳动版本的更大。
+
+\section{RBC 模型的其他拓展}\label{sec:other-extensions}
+
+考虑一般的效用函数，欧拉方程为
+\begin{equation*}
+    u_{C,t}=\beta\,\meant\bks{u_{C,t+1}\bka{\alpha\,Z\nt\,K_t^{\alpha-1}\,N\nt^{1-\alpha}+1-\delta}}
+\end{equation*}
+那么使用不同效用函数，就能进行不同的拓展。
+
+\TopicLabel{KPR 型效用函数}\label{sec:KPR}
+\begin{align*}
+    &u\bka{C_t,L_t}=\dfrac1{1-\sigma}\bkd{\bks{C_t\cdot v\bka{L_t}}^{1-\sigma}-1}\\
+    &u_{C,t}=\bks{C_t\cdot v\bka{L_t}}^{-\sigma}v\bka{L_t}\qquad u_{L,t}=\bks{C_t\cdot v\bka{L_t}}^{-\sigma}C_t\cdot v'\bka{L_t}
+\end{align*}
+KPR 型效用函数（King-Plosser-Rebelo）因与现实的平衡增长路径较为匹配，所以在论文中被广泛使用。
+
+考虑这样一个 KPR 型效用函数
+\begin{equation*}
+    u\bka{C_t,N_t}=\dfrac1{1-\sigma}\bks{\bka{C_t^\theta\cdot N_t^{1-\theta}}^{1-\sigma}-1}\,,\quad v\bka{L_t}=\bka{1-L_t}^{1-\theta}
+\end{equation*}
+当 \(\sigma\to1\) 时，KPR 型效用函数退化为我们在 LP 模型中设定的 Cobb-Douglas 型效用函数
+\begin{equation*}
+    u\bka{C_t,N_t}=\ln C_t+\bka{1-\theta}\ln\bka{1-N_t}
+\end{equation*}
+
+\TopicLabel{GHH 型效用函数}\label{sec:GHH}
+\begin{align*}
+    &u\bka{C,N}=\dfrac1{1-\sigma}\bks{\bka{C-\dfrac{A\,N^{1+\chi}}{1+\chi}}^{1-\sigma}-1}\\
+    &u_{C,t}=\bka{C_t-\dfrac{A\,N_t^{1+\chi}}{1+\chi}}^{-\sigma}\qquad u_{N,t}=-A\cdot N_t^\chi\bka{C_t-\dfrac{A\,N_t^{1+\chi}}{1+\chi}}^{-\sigma}
+\end{align*}
+GHH 型效用函数（Greenwood-Hercowitz-Huffman）的特征是：在劳动供给决策中没有财富效应。具体表现为边际替代率
+\begin{align*}
+    -\dfrac{u_{N,t}}{u_{C,t}}&=A\cdot N_t^\chi
+\end{align*}
+与消费无关，因此劳动供给决策不受财富效应影响，工资上升会对劳动有更大的激励效果。用 GHH 型效用函数构建的 RBC 模型能够更好地匹配现实中劳动供给的波动特征。
+
+\TopicLabel{JR 型效用函数}\label{sec:JR}
+\begin{align*}
+    &u\bka{C,L}=\dfrac{\bka{C_t-\psi\,X_t\,N^\theta_t}^{1-\sigma}-1}{1-\sigma}\,,\quad X_t=C_t^\gamma\,X_{t-1}^{1-\gamma}
+\end{align*}
+实际上，前文中 KPR 型和 GHH 型效用函数都可以看作 JR 型效用函数（Jaimovich-Rebelo）的特例：当 \(\gamma=1\) 时，\(X_t=C_t\)，JR 型效用函数退化为 KPR 型效用函数
+\begin{align*}
+    u\bka{C_t,N_t}=\dfrac{\bks{C_t\bka{1-\psi\,N^\theta_t}}^{1-\sigma}-1}{1-\sigma}
+\end{align*}
+当 \(\gamma\to0\) 时，\(X_t\) 简化为常数（\(X_t=X_{t-1}\)），JR 型效用函数退化为 GHH 型效用函数
+\begin{align*}
+    u\bka{C_t,N_t}=\dfrac{\bka{C_t-\psi\,X\,N^\theta_t}^{1-\sigma}-1}{1-\sigma}
+\end{align*}
+KPR 型效用函数和 GHH 型效用函数分别代表了 JR 型效用函数中财富效应完全存在和完全不存在的两端，而 JR 型效用函数则提供了一个连续的参数 \(\gamma\) 来调节财富效应的强弱，从而使得模型能够更灵活地匹配商业周期数据中劳动供给的波动特征。
+
+% \PrintChapterBibliography
+
+\FinishStandaloneChapter

@@ -1,0 +1,250 @@
+{
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "make all (XeLaTeX + SyncTeX)",
+            "tools": ["make-all"]
+        },
+        {
+            "name": "XeLaTeX once (current file)",
+            "tools": ["xelatex-once-current"]
+        },
+        {
+            "name": "XeLaTeX poster (once)",
+            "tools": ["xelatex-once-current"]
+        }
+    ],
+    "latex-workshop.latex.tools": [
+        {
+            "name": "make-all",
+            "command": "make",
+            "cwd": "%WORKSPACE_FOLDER%",
+            "args": ["all"]
+        },
+        {
+            "name": "xelatex-once-current",
+            "command": "python3",
+            "cwd": "%DIR%",
+            "args": [
+                "%WORKSPACE_FOLDER%/_tools/latex-current.py",
+                "--passes",
+                "1",
+                "%DOCFILE_EXT%"
+            ]
+        }
+    ],
+    "latex-workshop.latex.build.enableMagicComments": true,
+    "latex-workshop.latex.recipe.default": "first",
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    // 源文件名、构建目录名与 PDF 名相同，View PDF 可直接定位唯一产物。
+    "latex-workshop.latex.outDir": "%WORKSPACE_FOLDER%/_build/%DOCFILE%",
+    // 直接解析通过 \input 载入的 _config/setting-cmds.tex，不维护补全 JSON。
+    "latex-workshop.latex.texDirs": [
+        "%WORKSPACE_FOLDER%",
+        "%WORKSPACE_FOLDER%/_config"
+    ],
+    "latex-workshop.intellisense.update.aggressive.enabled": true,
+    "latex-workshop.intellisense.update.delay": 300,
+    "latex-workshop.intellisense.package.enabled": true,
+    // 接受命令补全后，使用 Tab 依次跳转各参数占位符。
+    "editor.tabCompletion": "on",
+    "latex-workshop.view.pdf.viewer": "tab",
+    "latex-workshop.view.pdf.internal.synctex.keybinding": "double-click",
+    "latex-workshop.synctex.afterBuild.enabled": true,
+    // 输入反斜杠或命令名称时自动显示 LaTeX 候选；也可随时按 Ctrl+Space。
+    "[latex]": {
+        "editor.suggestOnTriggerCharacters": true,
+        "editor.quickSuggestions": {
+            "other": "on",
+            "comments": "off",
+            "strings": "on"
+        }
+    },
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            // 普通公式内容：未被其他规则识别的拉丁字母、变量和等号等。
+            {
+                "name": "LaTeX math: base text",
+                "scope": [
+                    "meta.math.block.latex",
+                    "meta.math.block.tex",
+                    "meta.math.block.latex support.class.math.block.environment.latex",
+                    "meta.math.block.tex support.class.math.block.tex"
+                ],
+                "settings": {
+                    "foreground": "#404852"
+                }
+            },
+            // 公式定界符：\(...\)、\[...\]、$...$ 与 $$...$$ 两端的符号。
+            {
+                "name": "LaTeX math: inline and display delimiters",
+                "scope": [
+                    "meta.math.block.latex punctuation.definition.string.begin.latex",
+                    "meta.math.block.latex punctuation.definition.string.end.latex",
+                    "meta.math.block.tex punctuation.definition.string.begin.tex",
+                    "meta.math.block.tex punctuation.definition.string.end.tex"
+                ],
+                "settings": {
+                    "foreground": "#C45B66",
+                    "fontStyle": "bold"
+                }
+            },
+            // 数学环境命令：\begin 和 \end。
+            {
+                "name": "LaTeX math: begin and end commands",
+                "scope": "meta.function.environment.math.latex support.function.be.latex",
+                "settings": {
+                    "foreground": "#C45B66",
+                    "fontStyle": "bold"
+                }
+            },
+            // 数学环境名称：align、aligned、equation、cases、matrix 等。
+            {
+                "name": "LaTeX math: environment names",
+                "scope": "meta.function.environment.math.latex variable.parameter.function.latex",
+                "settings": {
+                    "foreground": "#3277B3",
+                    "fontStyle": "bold"
+                }
+            },
+            // 希腊字母与数学关系符号：\alpha、\delta、\le、\in、\rightarrow 等。
+            {
+                "name": "LaTeX math: Greek letters and relation symbols",
+                "scope": "meta.math.block constant.character.math.tex",
+                "settings": {
+                    "foreground": "#3277B3"
+                }
+            },
+            // 通用数学命令：未被专门分类的 \frac、\mathrm、\mathbf 等命令。
+            {
+                "name": "LaTeX math: general commands",
+                "scope": "meta.math.block constant.other.general.math.tex",
+                "settings": {
+                    "foreground": "#3277B3"
+                }
+            },
+            // 公式编号命令与标签名称：\label 及其 {eq:...} 内容。
+            {
+                "name": "LaTeX math: labels",
+                "scope": [
+                    "meta.function.environment.math.latex keyword.control.label.latex",
+                    "meta.function.environment.math.latex constant.other.reference.label.latex"
+                ],
+                "settings": {
+                    "foreground": "#747B84"
+                }
+            },
+            // 命名运算符与函数：\lim、\log、\sin、\max、\exp 等。
+            {
+                "name": "LaTeX math: named operators and functions",
+                "scope": "meta.math.block constant.other.math.tex",
+                "settings": {
+                    "foreground": "#3277B3"
+                }
+            },
+            // 公式中的整数与小数。
+            {
+                "name": "LaTeX math: numbers",
+                "scope": "meta.math.block constant.numeric.math.tex",
+                "settings": {
+                    "foreground": "#404852"
+                }
+            },
+            // 基本运算符及上下标符号：+、-、*、/、^、_。
+            {
+                "name": "LaTeX math: operators and scripts",
+                "scope": "meta.math.block punctuation.math.operator.tex",
+                "settings": {
+                    "foreground": "#C45B66",
+                    "fontStyle": "bold"
+                }
+            },
+            // 公式括号：普通圆括号、花括号以及由 \left、\right 控制的伸缩括号。
+            {
+                "name": "LaTeX math: brackets",
+                "scope": [
+                    "meta.math.block punctuation.math.bracket.pair.tex",
+                    "meta.math.block punctuation.math.bracket.pair.big.tex",
+                    "meta.math.block punctuation.math.begin.bracket.curly.tex",
+                    "meta.math.block punctuation.math.end.bracket.curly.tex",
+                    "meta.math.block punctuation.math.begin.bracket.round.tex",
+                    "meta.math.block punctuation.math.end.bracket.round.tex"
+                ],
+                "settings": {
+                    "foreground": "#747B84"
+                }
+            },
+            // 对齐环境控制符：列对齐符 & 与换行符 \\。
+            {
+                "name": "LaTeX math: align separators and line breaks",
+                "scope": [
+                    "meta.function.environment.math.latex keyword.control.equation.align.latex",
+                    "meta.function.environment.math.latex keyword.control.equation.newline.latex"
+                ],
+                "settings": {
+                    "foreground": "#C45B66",
+                    "fontStyle": "bold"
+                }
+            },
+            // 数学命令开头的反斜杠；命令名称本身仍使用对应类别的颜色。
+            {
+                "name": "LaTeX math: command backslashes",
+                "scope": "meta.math.block punctuation.definition.constant.math.tex",
+                "settings": {
+                    "foreground": "#747B84"
+                }
+            }
+        ]
+    },
+    "files.exclude": {
+        ".DS_Store": true,
+        "missfont.log": true,
+        "_build": true,
+        "**/*.aux": true,
+        "**/*.bbl": true,
+        "**/*.bcf": true,
+        "**/*.blg": true,
+        "**/*.fdb_latexmk": true,
+        "**/*.fls": true,
+        "**/*.log": true,
+        "**/*.out": true,
+        "**/*.run.xml": true,
+        "**/*.synctex.gz": true,
+        "**/*.toc": true,
+        "**/*.xdv": true,
+        "**/*.bbl-SAVE-ERROR": true,
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        "**/*.pyo": true,
+        ".gitignore": true,
+        "LICENSE": true,
+        "Makefile": true,
+        "*.bib": true,
+        "README.md": true
+    },
+    "search.exclude": {
+        ".DS_Store": true,
+        "missfont.log": true,
+        "_build": true,
+        "**/*.aux": true,
+        "**/*.bbl": true,
+        "**/*.bcf": true,
+        "**/*.blg": true,
+        "**/*.fdb_latexmk": true,
+        "**/*.fls": true,
+        "**/*.log": true,
+        "**/*.out": true,
+        "**/*.run.xml": true,
+        "**/*.synctex.gz": true,
+        "**/*.toc": true,
+        "**/*.xdv": true,
+        "**/*.bbl-SAVE-ERROR": true,
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        "**/*.pyo": true,
+        "sections/**/*.pdf": true,
+        ".gitignore": false,
+        "LICENSE": false,
+        "Makefile": false,
+        "*.bib": false
+    }
+}

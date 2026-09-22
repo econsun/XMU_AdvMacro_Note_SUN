@@ -1,0 +1,121 @@
+% !TeX root = ../../AdvMacroNote_Sun.tex
+% The complete shared-course cover lives here. Global fonts, colors, and
+% metadata remain in the preamble and _config/99 INFO.tex.
+\begingroup
+\thispagestyle{empty}
+\sbox{\AdvMacroBrandLogoBox}{%
+    \begin{tikzpicture}[scale=\CoverBrandLogoScale,transform shape]
+        \AdvMacroLogoHorizontal{InstitutionMark}{SecondaryText}
+    \end{tikzpicture}}%
+\sbox{\CourseIdentityBox}{\CourseIdentityGraphic{InstitutionMark}}%
+\begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north west,inner sep=0pt]
+        at ([xshift=\CoverGridLeftX,yshift=-\CoverIdentityTop]current page.north west)
+        {\usebox{\CourseIdentityBox}};
+
+    \node[anchor=north east,inner sep=0pt]
+        at ([xshift=-\CoverBrandLogoRight,yshift=-\CoverBrandLogoTop]current page.north east)
+        {\usebox{\AdvMacroBrandLogoBox}};
+
+    \node[
+        anchor=north west,
+        text=BodyText,
+        text width=160mm,
+        align=left,
+        font=\CoverDisplayFont
+    ] at ([xshift=\CoverGridLeftX,yshift=-\CoverTitleTop]current page.north west)
+    {{\fontsize{\CoverTitleMainSize}{\CoverTitleMainLeading}\selectfont Advanced}%
+     \hspace{4mm}%
+     {\HeadingLatinFont\fontsize{\CoverTitleMetaSize}{\CoverTitleMetaLeading}\selectfont\bfseries\color{SecondaryText}Course}\\[\CoverTitleLineGap]
+     {\fontsize{\CoverTitleMainSize}{\CoverTitleMainLeading}\selectfont Macroeconomics}%
+     \hspace{4mm}%
+     {\HeadingLatinFont\fontsize{\CoverTitleMetaSize}{\CoverTitleMetaLeading}\selectfont\bfseries\color{SecondaryText}Notes}};
+
+    % The Roman numerals are geometric TikZ forms. Their height is taken from
+    % the actual outer edges of the corresponding three-line information block.
+    \node[
+        name=first-topic,
+        anchor=base west,
+        inner sep=0pt,
+        text=BodyText,
+        font=\HeadingLatinFont\fontsize{\CoverTopicSize}{26}\selectfont\bfseries
+    ] at ([xshift=\CoverModuleTextX,yshift=-\CoverFirstModuleY]current page.north west)
+    {\CoverFirstTopic};
+    \node[
+        name=first-term,
+        anchor=base west,
+        inner sep=0pt,
+        text=VolumeOneAccent,
+        font=\HeadingLatinFont\fontsize{\CoverTermSize}{\CoverTermSize}\selectfont\bfseries
+    ] at ([yshift=-\CoverModuleLineStep]first-topic.base west)
+    {\CoverFirstTerm};
+    \node[
+        name=first-instructor,
+        anchor=base west,
+        inner sep=0pt,
+        text=SecondaryText,
+        font=\HeadingLatinFont\fontsize{\CoverInstructorSize}{\CoverInstructorSize}\selectfont
+    ] at ([yshift=-\CoverModuleLineStep]first-term.base west)
+    {Instructor\enspace\CoverFirstInstructor};
+    \fill[VolumeOneAccent]
+        ([xshift=\dimexpr\CoverNumeralRightX-\CoverNumeralStrokeWidth\relax]current page.north west |- first-topic.north)
+        rectangle
+        ([xshift=\CoverNumeralRightX]current page.north west |- first-instructor.south);
+
+    \node[
+        name=second-topic,
+        anchor=base west,
+        inner sep=0pt,
+        text=BodyText,
+        font=\HeadingLatinFont\fontsize{\CoverTopicSize}{\CoverTopicSize}\selectfont\bfseries
+    ] at ([xshift=\CoverModuleTextX,yshift=-\CoverSecondModuleY]current page.north west)
+    {\CoverSecondTopic};
+    \node[
+        name=second-term,
+        anchor=base west,
+        inner sep=0pt,
+        text=VolumeTwoAccent,
+        font=\HeadingLatinFont\fontsize{\CoverTermSize}{\CoverTermSize}\selectfont\bfseries
+    ] at ([yshift=-\CoverModuleLineStep]second-topic.base west)
+    {\CoverSecondTerm};
+    \node[
+        name=second-instructor,
+        anchor=base west,
+        inner sep=0pt,
+        text=SecondaryText,
+        font=\HeadingLatinFont\fontsize{\CoverInstructorSize}{\CoverInstructorSize}\selectfont
+    ] at ([yshift=-\CoverModuleLineStep]second-term.base west)
+    {Instructor\enspace\CoverSecondInstructor};
+    \fill[VolumeTwoAccent]
+        ([xshift=\dimexpr\CoverNumeralRightX-\CoverNumeralStrokeWidth-\CoverNumeralGap-\CoverNumeralStrokeWidth\relax]current page.north west |- second-topic.north)
+        rectangle
+        ([xshift=\dimexpr\CoverNumeralRightX-\CoverNumeralStrokeWidth-\CoverNumeralGap\relax]current page.north west |- second-instructor.south);
+    \fill[VolumeTwoAccent]
+        ([xshift=\dimexpr\CoverNumeralRightX-\CoverNumeralStrokeWidth\relax]current page.north west |- second-topic.north)
+        rectangle
+        ([xshift=\CoverNumeralRightX]current page.north west |- second-instructor.south);
+
+    % 左右信息共用三条基线，保证视觉高度完全一致。
+    \node[anchor=base west,inner sep=0pt,text=SecondaryText,font=\HeadingLatinFont\fontsize{\CoverFooterLabelSize}{13}\selectfont]
+        at ([xshift=\CoverGridLeftX,yshift=\dimexpr\CoverFooterBottomY+\CoverFooterRowStep+\CoverFooterRowStep\relax]current page.south west)
+        {Prepared by};
+    \node[anchor=base west,inner sep=0pt,text=BodyText,font=\HeadingLatinFont\fontsize{\CoverFooterMainSize}{20}\selectfont\bfseries]
+        at ([xshift=\CoverGridLeftX,yshift=\dimexpr\CoverFooterBottomY+\CoverFooterRowStep\relax]current page.south west)
+        {\CourseContributor};
+    \node[anchor=base west,inner sep=0pt,text=SecondaryText,font=\HeadingLatinFont\fontsize{\CoverFooterLabelSize}{13}\selectfont]
+        at ([xshift=\CoverGridLeftX,yshift=\CoverFooterBottomY]current page.south west)
+        {\CourseContributorEmail};
+
+    \node[anchor=base east,inner sep=0pt,text=SecondaryText,font=\HeadingLatinFont\fontsize{\CoverFooterLabelSize}{13}\selectfont]
+        at ([xshift=-\CoverGridLeftX,yshift=\dimexpr\CoverFooterBottomY+\CoverFooterRowStep+\CoverFooterRowStep\relax]current page.south east)
+        {\CourseLicenseToken};
+    \node[anchor=base east,inner sep=0pt,text=BodyText,font=\HeadingLatinFont\fontsize{\CoverFooterMainSize}{20}\selectfont\bfseries]
+        at ([xshift=-\CoverGridLeftX,yshift=\dimexpr\CoverFooterBottomY+\CoverFooterRowStep\relax]current page.south east)
+        {\DocumentVersion};
+    \node[anchor=base east,inner sep=0pt,text=SecondaryText,font=\HeadingLatinFont\fontsize{\CoverFooterLabelSize}{13}\selectfont]
+        at ([xshift=-\CoverGridLeftX,yshift=\CoverFooterBottomY]current page.south east)
+        {\CourseCompileDate};
+\end{tikzpicture}%
+\null
+\clearpage
+\endgroup

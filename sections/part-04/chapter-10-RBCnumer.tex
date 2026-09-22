@@ -1,0 +1,469 @@
+% !LW recipe = XeLaTeX once (current file)
+\ifdefined\CourseRootDocument
+\providecommand{\FinishStandaloneChapter}{}
+\else
+\documentclass[11pt,oneside,openany,UTF8,fontset=none]{ctexbook}
+\def\StandaloneChapterNumber{10}
+\def\StandaloneCourseSetup{\UseMacroIICourse}
+\input{../../_config/core/chapter-standalone}
+\def\FinishStandaloneChapter{\end{document}}
+\fi
+
+
+\chapter{RBC 模型：数值求解}\label{ch:10}
+
+% 什么是数值求解：通过迭代找到路径
+
+在\ref{sec:SolveRBC}，我们会用比较简单的形式
+\begin{equation}
+    \begin{cases}
+        \ \hat k_t=V_{kk}\,\hat k\lt+V_{kz}\,\hat z_t\\
+        \ \hat c_t=V_{ck}\,\hat k\lt+V_{cz}\,\hat z_t
+    \end{cases}
+\end{equation}
+替代相比下略微复杂的对数线性化结果，来近似描述资本存量和消费的动态路径。通过待定系数法，我们可以轻松求解迭代系数 \(V_{kk}\)、\(V_{kz}\)、\(V_{ck}\) 和 \(V_{cz}\)，虽然他们的表达式看起来不简单；迭代系数帮助我们在\ref{sec:IRF}分析技术脉冲对经济体的影响，校准和模拟为此做好了准备。\ref{sec:Comparative}和\ref{sec:Saddle}会沿用我们辛苦计算出的结果，共同构成完整的 RBC 模型分析。
+
+% 待完成：Vkk 其实就是差分系统的稳定根
+
+\section{RBC 模型的求解}\label{sec:SolveRBC}
+
+在\ref{ch:09}中，我们已经实现了 RBC 模型的对数线性化
+\begin{empheq}[left=\empheqlbrace]{align}
+        & \ \hat k_t=\dfrac1\beta\,\hat k\lt+\dfracb{Y}{K}\,\hat z_t-\dfracb{C}{K}\,\hat c_t\label{eq:logline1}\\
+        & \ \sigma\,\hat c_t=\sigma\,\meant\,\hat c\nt+\tilde\delta\bka{1-\alpha}\hat k_t-\tilde\delta\,\meant\,\hat z\nt\label{eq:logline2}\\
+        & \ \hat z\nt=\psi\,\hat z_t+\varepsilon_t\label{eq:logline3}
+\end{empheq}
+观察前两式，不难发现满足如下结构
+\begin{equation}
+    \begin{cases}
+        \ \hat k_t=V_{kk}\,\hat k\lt+V_{kz}\,\hat z_t\\
+        \ \hat c_t=V_{ck}\,\hat k\lt+V_{cz}\,\hat z_t
+    \end{cases}\label{eq:MUC}
+\end{equation}
+我们将 \ref{eq:MUC} 代入 \ref{eq:logline1} 的第一式得
+\begin{align*}
+    V_{kk}\,\hat k\lt+V_{kz}\,\hat z_t = \dfrac1\beta\,\hat k\lt&+\dfracb{Y}{K}\,\hat z_t-\dfracb{C}{K}\bka{V_{kk}\,\hat k\lt+V_{kz}\,\hat z_t}\\
+    \Rightarrow\quad  \bks{\dfrac1\beta-\dfracb{C}{K}\, V_{ck}-V_{kk}}\hat k\lt&+\bks{\dfracb{Y}{K}-\dfracb{C}{K}\, V_{cz}-V_{kz}}\,\hat z_t=0
+\end{align*}
+通过待定系数法得
+\begin{empheq}[left=\empheqlbrace]{align}
+    & \ V_{kk}=\dfrac1\beta-\dfracb{C}{K}\, V_{ck}=\dfrac1\beta-\ckbar V_{ck}\label{eq:MUC1}\\
+    & \ V_{kz}=\dfracb{Y}{K}-\dfracb{C}{K}\, V_{cz}=\ykbar-\ckbar V_{cz}\label{eq:MUC2}
+\end{empheq}
+同理将 \ref{eq:MUC} 代入 \ref{eq:logline2} 的第二式并利用 \(\meant\,\hat z\nt=\psi\,\hat z_t\) 得
+\begingroup\small
+\begin{align*}
+    &\sigma\bka{V_{ck}\,\hat k\lt+V_{cz}\,\hat z_t}=\sigma\,\meant\bka{V_{ck}\,\hat k_t+V_{cz}\,\hat z\nt}+\tilde\delta\bka{1-\alpha}\bka{V_{kk}\,\hat k\lt+V_{kz}\,\hat z_t}-\tilde\delta\,\meant\,\hat z\nt\\
+    &\sigma\,V_{ck}\,\hat k\lt+\sigma\,V_{cz}\,\hat z_t=\sigma\,V_{ck}\,\hat k_t+\sigma\,\psi\,V_{cz}\,\hat z_t+\tilde\delta\bka{1-\alpha}\bka{V_{kk}\,\hat k\lt+V_{kz}\,\hat z_t}-\psi\,\tilde\delta\,\hat z_t\\
+    \Rightarrow \ &\bks{\sigma\,V_{ck}\,V_{kk}+\tilde\delta\bka{1-\alpha}V_{kk}-\sigma\,V_{ck}}\hat k\lt\notag\\
+    &+\bks{\sigma\bka{V_{ck}\,V_{kz}+\psi\,V_{cz}}+\tilde\delta\bka{1-\alpha}V_{kz}-\psi\,\tilde\delta-\sigma\,V_{cz}}\hat z_t=0
+\end{align*}
+\endgroup
+通过待定系数法得
+\begin{empheq}[left=\empheqlbrace]{align}
+    & \ \sigma\,V_{ck}\bka{1-V_{kk}}=\tilde\delta\bka{1-\alpha}V_{kk}\label{eq:MUC3}\\
+    & \ \sigma\,V_{cz}\bka{1-\psi}=\bks{\sigma\,V_{ck}+\tilde\delta\bka{1-\alpha}}V_{kz}-\psi\,\tilde\delta\label{eq:MUC4}
+\end{empheq}
+
+将 \ref{eq:MUC1} 代入 \ref{eq:MUC3}，消去 \(V_{ck}\) 得
+\begin{align*}
+    \sigma\bka{1-V_{kk}}\bka{\dfrac1\beta-V_{kk}}\dfracb{K}{C}=\tilde\delta\bka{1-\alpha}V_{kk}
+\end{align*}
+对上式进行整理，有
+\begin{equation*}
+    V^2_{kk}-\bks{1+\dfrac1\beta+\dfrac{\tilde\delta\bka{1-\alpha}}\sigma\,\dfracb{C}{K}}V_{kk}+\dfrac1\beta=0
+\end{equation*}
+给一次项系数新的符号
+\begin{equation}
+    \gamma\coloneq1+\dfrac1\beta+\dfrac{\tilde\delta\bka{1-\alpha}}\sigma\,\dfracb{C}{K}\label{eq:gamma}
+\end{equation}
+因为 \(\gamma\) 的表达式由多个正数项相加而得，所以其为正数。解出 \(V_{kk}\) 的两个根分别为
+\begin{align}
+    V_{kk}=\dfrac{\gamma-\dsq{\gamma^2-4/\beta}}{2}\,,\qquad V_{kk}'=\dfrac{\gamma+\dsq{\gamma^2-4/\beta}}{2}\label{eq:Vkk}
+\end{align}
+为了得到更精细的数值范围，比较两个根与 1 的关系（关系到系统的稳定性），我们计算
+\begin{align*}
+    \bka{1-V_{kk}}\bka{1-V_{kk}'}&=1+V_{kk}\cdot V_{kk}'-\bka{V_{kk}+V_{kk}'}\\
+    &=1+\dfrac1\beta-\gamma=-\dfrac{\tilde\delta\bka{1-\alpha}}\sigma\,\dfracb{C}{K}<0
+\end{align*}
+因此两根分别在 1 的左侧和右侧，并且通过观察表达式，发现 \(0<V_{kk}<1<V_{kk}'\)。根据 Blanchard-Kahn 定理，满足稳定性条件的解为 \(V_{kk}\)，因此我们舍弃 \(V'_{kk}\)，选取 \(V_{kk}\) 作为资本的系数。将 \(V_{kk}\) 代入 \ref{eq:MUC1} 得 \(V_{ck}\)，再将 \(V_{kk}\) 和 \(V_{ck}\) 代入 \ref{eq:MUC2} 和 \ref{eq:MUC4} 分别得 \(V_{kz}\) 和 \(V_{cz}\)。至此，我们得到了满足稳定性条件的解
+\begin{equation}
+    \begin{cases}
+        \ V_{kk}=\dfrac{\gamma-\dsq{\gamma^2-4/\beta}}{2}\\[2ex]
+        \ V_{ck}=\dfracb{K}{C}\bka{\dfrac1\beta-V_{kk}}\\[2ex]
+        \ V_{cz}=\dfrac{\sigma\,V_{ck}+\tilde\delta\bka{1-\alpha}-\alpha\,\beta\,\psi}{\sigma\bka{1-\psi}-\bks{\sigma\,V_{ck}+\tilde\delta\bka{1-\alpha}}{\bar C}\islash{\bar K}}\\[2ex]
+        \ V_{kz}=\dfracb{Y}{K}-\dfracb{C}{K}\, V_{cz}
+    \end{cases}\label{eq:V}
+\end{equation}
+
+\section{脉冲响应分析}\label{sec:IRF}
+
+在本节，我们将分析脉冲（短时出现，即刻消失的冲击）对经济体会产生如何影响，经济变量离开稳态后会如何收敛。为分析真实变动，我们根据下表设定一系列参数的季度值。
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\dimexpr\linewidth-3pt\relax}{
+    >{\centering\arraybackslash}p{0.01\linewidth}
+    >{\centering\arraybackslash}p{0.07\linewidth}
+    >{\centering\arraybackslash}p{0.2\linewidth}
+    >{\raggedright\arraybackslash}X}
+        \toprule
+        & 参数 & 季度值 & \quad 备注 \\
+        \midrule
+        & \(\beta\) & 0.990 & \quad 季折现率 0.99 对应年利率约 4.1\% \sidenote{从欧拉方程\\[2pt]\scalebox{0.80}{\(u'_t=\beta\,\meant\bks{u'\nt\bka{1+r\nt}}\)}\\[2pt]得 \sidemath{\(r=\bka{1-\beta}/\,\beta\)}}\\
+        & \(\sigma\) & 1.000 & \quad 消费的相对风险厌恶系数，相当 \(\n{IES}=1/\sigma=1\) \\
+        & \(\alpha\) & 0.360 & \quad 资本回报在总收入中占比 \\
+        & \(\delta\) & 0.025 & \quad 季折旧率 2.5\% 对应年折旧率约 10\% \\
+        & \(\psi\) & 0.900 & \quad 技术冲击衰减系数或持续系数 \\
+        & \(\sigma_Z^2\) & / & \quad 无可靠数据 \\
+        \bottomrule
+    \end{tabularx}
+    \caption{RBC 模型参数设定}
+    \label{tab:params}
+    \renewcommand{\arraystretch}{0}
+\end{table}
+
+根据以上设定，计算得
+\begin{align*}
+    & \ V_{kk}\approx0.965 \qquad V_{kz}\approx0.075 \qquad \bar C\islash\bar K\approx0.073\\
+    & \ V_{ck}\approx0.618 \qquad V_{cz}\approx0.305 \qquad \bar Y\islash\bar K\approx0.098
+\end{align*}
+
+在 \(t=0\) 期，经济体处于稳态，\(\hat k_0=\hat c_0=\hat z_0=0\)；考虑在 \(t=1\) 期出现 \(\varepsilon_1\ne0\)，之后 \(\varepsilon_t=0\)（\(t>1\)）。首先，计算技术的增长路径
+\begin{align*}
+    &\hat z_1=\psi\,\hat z_0+\varepsilon_1=\varepsilon_1\\
+    &\hat z_2=\psi\,\hat z_1+\varepsilon_2=\psi\,\varepsilon_1+0=\psi\,\varepsilon_1\\
+    &\hat z_3=\psi\,\hat z_2+\varepsilon_3=\psi\cdot\psi\,\varepsilon_1+0=\psi^2\,\varepsilon_1
+\end{align*}
+归纳得 \(\hat z_t=\psi^{t-1}\,\varepsilon_1\)。将 \(\hat z_t\) 代入 \ref{eq:MUC}，得资本存量的路径
+\begin{align*}
+    &\hat k_1=V_{kk}\,\hat k_0+V_{kz}\,\hat z_1=V_{kz}\,\varepsilon_1\\
+    &\hat k_2=V_{kk}\,\hat k_1+V_{kz}\,\hat z_2=V_{kk}\,V_{kz}\,\varepsilon_1+V_{kz}\,\psi\,\varepsilon_1=\bka{V_{kk}+\psi}V_{kz}\,\varepsilon_1\\
+    \Rightarrow \quad & \hat k_t=V_{kk}\,\hat k\lt+V_{kz}\,\psi^{t-1}\,\varepsilon_1=\bka{\sum_{i=0}^{t-1}V_{kk}^i\cdot\psi^{t-1-i}}V_{kz}\,\varepsilon_1
+\end{align*}
+同理还能得到许多变量的增长路径，此处不逐一推导。\ref{fig:IRFfig} 展示了各变量的脉冲响应路径。可以看到，技术冲击会导致资本存量、产出和消费的增长率在短期内上升，但随着时间推移，这些变量会逐渐回归稳态水平。
+
+\begin{figure}[H]
+    \centering
+    \sidenote{同样时间长度内，投资变动幅度比产出大得多（纵坐标跨度），可见投资是敏感变量}
+    \MaybeIncludeGraphics[width=\textwidth]{chapter-10-irf.png}
+  \caption{技术冲击下各变量对数偏离的脉冲响应路径}
+  \label{fig:IRFfig}
+\end{figure}
+
+\TopicLabel{问题：为什么资本路径呈驼峰形？}
+
+首先我们要明确：\(\hat k\lt\) 上升或下降等同于 \(K\lt\) 上升或下降，所以图像说明了 \(K_t\) 的路径呈现 \term{驼峰形}{hump-shaped}。根据资本的运动方程
+\begin{equation*}
+    \Delta \,K_t=I_t-\delta\,K\lt
+\end{equation*}
+在资本积累过程中，投资 \(i_t\) 是收入，折旧 \(\delta\,K\lt\) 是支出。技术冲击带来产出增加，所以在较高投资水平的推动下，资本存量 \(K\lt\) 会持续增加；但随着时间推移，投资水平逐渐回落，而折旧水平相对较高，所以资本存量 \(K\lt\) 会逐渐回落，最终回归稳态水平。
+
+我们再用数学语言较为严格地说明以上观点。使用等比数列的求和公式，计算
+\begin{equation*}
+    \hat k_t=\bka{\sum_{i=0}^{t-1}V_{kk}^i\cdot\psi^{t-1-i}}V_{kz}\,\varepsilon_1 = \begin{cases}
+        \ \dfrac{\psi^t-V_{kk}^t}{\psi-V_{kk}}\cdot V_{kz}\,\varepsilon_1 & \psi\ne V_{kk}
+        \sidenote{\sidemath{\(V_{kk}\)} 表达式中不含 \sidemath{\(\psi\)}，二者取值无关}
+        \\[2ex]
+        \ t\cdot\psi^{t-1}\cdot V_{kz}\,\varepsilon_1 & \psi=V_{kk}
+    \end{cases}
+\end{equation*}
+作商来寻找最大值时刻。当 \(\psi=V_{kk}\) 时
+\begin{equation*}
+    \kappa\coloneq\dfrac{\hat k_{t+1}}{\hat k_t}=\dfrac{(t+1)\cdot\psi^{t}}{t\cdot\psi^{t-1}}=\bka{1+\dfrac1t}\cdot\psi
+\end{equation*}
+\(\kappa\) 是关于 \(t\) 递减的：若 \(t\) 较小，\(\kappa>1\)；若 \(t\) 较大，\(\kappa<1\)；若 \(t\approx\psi/(1-\psi)\)，\(\kappa\approx1\)，即 \(\hat k_t\) 达到峰值。当 \(\psi\ne V_{kk}\) 时
+\begin{equation*}
+    \dfrac{\hat k_{t+1}}{\hat k_t}=\dfrac{\psi^{t+1}-V_{kk}^{t+1}}{\psi^t-V_{kk}^t}=\dfrac{\psi-\psi\bka{V_{kk}/\psi}^{t+1}}{1-\bka{V_{kk}/\psi}^t}
+\end{equation*}
+分析方式类似。
+
+\(i_t=\delta\,K\lt\) 收支平衡时，\(\hat i_t=\hat k\lt\) 且 \(\hat{k}\lt\) 来到它的最大值。我们设定的数据可以支持这一点：\(\hat k_{t-1}\) 的峰值出现 \(t\approx23.86\)，\(\hat i_{24}\approx\hat k_{23}\)。
+
+\TopicLabel{问题：为什么资本回报会小于稳态？}
+
+\sidenote{\centering\MaybeIncludeGraphics[width=\linewidth]{chapter-10-irf-r.png}}
+图中虚线代表 \(\hat R\nt=0\)，\(\hat R\nt\) 出现在虚线下方代表 \(R\nt\) 下探到稳态以下水平，不代表一定有 \(R\nt<0\)。我们曾证得 \(\hat R\nt=\tilde\delta\,\widehat{\n{MPK}}\nt\)，所以 \(\hat R\nt\) 的路径与 \(\widehat{\n{MPK}}\nt\) 相似。\footnote{2026 年 4 月 7 日勘误：此前 \(\hat R\nt=\widehat{\n{MPK}}\nt\) 缺少系数 \(\tilde\delta\)。}
+
+冲击来了之后投资高于稳态水平，资本存量在不断上升，根据边际产出递减规律，\(\widehat{\n{MPK}}_t\) 会资本增加而下降。根据 \(\widehat{\n{MPK}}_t=\hat z_t-\bka{1-\alpha}\hat k\lt\)，技术波动 \(\hat z_t\) 下降也是助推力。出现 \(\hat R\nt<0\) 直接原因是过度投资。在 \(\hat K\lt\) 回落后，\(\hat R\nt\) 逐渐回升到稳态水平，如右图所示。
+
+综合来看，脉冲不会对经济体产生长期影响，所有变量都会回到稳态水平。这也如索洛模型给我们的结论：只有持续的技术进步可以给经济带来源源不断的增长动力。
+
+\section{比较静态分析}\label{sec:Comparative}
+
+\subsection{σ 变动的影响}\label{sec:CompaSigma}
+
+回顾 RBC 的稳态
+\begin{equation}
+    \bar K=\bks{\dfrac{\alpha\,\beta}{1-\beta\bka{1-\delta}}}^{\frac{1}{1-\alpha}} \qquad \& \qquad \bar Y=\bar Z\,\bar K^\alpha \qquad \& \qquad  \bar C=\bar Y-\delta\,\bar K\label{eq:steady}
+\end{equation}
+\(\sigma\) 变动不会对稳态产生任何影响。再看 \(V_{kk}\) 的表达式 \ref{eq:Vkk}，其中 \(\gamma\) 被如下定义
+\begin{equation*}
+    \gamma\coloneq1+\dfrac1\beta+\dfrac{\tilde\delta\bka{1-\alpha}}\sigma\,\dfracb{C}{K}
+\end{equation*}
+当中包含 \(\sigma\)，所以 \(\sigma\) 的变动会影响 \(V_{kk}\) 的数值，进而影响到其它迭代系数。\ref{fig:compasigma} 直观展示了 \(\sigma\) 上升时四个迭代系数的变化情况。迭代系数 \ref{eq:V} 间存在相互关系，所以图像呈现出相似的、对称的趋势。
+
+\begin{figure}[H]
+    \centering
+    \MaybeIncludeGraphics[width=0.7\textwidth]{chapter-10-sigma.png}
+  \caption{\(\sigma\) 上升对迭代系数的影响}
+  \label{fig:compasigma}
+\end{figure}
+
+家庭的相对风险厌恶系数 \(\sigma\) 上升，会对模型的影响及传导路径如下：
+\begin{itemize}
+    \item \(V_{kk}\) 上升\sidenote{迭代系数越大，收敛速度越慢}：\(\sigma\) 上升后，家庭更倾向于平滑消费，不愿意把冲击带来的新增资源过多用于当期消费，而会把更多资源留给投资。这样一来，资本偏离稳态后会在经济中保留更久，表现为资本持续性更强、收敛更慢。
+    \item \(V_{ck}\) 下降：家庭不愿意因资本状态变化而立刻大幅调整消费，而更愿意把这类影响分摊到多个时期，因此消费对资本存量变化的反应减弱。
+    \item \(V_{cz}\) 下降：技术冲击到来时，家庭也不愿意马上提高当期消费，而是倾向于先平滑掉一部分冲击，因此消费对冲击的即时反应减弱，消费路径更平滑。
+    \item \(V_{kz}\) 上升：既然消费少吸收一部分冲击，更多资源就会转化为投资和资本积累，因此资本对技术冲击的反应增强。
+\end{itemize}
+
+我们在\ref{sec:CRRA} 中已经说明过 \(\sigma\) 上升会引起消费的增长率 \(g_{C,t}\) 下降。这里进一步看到：\(\sigma\) 上升后 \(V_{ck}\) 和 \(V_{cz}\) 下降，那么消费会较快回到稳态水平，然后以较低 \(g_{C,t}\) 增长率保持平稳。
+
+\subsection{δ 变动的影响}\label{sec:CompaDelta}
+
+折旧率 \(\delta\) 上升，首先会压低经济体的稳态水平，它意味着经济中有更多资本无法持续使用。回顾稳态资本存量的表达式
+\begin{equation*}
+    \bar K=\bks{\dfrac{\alpha\,\beta}{1-\beta\bka{1-\delta}}}^{\frac{1}{1-\alpha}}
+\end{equation*}
+可见 \(\delta\) 上升会使稳态资本存量 \(\bar K\) 下降，进而使稳态产出 \(\bar Y\) 和稳态消费 \(\bar C\) 也下降。
+
+对动态系统而言，\(\delta\) 上升会对迭代系数产生如下影响：
+\begin{itemize}
+    \item \(V_{kk}\) 下降：折旧越快，原有资本越难被保留下来，必有资本的持续性下降，收敛更快。
+    \item \(V_{kz}\) 上升：稳态资本更低以后，资本相对稀缺，资本边际产出更高；因此同样一个技术冲击会诱发更强的投资意愿，资本对技术冲击的反应更大。
+    \item \(V_{cz}\) 变动方向不确定：一方面，折旧上升会提高资本稀缺性，使冲击带来的回报更高，从而刺激消费；另一方面，更高的折旧也意味着为了维持资本存量，需要把更多资源留作投资，因此会抑制当期消费。这两个方向同时存在，所以 \(V_{cz}\) 的变化依赖具体参数校准的结果。
+\end{itemize}
+
+\section{鞍路径分析}\label{sec:Saddle}
+
+\subsection{线性 RBC 模型}\label{sec:LineSaddleRBC}
+
+令对数线性化结果中 \(\hat z_t=0\) 有
+\begin{equation*}
+    \hat k_t=\dfrac1\beta\,\hat k\lt-\dfracb{C}{K}\,\hat c_t \quad \& \quad \sigma\,\hat c_t=\sigma\,\hat c\nt+\tilde\delta\bka{1-\alpha}\hat k_t
+\end{equation*}
+从中整理出作差结果，再让两个式等零，找到 \term{边界路径}{locus}
+\begin{align}
+    & \hat k_t-\hat k\lt=\bka{\dfrac1\beta-1}\hat k\lt-\dfracb{C}{K}\,\hat c_t&\Rightarrow\quad&\hat c_t=\dfrac{\bka{1-\beta}\bar K}{\beta\,\bar C}\cdot\hat k\lt\label{eq:linearsaddle1}\\
+    & \hat c\nt-\hat c_t=\dfrac{\tilde\delta}{\sigma}\bka{1-\alpha}\bka{\dfracb{C}{K}\,\hat c_t-\dfrac1\beta\,\hat k\lt}&\Rightarrow\quad&\hat c_t=\dfrac{\bar K}{\beta\,\bar C}\cdot\hat k\lt\label{eq:linearsaddle2}
+\end{align}
+
+作线性 RBC 系统相图。在\ref{fig:ch04-saddle-linear} 的 \(\D\hat k_t=0\) 边界之下，由于消费水平较低，从 \ref{eq:linearsaddle1} 知 \(\D\hat k_t>0\)，我们可以推断出：在该边界之下，向右移动。同理得整张图的运动方向。
+
+\begin{figure}[H]
+    \centering
+    \sidenote{\par \vspace{5em} 鞍路径斜率为 \sidemath{\(V_{kk}\)}}
+    \begin{tikzpicture}[
+        scale=0.95,
+        line cap=round,
+        line join=round,
+        >=Latex,
+        declare function={
+            lone(\x)=\yo+\mone*(\x-\xo);
+            ltwo(\x)=\yo+\mtwo*(\x-\xo);
+            lstable(\x)=\yo+\mstable*(\x-\xo);
+        }
+    ]
+        \pgfmathsetmacro{\xmin}{0}
+        \pgfmathsetmacro{\xmax}{8}
+        \pgfmathsetmacro{\ymin}{0}
+        \pgfmathsetmacro{\ymax}{7}
+
+        % Common intersection, placed slightly upper-right in the canvas
+        \pgfmathsetmacro{\xo}{4.2}
+        \pgfmathsetmacro{\yo}{3.5}
+
+        % Calibration and slopes from the chapter's baseline parameters
+        \pgfmathsetmacro{\betaRBC}{0.99}
+        \pgfmathsetmacro{\alphaRBC}{0.36}
+        \pgfmathsetmacro{\sigmaRBC}{1.0}
+        \pgfmathsetmacro{\deltaRBC}{0.025}
+        \pgfmathsetmacro{\xiRBC}{1-\betaRBC+\betaRBC*\deltaRBC}
+        \pgfmathsetmacro{\YKRBC}{\xiRBC/(\alphaRBC*\betaRBC)}
+        \pgfmathsetmacro{\CKRBC}{\YKRBC-\deltaRBC}
+        \pgfmathsetmacro{\gammaRBC}{1+1/\betaRBC+(\xiRBC*(1-\alphaRBC)/\sigmaRBC)*\CKRBC}
+        \pgfmathsetmacro{\VkkRBC}{(\gammaRBC-sqrt(\gammaRBC*\gammaRBC-4/\betaRBC))/2}
+        \pgfmathsetmacro{\VckRBC}{(1/\betaRBC-\VkkRBC)/\CKRBC}
+
+        % Slopes in the (\hat k_{t-1}, \hat c_t) plane
+        \pgfmathsetmacro{\mone}{(1/\betaRBC-1)/\CKRBC}
+        \pgfmathsetmacro{\mtwo}{(1/\betaRBC)/\CKRBC}
+        \pgfmathsetmacro{\mstable}{\VckRBC}
+        % Visible domain of the stable arm; change only these two numbers
+        \pgfmathsetmacro{\stablexmin}{2}
+        \pgfmathsetmacro{\stablexmax}{6.5}
+
+        % Saddle-path arrow positions update automatically with the domain
+        \pgfmathsetmacro{\xone}{\stablexmin + (\xo-\stablexmin)/3}
+        \pgfmathsetmacro{\xtwo}{\stablexmin + 2*(\xo-\stablexmin)/3}
+        \pgfmathsetmacro{\xfour}{\xo + (\stablexmax-\xo)/3}
+        \pgfmathsetmacro{\xfive}{\xo + 2*(\stablexmax-\xo)/3}
+        \pgfmathsetmacro{\arrowlen}{0.1}
+
+        % Axes
+        \draw[-{Latex[length=3mm,width=2.2mm]}, thick] (\xmin, \ymin) -- (\xmax, \ymin)
+            node[right] {\(\hat k_{t-1}\)};
+        \draw[-{Latex[length=3mm,width=2.2mm]}, thick] (\xmin, \ymin) -- (\xmin, \ymax)
+            node[left] {\(\hat c_t\)};
+
+        % Origin guides
+        \draw[densely dashed, DiagramGuide] (\xo,\ymin) -- (\xo,\yo);
+        \draw[densely dashed, DiagramGuide] (\xmin,\yo) -- (\xo,\yo);
+        \node[below] at (\xo,\ymin) {\(0\)};
+        \node[left] at (\xmin,\yo) {\(0\)};
+
+        % Nullclines and stable arm
+        \draw[DiagramHighlight, line width=1.2pt, domain=\xmin:\xmax, samples=2]
+            plot (\x, {lone(\x)})
+            node[pos=0.78, above right] {\StepBadge{2}\enspace\(\D \hat k_t=0\)};
+
+        \draw[DiagramComparison, line width=1.2pt, domain={(\ymin-\yo)/\mtwo+\xo}:{(\ymax-\yo)/\mtwo+\xo}, samples=2] plot (\x, {ltwo(\x)}) node[right] {\StepBadge{2}\enspace\(\D \hat c_t=0\)};
+
+        \draw[DiagramPrimary, line width=1.2pt, domain=\stablexmin:\stablexmax, samples=2]
+            plot (\x, {lstable(\x)});
+
+        % Arrow marks on the stable arm: toward the steady state
+        \draw[-{Latex[length=2.4mm,width=1.8mm]}, DiagramAnnotation, line width=0.9pt]
+            (\xone,{lstable(\xone)}) -- ({\xone+\arrowlen},{lstable(\xone+\arrowlen)});
+        \draw[-{Latex[length=2.4mm,width=1.8mm]}, DiagramAnnotation, line width=0.9pt]
+            (\xtwo,{lstable(\xtwo)}) -- ({\xtwo+\arrowlen},{lstable(\xtwo+\arrowlen)});
+        \draw[-{Latex[length=2.4mm,width=1.8mm]}, DiagramAnnotation, line width=0.9pt]
+            (\xfour,{lstable(\xfour)}) -- ({\xfour-\arrowlen},{lstable(\xfour-\arrowlen)});
+        \draw[-{Latex[length=2.4mm,width=1.8mm]}, DiagramAnnotation, line width=0.9pt]
+            (\xfive,{lstable(\xfive)}) -- ({\xfive-\arrowlen},{lstable(\xfive-\arrowlen)});
+
+        % Common intersection
+        \fill (\xo,\yo) circle (2.2pt) node[below right] {S.S.};
+
+        \draw[-{Latex[length=1.8mm,width=1.4mm]}, DiagramComparison, line width=1pt] (6.8,6.3) -- ++(-90:0.8);
+        \draw[-{Latex[length=1.8mm,width=1.4mm]}, DiagramHighlight, line width=1pt] (6.8,6.3) -- ++(180:0.8);
+
+        \draw[-{Latex[length=1.8mm,width=1.4mm]}, DiagramComparison, line width=1pt] (2,5.5) -- ++(90:0.8);
+        \draw[-{Latex[length=1.8mm,width=1.4mm]}, DiagramHighlight, line width=1pt] (2,5.5) -- ++(180:0.8);
+
+        \draw[-{Latex[length=1.8mm,width=1.4mm]}, DiagramComparison, line width=1pt] (1.2,1.2) -- ++(90:0.8);
+        \draw[-{Latex[length=1.8mm,width=1.4mm]}, DiagramHighlight, line width=1pt] (1.2,1.2) -- ++(0:0.8);
+
+        \draw[-{Latex[length=1.8mm,width=1.4mm]}, DiagramComparison, line width=1pt] (6,2) -- ++(-90:0.8);
+        \draw[-{Latex[length=1.8mm,width=1.4mm]}, DiagramHighlight, line width=1pt] (6,2) -- ++(0:0.8);
+
+    \end{tikzpicture}
+    \caption{线性 RBC 模型运动系统}
+    \label{fig:ch04-saddle-linear}
+\end{figure}
+
+% 非线性的情况，另一条线有不同的截距项和斜率，这个可以写出来增加理解
+
+% \subsection{非线性 RBC 模型}\label{sec:NonlineSaddleRBC}
+
+% \begin{figure}[H]
+%     \centering
+%     \begin{tikzpicture}[
+%         scale=0.95,
+%         line cap=round,
+%         line join=round,
+%         >=Latex,
+%         declare function={
+%             ltwo(\x)=\yo+\mtwo*(\x-\xo);
+%             lstable(\x)=\yo+\mstable*(\x-\xo);
+%             knon(\x)=\yo*pow(\x/\xo,\curvepower);
+%         }
+%     ]
+%         \pgfmathsetmacro{\xmin}{0}
+%         \pgfmathsetmacro{\xmax}{8}
+%         \pgfmathsetmacro{\ymin}{0}
+%         \pgfmathsetmacro{\ymax}{7}
+
+%         % Common intersection, placed slightly upper-right in the canvas
+%         \pgfmathsetmacro{\xo}{4.2}
+%         \pgfmathsetmacro{\yo}{3.5}
+
+%         % Calibration and slopes from the chapter's baseline parameters
+%         \pgfmathsetmacro{\betaRBC}{0.99}
+%         \pgfmathsetmacro{\alphaRBC}{0.36}
+%         \pgfmathsetmacro{\sigmaRBC}{1.0}
+%         \pgfmathsetmacro{\deltaRBC}{0.025}
+%         \pgfmathsetmacro{\xiRBC}{1-\betaRBC+\betaRBC*\deltaRBC}
+%         \pgfmathsetmacro{\YKRBC}{\xiRBC/(\alphaRBC*\betaRBC)}
+%         \pgfmathsetmacro{\CKRBC}{\YKRBC-\deltaRBC}
+%         \pgfmathsetmacro{\gammaRBC}{1+1/\betaRBC+(\xiRBC*(1-\alphaRBC)/\sigmaRBC)*\CKRBC}
+%         \pgfmathsetmacro{\VkkRBC}{(\gammaRBC-sqrt(\gammaRBC*\gammaRBC-4/\betaRBC))/2}
+%         \pgfmathsetmacro{\VckRBC}{(1/\betaRBC-\VkkRBC)/\CKRBC}
+
+%         % Slopes in the (\hat k_{t-1}, \hat c_t) plane
+%         \pgfmathsetmacro{\mone}{(1/\betaRBC-1)/\CKRBC}
+%         \pgfmathsetmacro{\mtwo}{(1/\betaRBC)/\CKRBC}
+%         \pgfmathsetmacro{\mstable}{\VckRBC}
+%         \pgfmathsetmacro{\curvepower}{0.42}
+%         \pgfmathsetmacro{\knonxmax}{6.8}
+
+%         % Visible domain of the stable arm; change only these two numbers
+%         \pgfmathsetmacro{\stablexmin}{2}
+%         \pgfmathsetmacro{\stablexmax}{6.5}
+
+%         % Saddle-path arrow positions update automatically with the domain
+%         \pgfmathsetmacro{\xone}{\stablexmin + (\xo-\stablexmin)/3}
+%         \pgfmathsetmacro{\xtwo}{\stablexmin + 2*(\xo-\stablexmin)/3}
+%         \pgfmathsetmacro{\xfour}{\xo + (\stablexmax-\xo)/3}
+%         \pgfmathsetmacro{\xfive}{\xo + 2*(\stablexmax-\xo)/3}
+%         \pgfmathsetmacro{\arrowlen}{0.1}
+
+%         % Axes
+%         \draw[-{Latex[length=3mm,width=2.2mm]}, thick] (\xmin, \ymin) -- (\xmax, \ymin)
+%             node[right] {\(\hat k_{t-1}\)};
+%         \draw[-{Latex[length=3mm,width=2.2mm]}, thick] (\xmin, \ymin) -- (\xmin, \ymax)
+%             node[left] {\(\hat c_t\)};
+
+%         % Origin guides
+%         \draw[densely dashed, DiagramGuide] (\xo,\ymin) -- (\xo,\yo);
+%         \draw[densely dashed, DiagramGuide] (\xmin,\yo) -- (\xo,\yo);
+%         \node[below] at (\xo,\ymin) {\(0\)};
+%         \node[left] at (\xmin,\yo) {\(0\)};
+
+%         % Nullclines and stable arm
+%         \draw[DiagramHighlight, line width=1.2pt, domain=0:\knonxmax, samples=200]
+%             plot (\x, {knon(\x)})
+%             node[pos=0.86, above right] {\(\n{\textcircled{\scriptsize 1}} \ \D \hat k_t=0\)};
+
+%         \draw[DiagramComparison, line width=1.2pt, domain={(\ymin-\yo)/\mtwo+\xo}:{(\ymax-\yo)/\mtwo+\xo}, samples=2] plot (\x, {ltwo(\x)}) node[right] {\(\n{\textcircled{\scriptsize 2}} \ \D \hat c_t=0\)};
+
+%         \draw[DiagramPrimary, line width=1.2pt, domain=\stablexmin:\stablexmax, samples=2]
+%             plot (\x, {lstable(\x)});
+
+%         % Arrow marks on the stable arm: toward the steady state
+%         \draw[-{Latex[length=2.4mm,width=1.8mm]}, DiagramAnnotation, line width=0.9pt]
+%             (\xone,{lstable(\xone)}) -- ({\xone+\arrowlen},{lstable(\xone+\arrowlen)});
+%         \draw[-{Latex[length=2.4mm,width=1.8mm]}, DiagramAnnotation, line width=0.9pt]
+%             (\xtwo,{lstable(\xtwo)}) -- ({\xtwo+\arrowlen},{lstable(\xtwo+\arrowlen)});
+%         \draw[-{Latex[length=2.4mm,width=1.8mm]}, DiagramAnnotation, line width=0.9pt]
+%             (\xfour,{lstable(\xfour)}) -- ({\xfour-\arrowlen},{lstable(\xfour-\arrowlen)});
+%         \draw[-{Latex[length=2.4mm,width=1.8mm]}, DiagramAnnotation, line width=0.9pt]
+%             (\xfive,{lstable(\xfive)}) -- ({\xfive-\arrowlen},{lstable(\xfive-\arrowlen)});
+
+%         % Common intersection
+%         \fill (\xo,\yo) circle (2.2pt) node[below right] {S.S.};
+
+%         \draw[-{Latex[length=1.8mm,width=1.4mm]}, DiagramComparison, line width=1pt] (6.8,6.3) -- ++(-90:0.8);
+%         \draw[-{Latex[length=1.8mm,width=1.4mm]}, DiagramHighlight, line width=1pt] (6.8,6.3) -- ++(180:0.8);
+
+%         \draw[-{Latex[length=1.8mm,width=1.4mm]}, DiagramComparison, line width=1pt] (2,5.5) -- ++(90:0.8);
+%         \draw[-{Latex[length=1.8mm,width=1.4mm]}, DiagramHighlight, line width=1pt] (2,5.5) -- ++(180:0.8);
+
+%         \draw[-{Latex[length=1.8mm,width=1.4mm]}, DiagramComparison, line width=1pt] (1.2,1.2) -- ++(90:0.8);
+%         \draw[-{Latex[length=1.8mm,width=1.4mm]}, DiagramHighlight, line width=1pt] (1.2,1.2) -- ++(0:0.8);
+
+%         \draw[-{Latex[length=1.8mm,width=1.4mm]}, DiagramComparison, line width=1pt] (6,2) -- ++(-90:0.8);
+%         \draw[-{Latex[length=1.8mm,width=1.4mm]}, DiagramHighlight, line width=1pt] (6,2) -- ++(0:0.8);
+
+%     \end{tikzpicture}
+%     \caption{非线性 RBC 模型运动系统}
+%     \label{fig:ch04-saddle-nonlinear}
+% \end{figure}
+
+
+
+% \PrintChapterBibliography
+
+\FinishStandaloneChapter

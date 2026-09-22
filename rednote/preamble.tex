@@ -1,0 +1,43 @@
+% Rednote 海报独立配置；每个 Chapter 的 poster-xx.tex 调用统一排版母版。
+\usepackage{iftex}
+\ifPDFTeX
+    \PackageError{Rednote Poster}{This poster requires XeLaTeX}{}
+\fi
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\IfFontExistsTF{Source Han Sans SC}
+    {\setsansfont{Source Han Sans SC}[BoldFont=Source Han Sans SC Bold]
+     \setCJKmainfont{Source Han Sans SC}[BoldFont=Source Han Sans SC Bold]
+     \setCJKsansfont{Source Han Sans SC}[BoldFont=Source Han Sans SC Bold]}
+    {\setsansfont{Arial}[BoldFont=Arial Bold]
+     \setCJKmainfont{Heiti SC}
+     \setCJKsansfont{Heiti SC}}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\input{../settings}
+\geometry{
+    paperwidth=\PosterPageWidth,
+    paperheight=\PosterPageHeight,
+    margin=0pt,
+    noheadfoot
+}
+\input{../../_config/setting-color.tex}
+\input{../../_config/99 INFO.tex}
+\def\LogoRootPath{../../logo}
+\input{../../logo/logo}
+\RednoteCourseSetup
+
+% 海报跟随章节所属课程：Macro I 使用第一册主题色，Macro II 使用第二册主题色。
+\colorlet{PosterAccent}{ActiveAccent}
+\colorlet{PosterAccentText}{PageBackground}
+\newcommand{\AdvMacroPosterLogo}{%
+    \AdvMacroLogoPosterCustom{BodyText}{BodyText}{PosterAccentText}{BodyText}}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+% 让 PDF 页面本身就是主题色，避免栅格化时页面底边出现浅色接缝。
+\AtBeginDocument{\pagecolor{PosterAccent}}

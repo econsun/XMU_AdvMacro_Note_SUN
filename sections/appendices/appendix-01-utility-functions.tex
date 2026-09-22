@@ -1,0 +1,198 @@
+% !LW recipe = XeLaTeX once (current file)
+\ifdefined\CourseRootDocument
+\providecommand{\FinishStandaloneChapter}{}
+\else
+\documentclass[11pt,oneside,openany,UTF8,fontset=none]{ctexbook}
+\def\StandaloneChapterNumber{1}
+\def\StandaloneCourseSetup{\UseMacroIICourse}
+\def\StandaloneIsAppendix{}
+\input{../../_config/core/chapter-standalone}
+\def\FinishStandaloneChapter{\end{document}}
+\fi
+% Migrated appendix content.
+
+\chapter{常见效用函数}\label{app:utility-functions}
+
+\section{常替代弹性效用函数}\label{subsec:apdx-ces}
+
+考虑具有常替代弹性（Constant Elasticity of Substitution，CES）的效用函数
+\sidenote{编写本节源起于本人在读论文中遇到微观个体对多个商品的消费选择问题，所以这里的推导更偏向高微\allowbreak（需求侧）}
+\begin{align}
+    u\bka{\bs c} = A \bka{\sum^N_{n=1} \alpha^{\frac1\sigma}_n \, c_n^{\frac{\sigma-1}{\sigma}}}^{\frac{\sigma}{\sigma-1}}\label{eq:CES-utility}
+\end{align}
+相比起常见 CES 函数，我们为 \(c_n\) 增加权重 \(\alpha_n^{1/\sigma}\) 且 \(\sum_n\alpha_n=1\)，幂 \(1/\sigma\) 会使后文中 \ref{eq:CES-opt-condition-ij} 形式简单；整体有常系数 \(A\)。如果商品指标 \(n\) 是连续的，则效用函数及后续聚合器中加和运算应更改为积分运算。
+
+\mysec{马歇尔需求}
+
+给定约束条件 \(\sum_n p_n\,c_n\le w\)（默认绑定取等），构建最优化的拉格朗日函数
+\begin{align*}
+    \mathscr L = A \bka{\sum^N_{n=1} \alpha^{\frac1\sigma}_n \, c_n^{\frac{\sigma-1}{\sigma}}}^{\frac{\sigma}{\sigma-1}} - \lambda \bka{\sum^N_{n=1} p_n\,c_n - w}
+    \sidenote{如果对效用函数进行正单调变化，去掉外层幂，计算会更简单}
+\end{align*}
+计算偏导数得一阶条件
+\begin{align}
+    \dfrac{\p \scr L}{\p c_i}= \underbrace{ \; A \bka{\sum^N_{n=1} \alpha^{\frac1\sigma}_n \, c_n^{\frac{\sigma-1}{\sigma}}}^{\frac{1}{\sigma-1}}}_{=\;A\,\bka{u/A}\,^{1/\sigma}\;\ne\;u} \alpha^{\frac1\sigma}_i \,c_i^{-\frac{1}{\sigma}} - \lambda \,p_i = 0\label{eq:CES-opt-condition}
+    \sidenote{常见将括号项记作 \sidemath{\(S\)} 来简化运算，但为过程清晰，故不改记法}
+\end{align}
+同理亦可得关于商品 \(j\) 的最优必要条件，与上式相除而消去拉格朗日乘子
+\begin{align}
+    c_j = \dfrac{\alpha_j}{\alpha_i}\bka{\dfrac{p_j}{p_i}}^{-\sigma} c_i\qquad \forall\,i,\,j\label{eq:CES-opt-condition-ij}
+\end{align}
+
+从一阶条件 \ref{eq:CES-opt-condition} 中解出最优消费量
+\begin{align}
+    c_i=\quad\alpha_i\;p_i^{-\sigma}\quad\times\quad u\;\lambda^{-\sigma} \,A^{\sigma-1} \label{eq:CES-opt-c}
+\end{align}
+注意看，乘号右侧项实际上与 \(n\) 无关，我们将其设为 \(K\) 并通过预算约束将其求出
+\begin{align*}
+    \sum^N_{n=1} p_n\,c_n = \sum^N_{n=1} p_n \, \alpha_n\,p_n^{-\sigma}\,K = w
+    \means
+    K = \dfrac{w}{\sum_n \alpha_n\,p_n^{1-\sigma}}
+\end{align*}
+代回 \ref{eq:CES-opt-c}，得商品 \(i\) 的马歇尔需求函数
+\begin{align}
+    c_i = \dfrac{\alpha_i\,p_i^{-\sigma}}{\sum_n \alpha_n\,p_n^{1-\sigma}} \cdot w = s_i\,w
+    \label{eq:CES-marshall-demand}
+    \sidenote{该处理帮助我们避免求解 \sidemath{\(\lambda\)} 及复杂计算；将必要条件 \sidemath{\ref{eq:CES-opt-condition-ij}} 代入预算约束同样可行}
+\end{align}
+它告诉我们：每个商品消费量与其他商品的无关，但和所有商品的价格有关。稍微变换得支出占比表达式
+\begin{align*}
+    \dfrac{p_i\,c_i}{w} = \dfrac{\alpha_i\,p_i^{1-\sigma}}{\sum_n \alpha_n\,p_n^{1-\sigma}}
+\end{align*}
+
+\mysec{间接效用}
+
+间接效用函数是以价格表示（可实现的最大）效用。我们将马歇尔需求代入效用函数
+\begin{align*}
+    v\bka{\bsp,w} &= A \bks{\sum^N_{i=1} \alpha^{\frac1\sigma}_i \bka{\dfrac{\alpha_i\,p_i^{-\sigma}}{\sum_n \alpha_n\,p_n^{1-\sigma}} \cdot w}^{\frac{\sigma-1}{\sigma}}}^{\frac{\sigma}{\sigma-1}}\\
+    &= A \bkd{\sum^N_{i=1}\bks{\alpha_i\,p_i^{1-\sigma}\bka{\sum^N_{n=1}\alpha_n\,p_n^{1-\sigma}}^{-\frac{\sigma-1}{\sigma}} w^{\frac{\sigma-1}{\sigma}}}}^{\frac{\sigma}{\sigma-1}}\\
+    &= A\,w\bks{\bka{\sum^N_{i=1}\alpha_i\,p_i^{1-\sigma}}\bka{\sum^N_{n=1}\alpha_n\,p_n^{1-\sigma}}^{-\frac{\sigma-1}{\sigma}}} ^{\frac{\sigma}{\sigma-1}}\\
+    &= A\,w\bka{\sum^N_{i=1}\alpha_i\,p_i^{1-\sigma}}^{\frac{1}{\sigma-1}} = \dfrac{A\,w}P
+    \sidenote{价格指标见后文}
+\end{align*}
+
+\mysec{价格指数}
+
+既然间接效用函数与所有商品价格有关，并且在表达式中每个价格有相同的代数地位，我们就考虑能不能通过 “价格指数”来简化表达。
+
+定义价格指数为获得 1 单位效用的最小支出，即 \(P=e\bka{\bs p,1}\)。根据该定义及对偶性有
+\begin{align*}
+    w = P\cdot u\bka{\bs c^*}=P\cdot v\bka{\bsp,w}
+\end{align*}
+代入间接效用函数直接得
+\begin{align*}
+    P = \dfrac{w}{v} = \dfrac1A\bka{\sum^N_{i=1}\alpha_i\,p_i^{1-\sigma}}^{\frac{1}{1-\sigma}}
+\end{align*}
+
+另外，有时会看到价格指数是获得单位聚合商品的最小支出，到底“获得 1 单位什么”主要看目标函数。在起初的最优化问题中，目标函数是效用函数，对应的支出最小化问题也应以效用函数为约束条件。如果目标函数是聚合商品 \(C\) 的消费量，则价格指数为
+\begin{align*}
+    P = \dfrac wC = \dfrac w{u\islash A} = \bka{\sum^N_{i=1}\alpha_i\,p_i^{1-\sigma}}^{\frac{1}{1-\sigma}}
+\end{align*}
+无论如何，理清楚二者区别，即使目标函数和价格指数定义不对应，也能厘清。
+
+\mysec{特殊形式}
+
+\textbf{(i) 完全替代}
+
+考虑以 \ref{eq:CES-utility} 代表偏好的消费者认为商品间是完全替代的的，根据参数含义有 \(\sigma\to\infty\)。计算该情形下效用函数的极限
+\begin{align*}
+    u\bka{\bs c}=\lim_{\sigma\to\infty} A \bka{\sum^N_{n=1} \alpha^{\frac1\sigma}_n \, c_n^{\frac{\sigma-1}{\sigma}}}^{\frac{\sigma}{\sigma-1}}=A\bka{\sum^N_{n=1} \alpha_n^0\,c_n^1}^1=A\sum^N_{n=1} c_n
+\end{align*}
+换句话说，如果消费者认为商品间完全替代，则可用以上效用函数刻画他的偏好。
+
+\textbf{(ii) 完全互补}
+
+考虑消费者认为商品间是完全互补的，即 \(\sigma\to0^+\)。先改写
+\begin{align*}
+    u\bka{\bs c}
+    =A\bks{\sum\limits^N_{n=1}\alpha_n\bka{\dfrac{c_n}{\alpha_n}}^{\frac{\sigma-1}{\sigma}}}^{\frac{\sigma}{\sigma-1}}
+\end{align*}
+不失一般性，设
+\begin{align*}
+    \dfrac{c_1}{\alpha_1}=\min\limits_{1\le n\le N}\bkd{\dfrac{c_n}{\alpha_n}}
+\end{align*}
+当 \(0<\sigma<1\) 时 \(\bka{\sigma-1}/\sigma<1\)
+\begin{align*}
+    &\alpha_1\bka{\dfrac{c_1}{\alpha_1}}^{\frac{\sigma-1}{\sigma}}
+    \le \sum\limits^N_{n=1}\alpha_n\bka{\dfrac{c_n}{\alpha_n}}^{\frac{\sigma-1}{\sigma}}
+    \le \sum_{n=1}^N\alpha_n\bka{\dfrac{c_1}{\alpha_1}}^{\frac{\sigma-1}{\sigma}}=\bka{\dfrac{c_1}{\alpha_1}}^{\frac{\sigma-1}{\sigma}}\\
+    &\hspace{5em}\dfrac{c_1}{\alpha_1}
+    \le \bks{\sum\limits^N_{n=1}\alpha_n\bka{\dfrac{c_n}{\alpha_n}}^{\frac{\sigma-1}{\sigma}}}^{\frac{\sigma}{\sigma-1}}
+    \le \alpha_1^{\frac{\sigma}{\sigma-1}}\cdot\dfrac{c_1}{\alpha_1}
+\end{align*}
+因为 \(\lim\limits_{\sigma\to0^+}\alpha_1^{\sigma/\bka{\sigma-1}}=1\)，由夹逼定理得
+\begin{align*}
+    u\bka{\bs c}=\lim\limits_{\sigma\to0^+}A\bks{\sum\limits^N_{n=1}\alpha_n\bka{\dfrac{c_n}{\alpha_n}}^{\frac{\sigma-1}{\sigma}}}^{\frac{\sigma}{\sigma-1}}=A\cdot\dfrac{c_1}{\alpha_1}
+    = A\min\limits_{1\le n\le N}\bkd{\dfrac{c_n}{\alpha_n}}
+\end{align*}
+这就是里昂替夫（Leontief）效用函数。
+
+\textbf{(iii) 柯布-道格拉斯}
+
+当\(\sigma\to1\) 时效用函数也是未定式，所以我们要单独考虑这种情况中效用函数会变成如何。首先看是怎么样的未定式
+\begin{align*}
+    u\bka{\bs c}=\lim_{\sigma\to1} A \bka{\sum^N_{n=1} \alpha^{\frac1\sigma}_n \, c_n^{\frac{\sigma-1}{\sigma}}}^{\frac{\sigma}{\sigma-1}}
+    \sim
+    A\bka{\sum^N_{n=1}\alpha_n^1\,c_n^0}^\infty\sim A\cdot 1^\infty
+\end{align*}
+为处理该极限，我们使用 \(\lim A\cdot f\bkx=A\cdot\exp\bkd{\lim\ln f\bkx}\) 定理，先计算指数极限
+\begin{align*}
+    \lim_{\sigma\to1} \dfrac{\ln\sum_n\alpha^{1/\sigma}\,c_n^{\bka{\sigma-1}/\sigma}}{\bka{\sigma-1}/\sigma}
+    = \lim_{\sigma\to1} \dfrac{\sum_n \bka{\ln c_n-\ln\alpha_n}\,\alpha^{1/\sigma}_n\,c_n^{\bka{\sigma-1}/\sigma}}{\sum_n \alpha^{1/\sigma}_n\,c_n^{\bka{\sigma-1}/\sigma}}
+    = \sum^N_{n=1} \alpha_n\ln\dfrac{c_n}{\alpha_n}
+\end{align*}
+第一个等式中使用了洛必达（L'Hôpital）法则，分子分母分别对 \(\sigma\) 求导数。得到中间式后，其为定式，直接代入 \(\sigma=1\) 即得最后结果。回到效用函数
+\begin{align*}
+    u\bka{\bs c}=A\cdot\exp\bkd{\sum^N_{n=1} \alpha_n\ln\dfrac{c_n}{\alpha_n}}=A\prod^N_{n=1}\bka{\dfrac{c_n}{\alpha_n}}^{\alpha_n}=\tilde A \prod^N_{n=1}c_n^{\alpha_n}
+    \sidenote{\sidemath{\(\dis\tilde A=A\prod^N_{n=1}\alpha_n^{-\alpha_n}\)}}
+\end{align*}
+这就是柯布-道格拉斯（Cobb-Douglas）效用函数。
+
+\mysec{相关弹性}
+
+\textbf{(i) 需求弹性}
+
+为方便计算，我们对马歇尔需求取对数得
+\begin{align*}
+    \ln c_i = \ln w + \ln\alpha_i - \sigma\ln p_i - \ln\bka{\sum_n \alpha_n\,p_n^{1-\sigma}} 
+\end{align*}
+计算需求对自身价格和其他价格的弹性
+\begin{align*}
+    &\n{E}_{ii} = \dfrac{\p\ln c_i}{\p\ln p_i} = -\,\sigma + \dfrac{\bka{\sigma-1}\alpha_i\,p_i^{1-\sigma}}{\sum_n \alpha_n\,p_n^{1-\sigma}} = -\,\sigma + \bka{\sigma-1}s_i\\
+    &\n{E}_{ij} = \dfrac{\p\ln c_i}{\p\ln p_j} = \dfrac{\bka{\sigma-1}\alpha_j\,p_j^{1-\sigma}}{\sum_n \alpha_n\,p_n^{1-\sigma}} = \bka{\sigma-1}s_j
+\end{align*}
+其中
+\begin{align*}
+    s_i = \dfrac{p_i\,c_i}{w} = \dfrac{p_i}w \cdot \dfrac{\alpha_i\,p_i^{-\sigma}\,w}{\sum_n \alpha_n\,p_n^{1-\sigma}}= \dfrac{\alpha_i\,p_i^{1-\sigma}}{\sum_n \alpha_n\,p_n^{1-\sigma}}
+\end{align*}
+既然知道以上弹性大的具体表达式，那么代入 \(\sigma\) 值即得特殊形式 CES 函数的弹性；尤其关注柯布-道格拉斯的 —— 两个弹性均为常数，与价格和消费量无关。
+
+\textbf{(ii) 替代弹性}
+
+前文计算需求的交叉价格弹性 \(\n E_{ij}\) 衡量“绝对意义”上两商品间有多大程度的替代性，而常说的替代弹性是“相对意义”上两商品间的替代性。为捕捉相对性，替代弹性被定义为相对需求对相对价格的敏感程度，即
+\begin{align*}
+    \n{EoS}_{ij}=-\,\dfrac{\p\ln\bka{c_i/c_j}}{\p\ln\n{MRS}_{ij}}=-\,\dfrac{\p\ln\bka{c_i/c_j}}{\p\ln\bka{p_i/p_j}}
+    \sidenote{均衡条件成立，第二个等号才成立}
+\end{align*}
+
+任取 \(i,j\in\bkd{1,\ldots,N}\) 且 \(i\ne j\)。由 \ref{eq:CES-opt-condition} 可知，边际效用比为
+\begin{align*}
+    \n{MRS}_{ij}=\dfrac{\p u/\p c_i}{\p u/\p c_j}
+    =\dfrac{\alpha_i^{1/\sigma}c_i^{-1/\sigma}}{\alpha_j^{1/\sigma}c_j^{-1/\sigma}}
+    =\bka{\dfrac{\alpha_i}{\alpha_j}}^{1/\sigma}\bka{\dfrac{c_i}{c_j}}^{-1/\sigma}
+\end{align*}
+对结果取对数
+\begin{align*}
+    \ln\n{MRS}_{ij}
+    =\dfrac1\sigma\ln\dfrac{\alpha_i}{\alpha_j}
+    -\dfrac1\sigma\ln\dfrac{c_i}{c_j}
+\end{align*}
+因此，商品 \(i\) 与商品 \(j\) 的替代弹性为
+\begin{align*}
+    \n{EoS}_{ij}=-\,\dfrac{\p\ln\bka{c_i/c_j}}{\p\ln\n{MRS}_{ij}}
+    =\sigma
+\end{align*}
+
+
+
+\FinishStandaloneChapter

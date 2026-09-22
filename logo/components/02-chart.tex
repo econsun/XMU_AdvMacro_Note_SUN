@@ -1,0 +1,63 @@
+% 图表原子：普通比例版与 Poster 实际尺寸版共享同一 GDP 数据。
+\newcommand{\DrawLogoGDPBarsRange}[6]{%
+    \pgfmathtruncatemacro{\LogoBarCount}{floor((#3-#2)/#4)+1}%
+    \pgfmathtruncatemacro{\LogoBarLastIndex}{\LogoBarCount-1}%
+    \pgfmathsetmacro{\LogoBarStep}{(1-2*#6-#5)/max(1,\LogoBarLastIndex)}%
+    \foreach \BarIndex in {0,...,\LogoBarLastIndex} {%
+        \pgfmathtruncatemacro{\BarYear}{#2+\BarIndex*#4}%
+        \edef\BarHeight{\LogoGDPHeightForYear{\BarYear}}%
+        \pgfmathsetmacro{\BarX}{#6+\BarIndex*\LogoBarStep}%
+        \path[fill=#1,rounded corners=\LogoBarCornerRadius]
+            (\BarX,-1) rectangle ++(#5,\BarHeight);%
+    }%
+}
+
+\newcommand{\DrawLogoGDPBars}[1]{%
+    \DrawLogoGDPBarsRange{#1}{\LogoGDPStartYear}{\LogoGDPEndYear}%
+        {\LogoGDPYearInterval}{\LogoBarWidth}{\LogoBarSideInset}%
+}
+
+\newcommand{\AdvMacroLogoChart}[2]{%
+    \begin{scope}[shift={(\LogoChartLeft,-\LogoChartTop)},
+        x=\LogoChartXAxisLength,y=\LogoChartYAxisLength,
+        line cap=round,line join=round]
+        \DrawLogoGDPBars{#1}%
+        \draw[#2,line width=\LogoXAxisWidth] (0,-1) -- (1,-1);
+    \end{scope}%
+}
+\let\AdvMacroLogoAxis\AdvMacroLogoChart
+
+\newcommand{\DrawPosterLogoGDPBars}[1]{%
+    \pgfmathtruncatemacro{\PosterLogoBarCount}{%
+        floor((\PosterLogoEndYear-\PosterLogoStartYear)/\PosterLogoYearInterval)+1}%
+    \pgfmathsetlengthmacro{\PosterLogoBarGap}{%
+        (\PosterLogoChartWidth-\PosterLogoBarCount*\PosterLogoBarWidth)%
+        /(\PosterLogoBarCount+1)}%
+    \ifdim\PosterLogoBarGap<0pt
+        \PackageError{AdvMacro Logo}{Poster bars are wider than the chart}%
+            {Increase chart width, reduce bar width, or increase year interval.}%
+    \fi
+    \pgfmathsetlengthmacro{\PosterLogoAxisY}{-\PosterLogoChartHeight}%
+    \pgfmathtruncatemacro{\PosterLogoLastBarIndex}{\PosterLogoBarCount-1}%
+    \foreach \PosterLogoBarIndex in {0,...,\PosterLogoLastBarIndex} {%
+        \pgfmathtruncatemacro{\PosterLogoBarYear}{%
+            \PosterLogoStartYear+\PosterLogoBarIndex*\PosterLogoYearInterval}%
+        \edef\PosterLogoNormalizedHeight{%
+            \LogoGDPHeightForYear{\PosterLogoBarYear}}%
+        \pgfmathsetlengthmacro{\PosterLogoBarX}{%
+            \PosterLogoBarGap+\PosterLogoBarIndex%
+            *(\PosterLogoBarWidth+\PosterLogoBarGap)}%
+        \pgfmathsetlengthmacro{\PosterLogoBarHeight}{%
+            \PosterLogoChartHeight*\PosterLogoNormalizedHeight}%
+        \path[fill=#1,rounded corners=\LogoBarCornerRadius]
+            (\PosterLogoBarX,\PosterLogoAxisY)
+            rectangle ++(\PosterLogoBarWidth,\PosterLogoBarHeight);%
+    }%
+}
+
+\newcommand{\AdvMacroLogoPosterChart}[2]{%
+    \DrawPosterLogoGDPBars{#1}%
+    \pgfmathsetlengthmacro{\PosterLogoAxisY}{-\PosterLogoChartHeight}%
+    \draw[#2,line width=\PosterLogoAxisLineWidth,line cap=round]
+        (0,\PosterLogoAxisY) -- (\PosterLogoChartWidth,\PosterLogoAxisY);
+}

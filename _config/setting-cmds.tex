@@ -1,0 +1,639 @@
+% !TeX root = ../AdvMacroNote_Sun.tex
+\usepackage{xparse}    % 更灵活设置命令
+\usepackage{mfirstuc}  % 大写首字母命令
+
+% =========================================================
+% Macro Library (AdvMacro II)
+% 设计原则：
+% 1) 使用稳定、语义化的命名接口，便于维护和迁移
+% 2) 按「大模块 -> 小模块」组织，便于查找与扩展
+% 3) 基础宏在前，依赖宏在后，避免阅读时跳转
+% =========================================================
+
+\newcommand{\typolog}[2]{\noindent\ttt{#1}｜\AccentTerm{勘误}｜#2\par\vspace{0.1cm}}
+\newcommand{\newlog}[2]{\noindent\ttt{#1}｜\AccentBold{完成}｜#2\par\vspace{0.1cm}}
+\newcommand{\changelog}[2]{\noindent\ttt{#1}｜\BodyBold{更新}｜#2\par\vspace{0.1cm}}
+
+
+% 快速记号
+\newcommand{\ykbar}{\dfrac{\tilde\delta}{\alpha\,\beta}}
+\newcommand{\ckbar}{\bka{\dfrac{\tilde\delta}{\alpha\,\beta}-\delta}}
+
+% =========================================================
+% A. 基础快捷层 (Base Shortcuts)
+% =========================================================
+
+% A1. 文本包装与上下角标快捷
+\newcommand{\n}[1]{\text{#1}}
+\newcommand{\w}[1]{^{#1}}
+\newcommand{\s}[1]{_{#1}}
+\newcommand{\wn}[1]{^{\text{#1}}}
+\newcommand{\sn}[1]{_{\text{#1}}}
+
+\newcommand{\wsii}{^{\infty}_{i=1}}
+\newcommand{\wsni}{^{n}_{i=1}}
+\newcommand{\wsito}{^{\infty}_{t=0}}
+
+% A2. 常用显示模式/短语
+\newcommand{\dis}{\displaystyle}
+\newcommand{\st}{\text{s.t.}}
+\newcommand{\iid}{\text{i.i.d.}}
+
+
+% =========================================================
+% B. 字体与字母体系 (Fonts & Alphabets)
+% =========================================================
+
+% B1. 黑板体、花体、草体
+\newcommand{\bbrn}{\bbr[n]}
+
+\NewDocumentCommand{\bbr}{o}{%
+  \mathbb{R}\IfValueT{#1}{^{#1}}%
+}
+
+\NewDocumentCommand{\bb}{m o}{%
+  \mathbb{#1}\IfValueT{#2}{^{#2}}%
+}
+
+\RenewDocumentCommand{\cal}{m o}{%
+  \mathcal{#1}\IfValueT{#2}{^{#2}}%
+}
+
+\NewDocumentCommand{\scr}{m o}{%
+  \mathscr{#1}\IfValueT{#2}{^{#2}}%
+}
+
+% B2. 常用目标函数符号
+\newcommand*{\lagrangian}{\mathcal{L}}
+
+
+% =========================================================
+% C. 颜色体系 (Color Helpers)
+% =========================================================
+
+% 中文术语使用强调色与黑体；英文释义使用弱化色与斜体。
+% 英文部分显式采用英文断词规则，并允许在单词内部显示连字符后换行。
+\newcommand{\AccentTerm}[1]{{\color{ActiveAccent}\sffamily\bfseries #1}}
+\newcommand{\TermEnglish}[1]{{%
+  \color{SecondaryText}（{%
+    \itshape
+    \language=0\relax
+    \lefthyphenmin=2\relax
+    \righthyphenmin=3\relax
+    \hyphenchar\font=`\-\relax
+    #1%
+  }）%
+}}
+\NewDocumentCommand{\term}{m m}{\AccentTerm{#1}\hspace{-1pt}\TermEnglish{#2}\hspace{-1pt}}
+% Neutral helpers for accent marks, labels, and changelog tags.
+\newcommand{\AccentMark}[1]{{\color{ActiveAccent}#1}}
+\newcommand{\AccentBold}[1]{\textcolor{ActiveAccent}{\textbf{#1}}}
+\newcommand{\BodyBold}[1]{\textcolor{BodyText}{\textbf{#1}}}
+\newcommand{\TopicLabel}[1]{\noindent\textcolor{BodyText}{\textbf{#1}}}
+
+% 公式局部强调：A 跟随当前课程主题色，B/C 用于同一公式中的对照项。
+% 通用命令接受可选颜色名；A/B/C 命令是正文中的快捷接口。
+\NewDocumentCommand{\MathMark}{O{MathEmphasisA}m}{{\color{#1}#2}}
+\newcommand{\MathMarkA}[1]{\MathMark[MathEmphasisA]{#1}}
+\newcommand{\MathMarkB}[1]{\MathMark[MathEmphasisB]{#1}}
+\newcommand{\MathMarkC}[1]{\MathMark[MathEmphasisC]{#1}}
+
+% 分别扩展内容盒子的横向宽度与纵向高度，供 Highlight/Frame 共用。
+\newcommand{\MathEmphasisPaddedContent}[3]{%
+    \hspace{#1}%
+    \raisebox{0pt}[\dimexpr\height+#2\relax][\dimexpr\depth+#2\relax]{#3}%
+    \hspace{#1}%
+}
+
+\NewDocumentCommand{\MathHighlight}{O{MathEmphasisA}m}{%
+    \begingroup
+    \setlength{\fboxsep}{0pt}%
+    \mathchoice
+        {\colorbox{#1!\MathHighlightTint!PageBackground}{\MathEmphasisPaddedContent{\MathHighlightHorizontalPadding}{\MathHighlightVerticalPadding}{\(\displaystyle\color{BodyText}#2\)}}}%
+        {\colorbox{#1!\MathHighlightTint!PageBackground}{\MathEmphasisPaddedContent{\MathHighlightHorizontalPadding}{\MathHighlightVerticalPadding}{\(\textstyle\color{BodyText}#2\)}}}%
+        {\colorbox{#1!\MathHighlightTint!PageBackground}{\MathEmphasisPaddedContent{\MathHighlightHorizontalPadding}{\MathHighlightVerticalPadding}{\(\scriptstyle\color{BodyText}#2\)}}}%
+        {\colorbox{#1!\MathHighlightTint!PageBackground}{\MathEmphasisPaddedContent{\MathHighlightHorizontalPadding}{\MathHighlightVerticalPadding}{\(\scriptscriptstyle\color{BodyText}#2\)}}}%
+    \endgroup
+}
+\newcommand{\MathHighlightA}[1]{\MathHighlight[MathEmphasisA]{#1}}
+\newcommand{\MathHighlightB}[1]{\MathHighlight[MathEmphasisB]{#1}}
+\newcommand{\MathHighlightC}[1]{\MathHighlight[MathEmphasisC]{#1}}
+
+\NewDocumentCommand{\MathFrame}{O{MathEmphasisA}m}{%
+    \begingroup
+    \setlength{\fboxsep}{0pt}%
+    \setlength{\fboxrule}{\MathFrameRuleWidth}%
+    \mathchoice
+        {\fcolorbox{#1}{PageBackground}{\MathEmphasisPaddedContent{\MathFrameHorizontalPadding}{\MathFrameVerticalPadding}{\(\displaystyle\color{BodyText}#2\)}}}%
+        {\fcolorbox{#1}{PageBackground}{\MathEmphasisPaddedContent{\MathFrameHorizontalPadding}{\MathFrameVerticalPadding}{\(\textstyle\color{BodyText}#2\)}}}%
+        {\fcolorbox{#1}{PageBackground}{\MathEmphasisPaddedContent{\MathFrameHorizontalPadding}{\MathFrameVerticalPadding}{\(\scriptstyle\color{BodyText}#2\)}}}%
+        {\fcolorbox{#1}{PageBackground}{\MathEmphasisPaddedContent{\MathFrameHorizontalPadding}{\MathFrameVerticalPadding}{\(\scriptscriptstyle\color{BodyText}#2\)}}}%
+    \endgroup
+}
+\newcommand{\MathFrameA}[1]{\MathFrame[MathEmphasisA]{#1}}
+\newcommand{\MathFrameB}[1]{\MathFrame[MathEmphasisB]{#1}}
+\newcommand{\MathFrameC}[1]{\MathFrame[MathEmphasisC]{#1}}
+
+\NewDocumentCommand{\MathUnderbrace}{O{MathEmphasisA}mm}{{%
+    \color{#1}\underbrace{\color{BodyText}#2}_{\color{#1}#3}%
+}}
+\newcommand{\MathUnderbraceA}[2]{\MathUnderbrace[MathEmphasisA]{#1}{#2}}
+\newcommand{\MathUnderbraceB}[2]{\MathUnderbrace[MathEmphasisB]{#1}{#2}}
+\newcommand{\MathUnderbraceC}[2]{\MathUnderbrace[MathEmphasisC]{#1}{#2}}
+
+\newcommand{\StepBadge}[1]{%
+    \tikz[baseline=(step.base)]\node[
+        draw,
+        circle,
+        inner sep=0.25pt,
+        line width=0.45pt,
+        font=\scriptsize
+    ] (step) {#1};%
+}
+
+
+% =========================================================
+% D. 间距体系 (Spacing System)
+% =========================================================
+
+% D1. 文档垂直间距：v = 增加, m = 减少
+\newcommand{\spacexs}{\vspace{1pt}}
+\newcommand{\spaces}{\vspace{2pt}}
+\newcommand{\spacem}{\vspace{4pt}}
+\newcommand{\spacel}{\vspace{6pt}}
+\newcommand{\mspacexs}{\vspace{-1pt}}
+\newcommand{\mspaces}{\vspace{-2pt}}
+\newcommand{\mspacem}{\vspace{-4pt}}
+\newcommand{\mspacel}{\vspace{-6pt}}
+
+% D2. 数学水平间距
+\newcommand{\mathspacexs}{\mspace{1mu}}
+\newcommand{\mathspaces}{\mspace{2mu}}
+\newcommand{\mathspacem}{\mspace{4mu}}
+\newcommand{\mathspacel}{\mspace{6mu}}
+
+% D3. 统一调整数学模式中的 \, 宽度（正文模式保持原行为）
+\let\originalthinspace\,
+\renewcommand{\,}{\ifmmode \mathspaces \else \originalthinspace \fi}
+
+
+
+% =========================================================
+% E. 括号与分隔符体系 (Delimiters)
+% =========================================================
+
+% E1. 基础自适应括号（bk 系列保留 left/right）
+\newcommand{\bka}[1]{\left(\mathspacexs#1\mathspacexs\right)}
+\newcommand{\bks}[1]{\left[\mathspacexs#1\mathspacexs\right]}
+\newcommand{\bkd}[1]{\left\{\mathspacexs#1\mathspacexs\right\}}
+\newcommand{\bkf}[1]{\left|\mathspacexs#1\mathspacexs\right|}
+\newcommand{\bkg}[1]{\left\|\mathspacexs#1\mathspacexs\right\|}
+\newcommand{\bkas}[1]{\left(\mathspacexs#1\mathspacexs\right]}
+\newcommand{\bksa}[1]{\left[\mathspacexs#1\mathspacexs\right)}
+
+% E2. 手动尺寸括号快捷层
+% 约定：
+% q  = big
+% p  = Big
+% qp = bigg
+% pp = Bigg
+% 括号外侧额外保留一点点小间隙
+\newcommand{\delimout}{\mathspaces}
+
+\newcommand{\pa}[1]{\delimout\bigl(\mathspacexs#1\mathspacexs\bigr)\delimout}
+\newcommand{\ps}[1]{\delimout\bigl[\mathspacexs#1\mathspacexs\bigr]\delimout}
+\newcommand{\pd}[1]{\delimout\bigl\{\mathspacexs#1\mathspacexs\bigr\}\delimout}
+\newcommand{\pf}[1]{\delimout\bigl|\mathspacexs#1\mathspacexs\bigr|\delimout}
+\newcommand{\pg}[1]{\delimout\bigl\|\mathspacexs#1\mathspacexs\bigr\|\delimout}
+
+\newcommand{\qpa}[1]{\delimout\Bigl(\mathspacexs#1\mathspacexs\Bigr)\delimout}
+\newcommand{\qps}[1]{\delimout\Bigl[\mathspacexs#1\mathspacexs\Bigr]\delimout}
+\newcommand{\qpd}[1]{\delimout\Bigl\{\mathspacexs#1\mathspacexs\Bigr\}\delimout}
+\newcommand{\qpf}[1]{\delimout\Bigl|\mathspacexs#1\mathspacexs\Bigr|\delimout}
+\newcommand{\qpg}[1]{\delimout\Bigl\|\mathspacexs#1\mathspacexs\Bigr\|\delimout}
+
+\newcommand{\ppa}[1]{\delimout\biggl(\mathspacexs#1\mathspacexs\biggr)\delimout}
+\newcommand{\pps}[1]{\delimout\biggl[\mathspacexs#1\mathspacexs\biggr]\delimout}
+\newcommand{\ppd}[1]{\delimout\biggl\{\mathspacexs#1\mathspacexs\biggr\}\delimout}
+\newcommand{\ppf}[1]{\delimout\biggl|\mathspacexs#1\mathspacexs\biggr|\delimout}
+\newcommand{\ppg}[1]{\delimout\biggl\|\mathspacexs#1\mathspacexs\biggr\|\delimout}
+
+\newcommand{\qa}[1]{\delimout(\mathspacexs#1\mathspacexs)\delimout}
+\newcommand{\qs}[1]{\delimout[\mathspacexs#1\mathspacexs]\delimout}
+\newcommand{\qd}[1]{\delimout\{\mathspacexs#1\mathspacexs\}\delimout}
+\newcommand{\qf}[1]{\delimout|\mathspacexs#1\mathspacexs|\delimout}
+\newcommand{\qg}[1]{\delimout\|\mathspacexs#1\mathspacexs\|\delimout}
+
+% E3. 竖线和斜杠分隔符
+\newcommand{\islash}{{\mathspaces}/{\mathspaces}}
+\newcommand{\bigslash}{{\mathspaces}\big/{\mathspaces}}
+\newcommand{\biggslash}{{\mathspaces}\bigg/{\mathspaces}}
+\newcommand{\Bigslash}{{\mathspaces}\Big/{\mathspaces}}
+\newcommand{\Biggslash}{{\mathspaces}\Bigg/{\mathspaces}}
+
+\newcommand{\ivbar}{{\mathspaces}|{\mathspaces}}
+\newcommand{\bigbar}[1]{{\mathspaces}\big|_{\,#1}}
+\newcommand{\biggbar}[1]{{\mathspaces}\bigg|_{\,#1}}
+\newcommand{\Bigbar}[1]{{\mathspaces}\Big|_{\,#1}}
+\newcommand{\Biggbar}[1]{{\mathspaces}\Bigg|_{\,#1}}
+
+% E4. 矩阵/向量括号模板：默认给一个固定尺寸，不再自动伸缩
+\newcommand{\matspace}{\mspace{2mu}}
+
+\newcommand{\matbka}[1]{\left(\matspace\begin{matrix}#1\end{matrix}\matspace\right)}
+\newcommand{\matbks}[1]{\left[\matspace\begin{matrix}#1\end{matrix}\matspace\right]}
+\newcommand{\matbkf}[1]{\left|\matspace\begin{matrix}#1\end{matrix}\matspace\right|}
+\newcommand{\vecbka}[1]{\left(\matspace\begin{matrix}#1\end{matrix}\matspace\right)}
+\newcommand{\vecbks}[1]{\left[\matspace\begin{matrix}#1\end{matrix}\matspace\right]}
+
+% E5. 常用加修饰括号（bar/hat/tilde + 下标文本）
+\newcommand{\qab}[2]{\bar{\bka{#1}}}
+\newcommand{\qah}[2]{\hat{\bka{#1}}}
+\newcommand{\qat}[2]{\tilde{\bka{#1}}}
+\newcommand{\qabw}[2]{\qa{\mathspacexs\bar{#1}^{\text{#2}}\mathspacexs}}
+\newcommand{\qahw}[2]{\qa{\mathspacexs\hat{#1}^{\text{#2}}\mathspacexs}}
+\newcommand{\qatw}[2]{\qa{\mathspacexs\tilde{#1}^{\text{#2}}\mathspacexs}}
+\newcommand{\qabs}[2]{\qa{\mathspacexs\bar{#1}_{\text{#2}}\mathspacexs}}
+\newcommand{\qahs}[2]{\qa{\mathspacexs\hat{#1}_{\text{#2}}\mathspacexs}}
+\newcommand{\qats}[2]{\qa{\mathspacexs\tilde{#1}_{\text{#2}}\mathspacexs}}
+\newcommand{\qabws}[3]{\qa{\mathspacexs\bar{#1}^{\text{#2}}_{\text{#3}}\mathspacexs}}
+\newcommand{\qahws}[3]{\qa{\mathspacexs\hat{#1}^{\text{#2}}_{\text{#3}}\mathspacexs}}
+\newcommand{\qatws}[3]{\qa{\mathspacexs\tilde{#1}^{\text{#2}}_{\text{#3}}\mathspacexs}}
+
+
+% =========================================================
+% F. 运算与统计算子 (Operations & Statistical Operators)
+% =========================================================
+
+% F1. 极限与收敛相关
+\newcommand{\nti}{n\to\infty}
+\newcommand{\limn}{\lim_{n\to\infty}}
+
+% F2. 行内分式与根号格式
+\newcommand{\ifrac}[2]{%
+  \mathchoice
+    {\frac{#1}{#2}}
+    {\scaleobj{1.3}{\frac{#1}{#2}}}
+    {\frac{#1}{#2}}
+    {\frac{#1}{#2}}
+}
+
+\makeatletter
+\NewDocumentCommand{\dsq}{o}{\@ifnextchar\bgroup{\dsq@a[#1]}{\@ifnextchar- {\dsq@neg[#1]}{\dsq@one[#1]}}}
+\def\dsq@a[#1]#2{\IfValueTF{#1}{\dis\sqrt[#1]{\,#2}}{\dis\sqrt{\,#2}}}
+\def\dsq@neg[#1]-#2{\dsq@a[#1]{-#2}}
+\def\dsq@one[#1]#2{\dsq@a[#1]{#2}}
+\makeatother
+
+% F3. Palatino 运算符：使用 \mathop 保留运算符两侧的数学间距。
+% 普通算子的上下标放在右侧；极限型算子在行间公式中自动放到正下方。
+\newfontfamily\PalatinoOperatorFont{Palatino}
+\newcommand{\PalatinoOperator}[1]{\mathop{\text{\PalatinoOperatorFont #1}}\nolimits}
+\newcommand{\PalatinoLimitOperator}[1]{\mathop{\text{\PalatinoOperatorFont #1}}\displaylimits}
+
+\newcommand{\mean}{\PalatinoOperator{E}}
+\newcommand{\meant}{\PalatinoOperator{E}_t}
+\newcommand{\meano}{\PalatinoOperator{E}_0}
+\newcommand{\var}{\PalatinoOperator{Var}}
+\newcommand{\cov}{\PalatinoOperator{Cov}}
+\newcommand{\avar}{\PalatinoOperator{avar}}
+\newcommand{\se}{\PalatinoOperator{se}}
+\newcommand{\pr}{\PalatinoOperator{Pr}}
+
+% F4. 常用函数、极值与集合上下界显示
+\renewcommand{\ln}{\PalatinoOperator{ln}}
+\renewcommand{\log}{\PalatinoOperator{log}}
+\renewcommand{\exp}{\PalatinoOperator{exp}}
+\renewcommand{\max}{\PalatinoLimitOperator{max}}
+\renewcommand{\min}{\PalatinoLimitOperator{min}}
+\renewcommand{\sup}{\PalatinoLimitOperator{sup}}
+\renewcommand{\inf}{\PalatinoLimitOperator{inf}}
+
+\newcommand{\maxlim}{\PalatinoLimitOperator{max}}
+\newcommand{\minlim}{\PalatinoLimitOperator{min}}
+\newcommand{\suplim}{\PalatinoLimitOperator{sup}}
+\newcommand{\inflim}{\PalatinoLimitOperator{inf}}
+\newcommand{\cuplim}{\bigcup\limits}
+\newcommand{\caplim}{\bigcap\limits}
+
+
+% =========================================================
+% G. 微积分与差分体系 (Calculus & Difference)
+% =========================================================
+
+% G1. 微分/偏导/差分符号
+\renewcommand{\d}{\text{\PalatinoOperatorFont d}\mathspaces}
+\newcommand{\dd}{\text{\PalatinoOperatorFont d}^2\mathspaces}
+\newcommand{\p}{\partial\mathspaces}
+\newcommand{\pp}{\partial^2\mathspaces}
+\newcommand{\D}{\Delta\mathspaces}
+\newcommand{\DD}{\Delta^2\mathspaces}
+
+% G2. 导数模板
+\newcommand{\dfracd}[1]{\frac{\text{\PalatinoOperatorFont d}}{\d{#1}}}
+\newcommand{\dfracp}[1]{\frac{\partial}{\p{#1}}}
+\newcommand{\dfracdd}[1]{\frac{\text{\PalatinoOperatorFont d}^2}{\d{#1}^2}}
+\newcommand{\dfracpp}[1]{\frac{\partial^2}{\p{#1}^2}}
+
+
+% =========================================================
+% H. 箭头与上下角标体系 (Arrows & Scripts)
+% =========================================================
+
+% H1. 概率论常用收敛箭头
+\newcommand{\pto}{\xrightarrow{p}}
+\newcommand{\dto}{\xrightarrow{d}}
+\newcommand{\asto}{\xrightarrow{a.s.}}
+\newcommand{\wto}{\xrightarrow{w}}
+
+% H2. 通用上下角标后缀
+\newcommand{\inv}{^{-1}}
+\newcommand{\tra}{^{\top}}
+\newcommand{\nt}{_{t+1}}
+\newcommand{\nnt}{_{t+2}}
+\newcommand{\lt}{_{t-1}}
+\newcommand{\llt}{_{t-2}}
+
+
+% =========================================================
+% I. 符号风格与分布名 (Styling & Distributions)
+% =========================================================
+
+% I1. 其他通用符号
+\newcommand{\abfun}{\,\cdot\,}
+\renewcommand{\i}{\infty}
+
+% I2. 加粗数学符号（向量/矩阵）
+\newcommand{\bs}[1]{\symbfit{#1}}
+\newcommand{\bbs}[1]{\bar{\symbfit{#1}}}
+\newcommand{\hbs}[1]{\hat{\symbfit{#1}}}
+\newcommand{\tbs}[1]{\tilde{\symbfit{#1}}}
+
+\newcommand{\bsp}{\symbfit{p}}
+\newcommand{\bsx}{\symbfit{x}}
+\newcommand{\bsy}{\symbfit{y}}
+\newcommand{\bsz}{\symbfit{z}}
+\newcommand{\bsA}{\symbfit{A}}
+\newcommand{\bsM}{\symbfit{M}}
+\newcommand{\bsI}{\symbfit{I}}
+\newcommand{\bsX}{\symbfit{X}}
+
+% I3. 常见概率分布名
+\newcommand{\poisson}{\text{Poisson}}
+\newcommand{\normal}{\text{Normal}}
+\newcommand{\exponential}{\text{Exponential}}
+\newcommand{\bernoulli}{\text{Bernoulli}}
+\newcommand{\binomial}{\text{Binomial}}
+\newcommand{\geometric}{\text{Geometric}}
+\newcommand{\uniform}{\text{Uniform}}
+\newcommand{\lognormal}{\text{Lognormal}}
+\newcommand{\cauchy}{\text{Cauchy}}
+\newcommand{\negabinomial}{\text{NBinomial}}
+\newcommand{\gam}{\text{Gamma}}
+
+
+% =========================================================
+% J. 高层快捷模板 (High-level Shorthands)
+% =========================================================
+
+% J1. 单字母括号快捷
+\newcommand{\bkk}{\bka{k}}
+\newcommand{\bkt}{\bka{t}}
+\newcommand{\bku}{\bka{u}}
+\newcommand{\bkv}{\bka{v}}
+\newcommand{\bkx}{\bka{x}}
+\newcommand{\bki}{\bka{i}}
+\newcommand{\bkj}{\bka{j}}
+\newcommand{\bky}{\bka{y}}
+\newcommand{\bkz}{\bka{z}}
+\newcommand{\bkA}{\bka{A}}
+\newcommand{\bkX}{\bka{X}}
+\newcommand{\bko}{\bka{0}}
+
+% J2. 单字母加粗括号快捷
+\newcommand{\bkbsp}{\bka{\symbfit{p}}}
+\newcommand{\bkbsx}{\bka{\symbfit{x}}}
+\newcommand{\bkbsy}{\bka{\symbfit{y}}}
+\newcommand{\bkbs}[1]{\bka{\symbfit{#1}}}
+
+% J3. 常见时序/样本表达快捷
+\newcommand{\bkct}{\bka{c_t}}
+\newcommand{\bkcnt}{\bka{c_{t+1}}}
+\newcommand{\bkkt}{\bka{k_t}}
+\newcommand{\bkknt}{\bka{k_{t+1}}}
+\newcommand{\bkkstar}{\bka{k^*}}
+\newcommand{\bkdxn}{\bkd{x_n}}
+\newcommand{\bkdxt}{\bkd{x_t}}
+\newcommand{\bkdyt}{\bkd{y_t}}
+\newcommand{\bkdut}{\bkd{u_t}}
+\newcommand{\bkXYi}{\bkd{X_i,Y_i}}
+
+% J4. 多变量组合快捷
+\newcommand{\bkab}{\bka{a,b}}
+\newcommand{\bkxy}{\bka{x,y}}
+\newcommand{\bkxz}{\bka{x,z}}
+\newcommand{\bkyz}{\bka{y,z}}
+\newcommand{\bkxyz}{\bka{x,y,z}}
+\newcommand{\bkXY}{\bka{X,Y}}
+\newcommand{\bkKL}{\bka{K,L}}
+\newcommand{\bkKAL}{\bka{K,AL}}
+\newcommand{\bkoo}{\bka{0,0}}
+\newcommand{\bkdXY}{\bkd{X,Y}}
+\newcommand{\bkit}{\bka{i,t}}
+\newcommand{\bkqq}{\bka{q_1,q_2}}
+\newcommand{\bkxx}{\bka{x_1,x_2}}
+\newcommand{\bkXX}{\bka{X_1,X_2}}
+\newcommand{\bkyy}{\bka{y_1,y_2}}
+\newcommand{\bkKALt}{\bks{K\bkt,\,A\bkt L\bkt}}
+
+% J5. 序列书写模板
+\newcommand{\xx}[1]{#1_1,#1_2}
+\newcommand{\xxstar}[1]{#1^*_1,#1^*_2}
+\newcommand{\xxprime}[1]{#1'_1,#1'_2}
+\newcommand{\xxx}[1]{#1_1,#1_2,#1_3}
+\newcommand{\sexn}[1]{#1_1,\dots,#1_n}
+\newcommand{\sexs}[1]{#1_1,\dots,#1_s}
+\newcommand{\sexxn}[1]{#1_1,#1_2,\dots,#1_n}
+\newcommand{\sexxd}[1]{#1_1,#1_2,\dots}
+
+% J6. 增长率模板
+\newcommand{\grt}[1]{\dfrac{\dot #1}{#1}}
+\newcommand{\grta}[1]{\dfrac{\dot{\bka{#1}}}{#1}}
+\newcommand{\grts}[1]{\dfrac{\dot{\bks{#1}}}{#1}}
+\newcommand{\grtt}[1]{\dfrac{\dot #1\bkt}{#1\bkt}}
+\newcommand{\ingrt}[1]{\dot{#1}\islash{#1}}
+\newcommand{\ingrta}[1]{\dot{\bka{#1}}\islash{#1}}
+\newcommand{\ingrts}[1]{\dot{\bks{#1}}\islash{#1}}
+
+\newcommand{\dfracb}[2]{\dfrac{\bar{#1}}{\bar{#2}}}
+
+
+% ==========================================
+% ==========================================
+% _config/mathcmds.tex — 数学符号与算子宏
+% ==========================================
+% ==========================================
+
+% ---------- 概率与统计 ----------
+\newcommand{\Var}{\PalatinoOperator{Var}}        % 方差
+\newcommand{\Cov}{\PalatinoOperator{Cov}}        % 协方差
+\newcommand{\Corr}{\PalatinoOperator{Corr}}      % 相关系数
+\newcommand{\SD}{\PalatinoOperator{SD}}          % 标准差
+\newcommand{\SE}{\PalatinoOperator{se}}          % 标准误
+
+% ---------- 优化 ----------
+\newcommand{\argmax}{\PalatinoLimitOperator{arg\,max}}
+\newcommand{\argmin}{\PalatinoLimitOperator{arg\,min}}
+\newcommand{\maximize}{\PalatinoLimitOperator{maximize}}
+\newcommand{\minimize}{\PalatinoLimitOperator{minimize}}
+
+% ---------- 括号与范数 ----------
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inp}{\langle}{\rangle}      % 内积
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+% ---------- 线性代数 ----------
+\newcommand{\tr}{\PalatinoOperator{tr}}
+
+
+\newcommand{\means}{\quad\Rightarrow\quad}
+\newcommand{\rmeans}{\Rightarrow\quad}
+
+\newcommand{\idxtt}[1]{^T_{t=#1}}
+\newcommand{\idxti}[1]{^\infty_{t=#1}}
+
+% =========================================================
+% Numbering, appendices, and cross-reference compatibility
+% =========================================================
+
+\makeatletter
+\newif\if@InChapterAppendix
+\@InChapterAppendixfalse
+\newif\if@InBookAppendix
+\@InBookAppendixfalse
+
+\let\@OrigThechapter\thechapter
+\let\@OrigTheHchapter\theHchapter
+\let\@OrigThesection\thesection
+\let\@OrigTheHsection\theHsection
+\let\@OrigTheequation\theequation
+\let\@OrigTheHequation\theHequation
+\let\@OrigThefigure\thefigure
+\let\@OrigTheHfigure\theHfigure
+\let\@OrigThetable\thetable
+\let\@OrigTheHtable\theHtable
+
+\newcommand{\NoteStandardNumbering}{%
+    \renewcommand{\theequation}{\thechapter-\arabic{equation}}%
+    \renewcommand{\theHequation}{chap.\thechapter.eq.\arabic{equation}}%
+    \renewcommand{\thefigure}{\thechapter.\arabic{figure}}%
+    \renewcommand{\theHfigure}{chap.\thechapter.fig.\arabic{figure}}%
+    \renewcommand{\thetable}{\thechapter.\arabic{table}}%
+    \renewcommand{\theHtable}{chap.\thechapter.tab.\arabic{table}}%
+}
+\NoteStandardNumbering
+
+\newcommand{\BeginChapterAppendix}{%
+    \@InChapterAppendixtrue
+    \setcounter{section}{0}%
+    \renewcommand{\thesection}{\thechapter.\Alph{section}}%
+    \renewcommand{\theHsection}{chap\thechapter.app.\arabic{section}}%
+    \par\vspace{6ex}%
+    {\centering\bfseries\large 本章附录\par}%
+    \par
+}
+
+\newcommand{\EndChapterAppendix}{%
+    \if@InChapterAppendix
+        \@InChapterAppendixfalse
+        \let\thesection\@OrigThesection
+        \let\theHsection\@OrigTheHsection
+        \NoteStandardNumbering
+    \fi
+}
+
+\newcommand{\BeginBookAppendix}{%
+    \@InBookAppendixtrue
+    % 全书附录及其后的后记区域持续使用独立主题色。
+    \setcourseaccent{AppendixAccent}%
+    \appendix
+    \setcounter{chapter}{0}%
+    \setcounter{section}{0}%
+    \setcounter{subsection}{0}%
+    \renewcommand{\theHchapter}{bookappendix.\Alph{chapter}}%
+    \renewcommand{\theequation}{\thechapter-\arabic{equation}}%
+    \renewcommand{\theHequation}{bookappendix.\Alph{chapter}.eq.\arabic{equation}}%
+    \renewcommand{\thefigure}{\thechapter.\arabic{figure}}%
+    \renewcommand{\theHfigure}{bookappendix.\Alph{chapter}.fig.\arabic{figure}}%
+    \renewcommand{\thetable}{\thechapter.\arabic{table}}%
+    \renewcommand{\theHtable}{bookappendix.\Alph{chapter}.tab.\arabic{table}}%
+}
+
+\newcommand{\EndBookAppendix}{%
+    \if@InBookAppendix
+        \@InBookAppendixfalse
+        \let\thechapter\@OrigThechapter
+        \let\theHchapter\@OrigTheHchapter
+        \let\thesection\@OrigThesection
+        \let\theHsection\@OrigTheHsection
+        \NoteStandardNumbering
+    \fi
+}
+
+\pretocmd{\chapter}{\EndChapterAppendix}{}{}
+\makeatother
+
+\newcommand{\PrintChapterBibliography}{%
+    \EndChapterAppendix
+    \printbibliography[heading=subbibliography,title={参考文献}]%
+}
+
+\crefformat{chapter}{第~#2#1#3~章}
+\Crefformat{chapter}{第~#2#1#3~章}
+\crefformat{section}{第~#2#1#3~节}
+\Crefformat{section}{第~#2#1#3~节}
+\crefformat{subsection}{第~#2#1#3~小节}
+\Crefformat{subsection}{第~#2#1#3~小节}
+\crefformat{equation}{式~(#2#1#3)}
+\Crefformat{equation}{式~(#2#1#3)}
+\crefname{figure}{图}{图}
+\Crefname{figure}{图}{图}
+\crefname{table}{表}{表}
+\Crefname{table}{表}{表}
+
+% Prefix-aware \ref keeps the migrated prose's original reading style.
+\let\AdvMacroRawRef\ref
+\newcommand{\AdvMacroFullLink}[2]{\hyperref[#1]{{\bfseries #2}}}
+\newcommand{\AdvMacroRefWithTitle}[1]{%
+    \IfBeginWith{#1}{ch:}
+        {\AdvMacroFullLink{#1}{第~\AdvMacroRawRef*{#1}~章《\nameref*{#1}》}}
+        {\IfBeginWith{#1}{part:}
+            {\AdvMacroFullLink{#1}{第~\AdvMacroRawRef*{#1}~部分《\nameref*{#1}》}}
+            {\IfBeginWith{#1}{sec:}
+                {\AdvMacroFullLink{#1}{第~\AdvMacroRawRef*{#1}~节《\nameref*{#1}》}}
+                {\IfBeginWith{#1}{subsec:}
+                    {\AdvMacroFullLink{#1}{第~\AdvMacroRawRef*{#1}~小节《\nameref*{#1}》}}
+                    {\IfBeginWith{#1}{fig:}
+                        {\AdvMacroFullLink{#1}{图~\AdvMacroRawRef*{#1}}}
+                        {\IfBeginWith{#1}{tab:}
+                            {\AdvMacroFullLink{#1}{表~\AdvMacroRawRef*{#1}}}
+                            {\IfBeginWith{#1}{eq:}
+                                {\AdvMacroFullLink{#1}{(\AdvMacroRawRef*{#1})}}
+                                {\AdvMacroRawRef{#1}}%
+                            }%
+                        }%
+                    }%
+                }%
+            }%
+        }%
+}
+\AtBeginDocument{%
+    \let\AdvMacroRawRef\ref
+    \let\ref\AdvMacroRefWithTitle
+}
+
+% 高宏特供
+\newcommand{\bkskt}{\bks{k\bkt}}
+\newcommand{\ALt}{A\bkt L\bkt}

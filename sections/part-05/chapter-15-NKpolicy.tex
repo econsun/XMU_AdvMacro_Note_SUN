@@ -1,0 +1,313 @@
+% !LW recipe = XeLaTeX once (current file)
+\ifdefined\CourseRootDocument
+\providecommand{\FinishStandaloneChapter}{}
+\else
+\documentclass[11pt,oneside,openany,UTF8,fontset=none]{ctexbook}
+\def\StandaloneChapterNumber{15}
+\def\StandaloneCourseSetup{\UseMacroIICourse}
+\input{../../_config/core/chapter-standalone}
+\def\FinishStandaloneChapter{\end{document}}
+\fi
+
+
+\chapter{NK 模型：政策设计}\label{ch:15}
+
+\section{NK 模型的无效率}
+
+经济体中资源分配是有效率的，当边际替代率、边际转换率和边际产出相等时，即
+\begin{align*}
+    \n{MRS}_{C,N,t}=\n{MRT}_{C,N,t}=\n{MPN}_t
+\end{align*}
+NK 模型的均衡是 \term{次优的}{suboptimal}，其引入的两大微观机制使得存在帕累托改进空间：1. 市场势力；2. 价格黏性。
+
+有市场势力的厂商会采取加成定价策略
+\begin{align*}
+    P_t=\mu\cdot\dfrac{W_t}{\n{MPN}_t} \means W_t=\dfrac1\mu\cdot\n{MPN}_t\,P_t
+\end{align*}
+来最大化利润，那么
+\begin{align*}
+    \n{MRS}_{C,N,t}=-\dfrac{U_{N,t}}{U_{C,t}}=\dfrac{W_t}{P_t}=\dfrac1\mu\cdot\dfrac{\n{MPN}_t\,P_t}{P_t}=\dfrac{\n{MPN}_t}{\mu}\le\n{MPN}_t
+\end{align*}
+为了解决无效率，我们考虑 \(\tau\) 是社会规划者对工资的补贴，即厂商仅需为单位劳动支付 \(\bka{1-\tau}W_t\)，但劳动者仍然收到全额工资 \(W_t\)。在这种设计下用工成本降低，厂商仍然采用加成定价但价格随之下降、产量增加。现在来查看多少补贴能实现资源有效配置
+\begin{align*}
+    P_t=\mu\cdot\dfrac{\bka{1-\tau}W_t}{\n{MPN}_t}
+    \means
+    \dfrac{W_t}{P_t}=\dfrac{\n{MPN}_t}{\mu\bka{1-\tau}}
+\end{align*}
+为使得 \(\n{MRS}_{C,N,t}=W_t\islash P_t=\n{MPN}_t\)，需满足 \(1-\tau=1\islash\mu\) 或 \(\tau=1\islash\varepsilon\)。
+
+另一方面，如果加成系数 \(\mu_t\) 是随时间变化的而补贴 \(\tau\) 固定
+\begin{align*}
+    \mu_t=\dfrac{P_t}{\bka{1-\tau}W_t\islash\n{MPN}_t}=\dfrac{\mu\,P_t}{W_t\islash\n{MPN}_t}
+    \means
+    \dfrac{W_t}{P_t}=\dfrac\mu{\mu_t}\cdot\n{MPN}_t
+    \sidenote{可将 \sidemath{\(\mu\)} 视作关于 \sidemath{\(\mu_t\)} 的平均加成系数}
+\end{align*}
+为使得 \(\n{MRS}_{C,N,t}=W_t\islash P_t=\n{MPN}_t\)，需满足 \(\mu=\mu_t\)，即加成系数不随时间变化。前文讨论了如何通过补贴消除垄断的无效率，而当时加成系数为常数；现在，如果加成系数随时间变化，那么补贴也必须对应随时间变化才能维持有效率。
+
+交错定价的价格黏性也会造成无效率。首先，存在商品 \(i\) 和 \(j\) 有 \(P_t\bki\ne P_t\bkj\)，又因为
+\begin{align*}
+    C_t\bki=\bks{\dfrac{P_t\bki}{P_t}}^{-\varepsilon}C_t
+    \means
+    \dfrac{C_t\bki}{C_t\bkj}=\bks{\dfrac{P_t\bki}{P_t\bkj}}^{-\varepsilon}
+\end{align*}
+则必有 \(C_t\bki\ne C_t\bkj\)，对称均衡不完全成立。由于生产函数相同，部门 \(i\) 和 \(j\) 产量不同是由劳动投入数量不同引起的，而生产函数是边际产出递减的，则可以将劳动从边际产出较小的部门转移至较大的（即劳动投入较多向较少转移），实现更有效的劳动分配，最终达到劳动投入、产出、消费无部门差异。这就是价格黏性引起无效率的原因和改进空间。
+
+\section{最优货币规则}
+
+最优货币规则应实现产出稳定和价格稳定，设为 \(\tilde y_t=0\) 和 \(\hat \pi_t=0\)。
+
+在本节，我们会简单介绍三种货币政策，根据以下步骤考查实施后系统的稳定性如何：
+\begin{empheq}[left=\empheqlbrace]{align}
+    & \ \tilde y_t=-\dfrac1\sigma\bka{\hat\imath_t-\meant\,\hat\pi\nt-\hat r^n_t}+\meant\,\tilde y\nt \tag{DIS}\\
+    & \ \hat\pi_t=\beta\,\meant\,\hat\pi\nt+\kappa\,\tilde y_t \tag{NKPC}
+\end{empheq}
+
+\begin{itemize}
+    \item 步骤 1 - 将货币规则代入 DIS 方程，让 NK 系统包含货币规则
+    \item 步骤 2 - 将 DIS 方程代入 NKPC 方程，让系统的等号右侧都由 \(\meant\,\hat\pi\nt\) 和 \(\tilde y_{t+1}\) 表示
+    \item 步骤 3 - 用矩阵符号改写系统，指出其中转移矩阵的逆，记作 \(\bsA\)
+    \sidenote{真正的转移矩阵是 \(\bsA\inv\)；后文中直接写出矩阵 \(\bsA\)，不再复述操作过程}
+    \item 步骤 4 - 通过对转移矩阵的逆，进行分析（特征根与 BK 条件）得系统稳定性
+\end{itemize}
+
+\subsection{外生利率规则}
+
+考虑货币政策
+\begin{align*}
+    \hat\imath_t=\hat r^n_t
+    \sidenote{在本章，货币政策都不含冲击项}
+\end{align*}
+由于其中名义利率不由内生变量 \(\tilde y_t\) 和 \(\hat \pi_t\) 决定，所以我们称之为外生利率规则。
+
+将该规则和 NK 系统结合得
+\begin{empheq}[left=\empheqlbrace]{align*}
+    & \ \tilde y_t=\dfrac1\sigma\,\meant\,\hat\pi\nt+\meant\,\tilde y\nt \\
+    & \ \hat\pi_t=\beta\,\meant\,\hat\pi\nt+\kappa\,\tilde y_t
+\end{empheq}
+将 DIS 代入 NKPC 再转为矩阵表示
+\begin{align*}
+    \matbks{\tilde y_t \\[6pt] \hat \pi_t} = \underbrace{\matbks{1 & 1/\sigma \\[6pt] \kappa & \beta+\kappa/\sigma}}_{\eqcolon\;\bsA_E} \matbks{\meant\,\tilde y\nt \\[6pt] \meant\,\hat\pi\nt}=\bsA_E\matbks{\meant\,\tilde y\nt \\[6pt] \meant\,\hat\pi\nt}
+\end{align*}
+判定系统稳定性，首先计算 \(\bsA_E\) 的迹和行列式
+\begin{align*}
+    \tr \bsA_E=1+\beta+\dfrac\kappa\sigma
+    \qquad \& \qquad
+    \det \bsA_E=\beta
+\end{align*}
+接着计算特征多项式
+\begin{align*}
+    &p\bka{1}  = 1-\tr\bsA_E+\det\bsA_E = -\dfrac\kappa\sigma < 0\\
+    &p\bka{-1} = 1+\tr\bsA_E+\det\bsA_E = 2+2\,\beta+\dfrac\kappa\sigma > 0
+\end{align*}
+\(p\bka{1}\cdot p\bka{-1}<0\) 则系统中稳定根和不稳定根各有一个，而两变量均为跳跃变量，
+\sidenote{同理，\sidemath{\((\tilde y_t,\,\hat\pi_t)=\bka{0,0}\)} 不是该自治方程的唯一解}
+根据 BK 条件，无法确定系统的稳定性。
+
+\subsection{泰勒规则}
+
+考虑货币政策
+\begin{align*}
+    \hat\imath_t=\hat r^n_t+\phi_\pi\,\hat\pi_t+\phi_y\,\tilde y_t
+\end{align*}
+转写为矩阵形式
+\begin{align*}
+    \bsA_T=\underbrace{\dfrac1{\sigma+\phi_y+\kappa\,\phi_\pi}}_{\eqcolon\;\Omega}\matbks{\sigma & 1-\beta\,\phi_\pi \\[6pt] \kappa\,\sigma & \kappa+\beta\bka{\sigma+\phi_y}}
+    \sidenote{表达式同基本模型}
+\end{align*}
+计算 \(\bsA_T\) 的迹和行列式
+\begin{align*}
+    \tr \bsA_T=\Omega\bks{\sigma+\kappa+\beta\bka{\sigma+\phi_y}}
+    \qquad \& \qquad
+    \det \bsA_T=\Omega\,\sigma\,\beta
+\end{align*}
+判定系统稳定性，首先计算
+\begin{align*}
+    & p\bka{-1}
+        =1+\tr\bsA_T+\det\bsA_T
+        = 1+\Omega\bks{\sigma+\kappa+\beta\bka{\sigma+\phi_y}}+\Omega\,\sigma\,\beta > 0\\
+    & D
+        =\det \bsA_T=\Omega\,\sigma\,\beta=\dfrac{\sigma\,\beta}{\sigma+\phi_y+\kappa\,\phi_\pi}
+        =\dfrac{\sigma\,\beta}{\sigma\,\beta+\sigma\bka{1-\beta}+\phi_y+\kappa\,\phi_\pi}
+        < 1
+\end{align*}
+接着还有在本例中决定稳定性的条件
+\begin{align*}
+    p\bka{1}
+        =1-\tr\bsA_T+\det\bsA_T = 1-\Omega\bks{\sigma+\kappa+\beta\,\phi_y}
+        \quad ? \quad 
+        0
+\end{align*}
+代入 \(\Omega\) 的定义，得到在 \ref{sec:dynamic-monetary-policy} 中朱瑞条件的关键判定式
+\begin{align*}
+    \kappa\bka{\phi_\pi-1}+\phi_y\bka{1-\beta}
+    \quad ? \quad 
+    0
+\end{align*}
+将 \(p\bka{1}\) 方程在 \(\bka{\phi_y,\phi_\pi}\) 平面中画出
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        scale=0.8,
+        x=1.05cm,
+        y=1.05cm,
+        line cap=round,
+        line join=round,
+        >=Latex
+    ]
+        \def\xaxismax{7.0}
+        \def\yaxismax{4.8}
+        \def\xlineleft{0}
+        \def\xlineright{6.4}
+        \def\boundaryslope{-0.28}
+        \def\boundaryintercept{3.2}
+        \def\BaseLineWidth{0.9pt}
+        \def\GuideLineWidth{0.6pt}
+
+        \draw[line width=\BaseLineWidth] (0,0) -- (\xaxismax,0)
+            node[below] {\(\phi_y\)};
+        \draw[line width=\BaseLineWidth] (0,0) -- (0,\yaxismax)
+            node[left] {\(\phi_\pi\)};
+
+        \node[left] at (0,\boundaryintercept) {\(1\)};
+
+        \draw[line width=1.15pt, DiagramPrimary, domain=\xlineleft:\xlineright, samples=2]
+            plot (\x, {\boundaryintercept+\boundaryslope*\x});
+
+        \node[align=center] at (3.5,3.5) {可确定\\\(p\bka{1}>0\)};
+        \node[align=center] at (2.4,1.0) {不可确定\\\(p\bka{1}<0\)};
+    \end{tikzpicture}
+    \caption{泰勒规则参数平面中的 \(p\bka{1}=0\) 边界}
+    \label{fig:chap09-taylor-p-one-locus}
+\end{figure}
+边界以下不可确定的情况和外生利率规则相同 —— \(p\bka{1}\cdot p\bka{-1}<0\) 且都为跳跃变量；边界以上两根都稳定，即该有两跳跃变量的系统的转移矩阵有两不稳定根，根据 BK 条件，系统稳定。自治方程的唯一解是 \(\bka{\tilde y_t,\,\hat\pi_t}=\bka{0,0}\)，且 \(\hat\imath_t=\hat r_t^n\) 恒成立。
+
+
+\subsection{前瞻利率规则}
+
+考虑货币政策
+\begin{align*}
+    \hat\imath_t=\hat r^n_t+\phi_\pi\,\meant\,\hat\pi\nt+\phi_y\,\meant\,\tilde y\nt
+    \sidenote{相比常规泰勒规则，该规则应用了下期的通胀和产出缺口，故得名“前瞻”}
+\end{align*}
+转写为矩阵形式
+\begin{align*}
+    \bsA_F=\dfrac1\sigma\matbks{\sigma-\phi_y & 1-\phi_\pi \\[6pt] \kappa\bka{\sigma-\phi_y} & \sigma\,\beta+\kappa\bka{1-\phi_\pi}}
+\end{align*}
+系统稳定要求（推导略）
+\begin{align*}
+    & p\bka{1} > 0
+        \quad \Leftrightarrow \quad
+        \kappa\bka{\phi_\pi-1}+\phi_y\bka{1-\beta} > 0\\
+    & p\bka{-1} > 0
+        \quad \Leftrightarrow \quad
+        \kappa\bka{\phi_\pi-1}+\phi_y\bka{1+\beta}<2\,\sigma\bka{1+\beta}
+\end{align*}
+
+\section{简单货币政策规则}
+
+\sidenote{本节内容全部由超高推理版 GPT-5.5 完成}
+Rotemberg 和 Woodford \footnote{Rotemberg and WoodfordThe, ``Cyclical Behavior of Prices and Costs'', NBER, 1999} 对经济偏离有效率配置所造成的效用损失做二阶近似得
+\begin{align*}
+    W=\dfrac12\,\meano\sum^\infty_{t=0}\,\beta^t\bks{\bka{\sigma+\dfrac{\phi+\alpha}{1-\alpha}}\tilde y^2_t+\dfrac\varepsilon\kappa\,\hat\pi_t^2}
+\end{align*}
+在平稳均值为 0 的情况下，可以将其写成单期损失函数
+\begin{align*}
+    L=\dfrac12\bks{\bka{\sigma+\dfrac{\phi+\alpha}{1-\alpha}}\var\bka{\tilde y_t}+\dfrac\varepsilon\kappa\,\var\bka{\hat\pi_t}}
+\end{align*}
+其中第一项衡量产出缺口波动造成的损失，第二项衡量通胀波动造成的损失。\(\sigma\)、\(\phi\) 和 \(\alpha\) 越大，消费、劳动和技术带来的弯曲程度越强，给定产出缺口波动对应的损失也越大；\(\varepsilon\) 越大或 \(\kappa\) 越小，价格分散带来的福利损失越大。
+
+考虑一个响应真实产出的泰勒规则
+\begin{align*}
+    \hat\imath_t=\phi_\pi\,\hat\pi_t+\phi_y\,\hat y_t
+    =\phi_\pi\,\hat\pi_t+\phi_y\,\tilde y_t+\underbrace{\phi_y\,\hat y^n_t}_{\eqcolon\;v_t}=\phi_\pi\,\hat\pi_t+\phi_y\,\tilde y_t+v_t
+\end{align*}
+它可以被理解为响应产出缺口的泰勒规则叠加一个由自然产出决定的政策冲击 \(v_t\)。将其代入 DIS 方程，并与 NKPC 联立
+\begin{align*}
+    &\bka{\sigma+\phi_y}\tilde y_t+\phi_\pi\,\hat\pi_t \tag{DIS}
+        =\sigma\,\meant\,\tilde y\nt+\meant\,\hat\pi\nt+\hat r^n_t-v_t\\
+    &\hat\pi_t=\beta\,\meant\,\hat\pi\nt+\kappa\,\tilde y_t \tag{NKPC}
+\end{align*}
+可得
+\begin{align*}
+    \matbks{\tilde y_t \\[6pt] \hat\pi_t}
+    =\bsA_T\matbks{\meant\,\tilde y\nt \\[6pt] \meant\,\hat\pi\nt}
+    +\bs B_T\bka{\hat r^n_t-v_t}
+    \qquad
+    \bs B_T=\Omega\matbks{1 \\[6pt] \kappa}
+\end{align*}
+其中 \(\bsA_T\) 和 \(\Omega\) 同前文。假设技术冲击满足
+\begin{align*}
+    \hat a_t=\varrho_a\,\hat a\lt+\varepsilon^a_t
+    \qquad \& \qquad
+    \hat y^n_t=\psi^n_{ya}\,\hat a_t
+    \qquad
+    \psi^n_{ya}=\dfrac{1+\phi}{\phi+\alpha+\sigma\bka{1-\alpha}}>0
+\end{align*}
+详细计算其中冲击项
+\begin{align*}
+    \bs B_T\bka{\hat r^n_t-v_t}&=\matbks{1 \\[6pt] \kappa}\Omega\bka{\sigma\,\psi^n_{ya}\,\meant\bkd{\D\hat a\nt}-\phi_y\,\psi^n_{ya}\,\hat a_t}\\
+    &=\matbks{1 \\[6pt] \kappa}\Omega\bkd{-\psi^n_{ya}\bks{\sigma\bka{1-\varrho_a}+\phi_y}}\hat a_t
+\end{align*}
+提取出其中关键部分
+\begin{align*}
+    f\bka{\phi_y}
+        =\dfrac{\sigma\bka{1-\varrho_a}+\phi_y}{\sigma+\phi_y+\kappa\,\phi_\pi}
+        \quad\Rightarrow\quad
+        f'\bka{\phi_y}
+        =\dfrac{\sigma\,\varrho_a+\kappa\,\phi_\pi}{\bka{\sigma+\phi_y+\kappa\,\phi_\pi}^2}>0
+\end{align*}
+同向变动。也就是说，当中央银行对真实产出做出更强响应时，技术冲击进入系统的力度反而更大，产出缺口和通胀的方差上升，福利损失增加。另一方面，
+\begin{align*}
+    \phi_\pi\to+\infty \quad\Rightarrow\quad f\bka{\phi_y}\to0
+\end{align*}
+意味着足够强的通胀目标制会使外生冲击对系统的影响趋近于 0，从而任意接近最优货币规则。
+
+另一类简单规则是 Friedman (1960) 提出的固定货币增长规则，即根据 \(\D\hat m_t=0\) 来设定货币政策。
+
+引入货币需求方程
+\begin{align*}
+    \hat m_t-\hat p_t
+        =\tilde y_t+\hat y^n_t-\eta\,\hat\imath_t-\zeta_t
+\end{align*}
+其中 \(\zeta_t\) 是外生货币需求冲击。令
+\begin{align*}
+    \hat{\mathcal M}^{+}_t\coloneq\hat m_t-\hat p_t+\zeta_t
+\end{align*}
+表示剔除外生货币需求扰动后的真实货币余额，则
+\begin{align*}
+    \hat\imath_t
+        =\dfrac1\eta\bka{\tilde y_t+\hat y^n_t-\hat{\mathcal M}^{+}_t}
+    \qquad \& \qquad
+    \hat{\mathcal M}^{+}\lt
+        =\hat{\mathcal M}^{+}_t+\hat\pi_t-\D\zeta_t
+\end{align*}
+将其与 DIS 和 NKPC 联立，可以将固定货币增长规则下的系统写成
+\begin{align*}
+    \underbrace{\matbks{
+        \sigma+\dfrac1\eta & \dfrac1\eta & -\dfrac1\eta \\[10pt]
+        -\kappa & 1 & 0 \\[6pt]
+        0 & -1 & 1
+    }}_{\eqcolon\;\bsA_{M,0}}
+    \matbks{\tilde y_t \\[6pt] \hat\pi_t \\[6pt] \hat{\mathcal M}^{+}\lt}
+    =
+    \underbrace{\matbks{
+        \sigma & 1 & 0 \\[6pt]
+        0 & \beta & 0 \\[6pt]
+        0 & 0 & 1
+    }}_{\eqcolon\;\bsA_{M,1}}
+    \matbks{\meant\,\tilde y\nt \\[6pt] \meant\,\hat\pi\nt \\[6pt] \meant\,\hat{\mathcal M}^{+}_t}
+    +\underbrace{\matbks{
+        1 & -\dfrac1\eta & \dfrac1\eta \\[10pt]
+        0 & 0 & 0 \\[6pt]
+        0 & 0 & -1
+    }}_{\eqcolon\;\bs B_M}
+    \matbks{\hat r^n_t \\[6pt] \hat y^n_t \\[6pt] \D\zeta_t}
+\end{align*}
+固定货币增长规则是否合意，很大程度上取决于货币需求是否稳定；如果货币需求冲击本身波动很大，固定货币增长会把这种不稳定性传导到产出缺口和通胀中。
+
+
+
+% \PrintChapterBibliography
+
+\FinishStandaloneChapter

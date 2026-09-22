@@ -1,0 +1,73 @@
+% !TeX root = ../AdvMacroNote_Sun.tex
+% Shared metadata plus the two course profiles used throughout the book.
+
+\newcommand{\DocumentTitle}{Advanced Macroeconomics I \& II}
+\newcommand{\DocumentVersion}{2nd edition}
+\newcommand{\CourseTitle}{Advanced Macroeconomics I}
+\newcommand{\CourseVolumeRoman}{I}
+\newcommand{\CourseShortTitle}{Adv Macro I}
+\newcommand{\CourseSubtitle}{(zh) Course notes based on the lectures of \CourseInstructor}
+\newcommand{\CoursePartSubtitle}{Course notes based on the lectures of \CourseInstructor}
+\newcommand{\CourseTerm}{Fall 2026}
+\newcommand{\CourseInstructor}{Yinong TAN}
+\newcommand{\CourseInstructorEmail}{}
+\newcommand{\CourseCreditLabel}{Prepared by}
+\newcommand{\CourseContributorLabel}{\CourseCreditLabel}
+\newcommand{\CourseContributor}{Rongqing SUN}
+\newcommand{\CourseContributorEmail}{econsunrq@outlook.com}
+\newcommand{\CourseInstitution}{{\color{InstitutionMark}Xiamen University}}
+\newcommand{\CourseAffiliation}{%
+    SOE\hspace{0.5em}\(\boldsymbol{\times}\)\hspace{0.5em}%
+    WISE\hspace{0.5em}\(\boldsymbol{\times}\)\hspace{0.5em}CHOW%
+}
+\newcommand{\CourseLevel}{Graduate Program}
+% Short level label used only in the vertical page-edge metadata.
+\newcommand{\CourseSideLevel}{Graduate}
+\newcommand{\CoursePartAuthor}{\CourseContributor}
+\newcommand{\CourseLicenseToken}{CC BY-NC 4.0}
+\newcommand{\CoursePartDate}{\CourseCompileDate}
+\newcommand{\CourseEmblem}{xmu-emblem.png}
+\newcommand{\CourseUnitName}{Chapter}
+% The shared cover treats each semester as its own reading unit.  Keeping
+% these values separate avoids ambiguous slash-separated metadata.
+\newcommand{\CoverSubtitle}{Lecture notes in Chinese}
+\newcommand{\CoverFirstCourse}{Advanced Macroeconomics I}
+\newcommand{\CoverFirstTerm}{Fall 2026}
+\newcommand{\CoverFirstInstructor}{Yinong TAN}
+\newcommand{\CoverFirstTopic}{Economic Growth}
+\newcommand{\CoverSecondCourse}{Advanced Macroeconomics I}
+\newcommand{\CoverSecondTerm}{Fall 2026}
+\newcommand{\CoverSecondInstructor}{Yinong TAN}
+\newcommand{\CoverSecondTopic}{Economic Fluctuation}
+\newcommand{\CourseCompileDate}{%
+    \ifcase\month\or
+        January\or February\or March\or April\or May\or June\or
+        July\or August\or September\or October\or November\or December%
+    \fi~\number\day,~\number\year
+}
+
+\newcommand{\UseSharedCourseCover}{%
+    \renewcommand{\CourseTitle}{\DocumentTitle}%
+    \renewcommand{\CourseShortTitle}{Adv Macro I \& II}%
+    \setcourseaccent{VolumeOneAccent}%
+}
+\newcommand{\UseMacroICourse}{%
+    \renewcommand{\CourseTitle}{Advanced Macroeconomics I}%
+    \renewcommand{\CourseShortTitle}{Adv Macro I}%
+    \renewcommand{\CourseTerm}{Fall 2026}%
+    \renewcommand{\CourseInstructor}{Yinong TAN}%
+    \renewcommand{\CourseVolumeRoman}{I}%
+    \setcourseaccent{VolumeOneAccent}%
+}
+\newcommand{\UseMacroIICourse}{%
+    \renewcommand{\CourseTitle}{Advanced Macroeconomics I}%
+    \renewcommand{\CourseShortTitle}{Adv Macro I}%
+    \renewcommand{\CourseTerm}{Fall 2026}%
+    \renewcommand{\CourseInstructor}{Yinong TAN}%
+    \renewcommand{\CourseVolumeRoman}{I}%
+    \setcourseaccent{VolumeTwoAccent}%
+}
+
+% Enable only after the notes contain active citation commands.
+\newif\ifcoursebibliography
+\coursebibliographyfalse
