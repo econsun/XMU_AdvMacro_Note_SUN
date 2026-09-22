@@ -1,25 +1,97 @@
-# Advanced Macroeconomics Notes
+# XMU_AdvMacro_Note_SUN
 
-## 目录约定
+这里是老艺人古法匠心打造的 readme 文件，为本 XMU_AdvMacro_Note_SUN 项目提供使用说明。
 
-`AdvMacroNote_Sun.tex` 是整书唯一入口。`sections/part-XX/` 保存正文，`rednote/part-XX/` 保存对应海报，两者按相同 Part 结构组织。`_config/` 集中保存 LaTeX 配置，`_tools/` 集中保存构建脚本，`_assets/` 集中保存图片与 MATLAB 源文件，旧的补充材料归档在 `_archive/`，所有可重建产物进入 `_build/`。
+</br>
 
-经常修改的文件集中在三处：正文位于 `sections/`，海报位于 `rednote/`，项目配置位于 `_config/`。根层的 `99 INFO.tex`、`cover-main.tex`、`cover-part.tex` 与四个 `setting-*.tex` 可直接修改；无需日常修改的实现统一位于 `_config/core/`。Logo 的可调参数仍位于 `logo/settings.tex` 和 `logo/poster-settings.tex`。
+## 事先说明
 
-## 自动发现规则
+- 开源本项目的主要目的是
+    - 方便他人获取最新笔记，即在根目录的 PDF 文件
+    - 方便他人提供笔记建议，欢迎提交 GitHub issue
 
-整书顺序不依赖 Chapter 的完整文件名。`_tools/build.py` 从每个源码中的 `\StandaloneChapterNumber` 与 `\StandaloneCourseSetup` 读取编号和课程配置，再自动生成 `_config/core/content-map.tex`。因此可以修改 `chapter-XX-` 后面的标题，也可以在 `part-XX` 之间移动 Chapter；运行 `make all` 时映射会自动更新。
+- **! 将本笔记当作模板并非主要目的 !**
+    - 如果你想当作模板，请详细研究项目架构
 
-Rednote 以 `\RednoteChapterNumber` 与正文配对。`make post XX` 会对齐对应海报的 Part、文件名与正文相对路径。项目文件不写入机器相关的绝对路径。
+- 本人先完成《高宏 II》笔记后再增加《高宏 I》笔记，并非正常高宏学习顺序
+    - 《高宏 I》笔记来自于助教工作
+    - 《高宏 II》笔记来自于上课学习
 
-## 常用命令
+</br>
 
-```sh
-make all      # 构建整书 AdvMacroNote_Sun.pdf
-make chap 03  # 构建 Chapter 03 PDF
-make post 03  # 构建 Chapter 03 Poster PDF 与 PNG
+## 项目结构
+
+```
+├── .vscode/      # 我的配置，请仔细察看
+│
+├── _assets/               # 相关附件
+├── _build/                # 编译产出：book、posts、visuals
+├── _tools/                # 编译程序
+│
+├── _config/               # 配置文件
+│   ├── core/              # 无需更改配置
+│   └── xxx/               # 可调参数配置
+│
+├── sections/              # 笔记正文
+│   └── part-xx/           # 分部内容
+│       └── chapte-xx/     # 分章内容
+│
+├── logo/                  # 产出图标
+├── rednote/               # 产出小红书
+│
+├── AdvMacroNote_Sun.tex   # 核心入口
+├── AdvMacroNote_Sun.pdf   # 完整笔记
+│
+├── references.bib         # 参考文献
+└── Makefile               # 编译命令
 ```
 
-## LaTeX Workshop
+</br>
 
-Chapter、Appendix 和 Poster 都是真正的独立根文件，保存时只构建当前文件；`AdvMacroNote_Sun.tex` 使用 `make all`。编辑器通过 `latex-workshop.latex.texDirs` 直接解析已经由 `\input` 载入的 `_config/setting-cmds.tex`，项目不再生成或维护补全 JSON。修改命令后保存文件即可刷新候选；若扩展仍保留旧缓存，执行一次 `Developer: Reload Window`。
+## 获取方式
+
+### 方法一
+
+如果你只是想要 PDF 笔记，那么 [请点击这里](https://raw.githubusercontent.com/econsun/XMU_AdvMacro_Note_SUN/main/AdvMacroNote_Sun.pdf) 。
+
+### 方法二
+
+点击 GitHub 页面中的 “code” 绿色按钮，找到下载 zip 压缩包
+
+### 方法三
+
+如果你的设备中已安装 Git 工具，直接在你想存放本项目的路径打开命令行并输入：
+
+```bash
+git clone git@github.com:econsun/XMU_AdvMacro_Note_SUN.git
+```
+
+</br>
+
+## 使用方式
+
+- 我个人使用方式是 VS Code + LaTeX workshop + Makefile 三大工具
+    - 找到笔记文件进行修改
+    - 点击 LW 插件提供的 build LaTeX project 即可编译当前笔记
+    - 对根目录 AdvMacroNote_Sun.tex 使用 build LaTeX project 编译可得完整笔记
+    - 除此之外，Makefile 提供了三类命令行编译方式
+
+```bash
+# 编译完整笔记
+make
+make all
+
+# 编译章笔记
+make chap 03
+
+# 完整编译后生成封面与章笔记 PNG
+make post 03
+```
+
+</br>
+
+## 致谢
+
+感谢俚霖，如果没有她常伴心头，这份笔记就不会如此完整。
+
+感谢所有同学，你们让这份笔记变得有意义。
