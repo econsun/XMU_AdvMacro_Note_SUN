@@ -16,6 +16,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SECTION_ROOT = PROJECT_ROOT / "sections"
 BUILD_ROOT = PROJECT_ROOT / "_build"
+CHAPTER_OUTPUT_ROOT = BUILD_ROOT / "book"
 MACTEX_BIN = os.environ.get("MACTEX_BIN")
 LATEXMK = str(Path(MACTEX_BIN) / "latexmk") if MACTEX_BIN else "latexmk"
 XELATEX = str(Path(MACTEX_BIN) / "xelatex") if MACTEX_BIN else "xelatex"
@@ -229,7 +230,7 @@ def find_chapter(value: str) -> Path:
 def build_chapter(value: str) -> None:
     require_executable(XELATEX)
     chapter_file = find_chapter(value)
-    part_dir = BUILD_ROOT / "book" / chapter_file.parent.name
+    part_dir = CHAPTER_OUTPUT_ROOT / chapter_file.parent.name
     part_dir.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="advanced-macro-chapter-") as temporary:
         temporary_dir = Path(temporary)
@@ -237,10 +238,12 @@ def build_chapter(value: str) -> None:
             *XELATEX_COMMAND, f"-jobname={chapter_file.stem}",
             f"-output-directory={temporary_dir}", chapter_file.name,
         ], chapter_file.parent)
-        publish(temporary_dir / f"{chapter_file.stem}.pdf", part_dir / f"{chapter_file.stem}.pdf")
+        pdf = part_dir / f"{chapter_file.stem}.pdf"
+        synctex = part_dir / f"{chapter_file.stem}.synctex.gz"
+        publish(temporary_dir / pdf.name, pdf)
         publish(
-            temporary_dir / f"{chapter_file.stem}.synctex.gz",
-            part_dir / f"{chapter_file.stem}.synctex.gz",
+            temporary_dir / synctex.name,
+            synctex,
         )
     print(f"单章构建完成：{part_dir.relative_to(PROJECT_ROOT)}（一次 XeLaTeX）")
 
