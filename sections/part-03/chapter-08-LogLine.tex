@@ -24,7 +24,7 @@
 
 \section{对数偏离变量}\label{sec:HatVar}
 
-两项作差得它们间的距离；如果其中一项被视为基准（比如稳态），我们将作差结果视为 \term{偏离}{deviation}；如果作差两项是对数形式，那么就有本节要讨论的 \term{对数偏离}{log-deviation}。记 \(X_t\) \sidenote{稳态记号不需要时间角标，\sidemath{\(\bar X_t\)} 不够准确}相对于自己的稳态 \(\bar X\) 的对数偏离为
+两项作差得它们间的距离；如果其中一项被视为基准（比如稳态），我们将作差结果视为 \term{偏离}{deviation}；如果作差两项是对数形式，那么就有本节要讨论的 \term{对数偏离}{log-deviation}。记 \(X_t\) \sidenote{稳态记号不需要时间角标，\(\bar X_t\) 不够准确}相对于自己的稳态 \(\bar X\) 的对数偏离为
 \begin{equation}
     \hat x_t\coloneq \log X_t-\log\bar X\label{eq:HatDef}
 \end{equation}
@@ -91,7 +91,7 @@
 
 \section{对数线性化的方法}\label{sec:LogLineMethod}
 
-以柯布-道格拉斯生产函数为例，说明对数线性化的三种方法
+以柯布--道格拉斯生产函数为例，说明对数线性化的三种方法
 \begin{equation}
     Y_t=K_t^\alpha\,L_t^{1-\alpha}\label{eq:CDProdExample}
 \end{equation}
@@ -153,7 +153,7 @@
 \end{equation}
 在 \ref{eq:LogLineGeneralX} 的最后结果我们看到了稳态处的弹性（得益于取对数操作），那么此处 \(\bar\eta_{zx}\) 和 \(\bar\eta_{zy}\) 分别是 \(Z_t\) 关于 \(X_t\) 和 \(Y_t\) 在稳态处的弹性系数。
 
-使用 \ref{eq:LogLineGeneralHat} 的形式，直接把柯布-道格拉斯生产函数改写为
+使用 \ref{eq:LogLineGeneralHat} 的形式，直接把柯布--道格拉斯生产函数改写为
 \begin{align}
     \hat y_t&=\bar\eta_{yk}\cdot\hat k_t+\bar\eta_{yl}\cdot\hat l_t=\alpha\,\hat k_t+\bka{1-\alpha}\hat l_t\notag
 \end{align}
@@ -161,7 +161,7 @@
 \section{对数线性化的性质}\label{sec:LogLineProp}
 
 下表总结了对数线性化的重要性质，证明略。
-\begin{table}[H]
+\begin{table}[!htbp]
     \centering
     \caption{对数线性化的常用性质}
     \renewcommand{\arraystretch}{1.4}
@@ -243,7 +243,7 @@
 \begin{align*}
     \dfrac{\p Z_t}{\p X_{1,t}}&=X_{1,t}^{\varrho-1}\bka{X_{1,t}^\varrho+X_{2,t}^\varrho}^{\frac{1-\varrho}\varrho}\notag
 \end{align*}
-再代入弹性表达式\sidenote{以上计算的是任意位置的偏导数，别忘记取稳态处的值\\ \vspace{8pt}注意不变替代弹性的定义，和这里计算的弹性不同，所以计算结果不是 \sidemath{\(\varrho\)}}
+再代入弹性表达式\sidenote{以上计算的是任意位置的偏导数，别忘记取稳态处的值\\ \vspace{8pt}注意不变替代弹性的定义，和这里计算的弹性不同，所以计算结果不是 \(\varrho\)}
 \begin{equation*}
     \dfrac{\partial\log Z_t}{\partial\log X_{1,t}}=\dfrac{X_{1,t}}{Z_t}\cdot\dfrac{\p Z_t}{\p X_{1,t}}=\dfrac{X_{1,t}}{\bka{X_{1,t}^\varrho+X_{2,t}^\varrho}^{1/\varrho}}\cdot X_{1,t}^{\varrho-1}\bka{X_{1,t}^\varrho+X_{2,t}^\varrho}^{\frac{1-\varrho}\varrho}=\dfrac{X_{1,t}^\varrho}{X_{1,t}^\varrho+X_{2,t}^\varrho}\notag
 \end{equation*}

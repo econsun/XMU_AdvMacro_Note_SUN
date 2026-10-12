@@ -86,7 +86,7 @@
     \bka{1-V_{kk}}\bka{1-V_{kk}'}&=1+V_{kk}\cdot V_{kk}'-\bka{V_{kk}+V_{kk}'}\\
     &=1+\dfrac1\beta-\gamma=-\dfrac{\tilde\delta\bka{1-\alpha}}\sigma\,\dfracb{C}{K}<0
 \end{align*}
-因此两根分别在 1 的左侧和右侧，并且通过观察表达式，发现 \(0<V_{kk}<1<V_{kk}'\)。根据 Blanchard-Kahn 定理，满足稳定性条件的解为 \(V_{kk}\)，因此我们舍弃 \(V'_{kk}\)，选取 \(V_{kk}\) 作为资本的系数。将 \(V_{kk}\) 代入 \ref{eq:MUC1} 得 \(V_{ck}\)，再将 \(V_{kk}\) 和 \(V_{ck}\) 代入 \ref{eq:MUC2} 和 \ref{eq:MUC4} 分别得 \(V_{kz}\) 和 \(V_{cz}\)。至此，我们得到了满足稳定性条件的解
+因此两根分别在 1 的左侧和右侧，并且通过观察表达式，发现 \(0<V_{kk}<1<V_{kk}'\)。根据 Blanchard--Kahn 定理，满足稳定性条件的解为 \(V_{kk}\)，因此我们舍弃 \(V'_{kk}\)，选取 \(V_{kk}\) 作为资本的系数。将 \(V_{kk}\) 代入 \ref{eq:MUC1} 得 \(V_{ck}\)，再将 \(V_{kk}\) 和 \(V_{ck}\) 代入 \ref{eq:MUC2} 和 \ref{eq:MUC4} 分别得 \(V_{kz}\) 和 \(V_{cz}\)。至此，我们得到了满足稳定性条件的解
 \begin{equation}
     \begin{cases}
         \ V_{kk}=\dfrac{\gamma-\dsq{\gamma^2-4/\beta}}{2}\\[2ex]
@@ -100,7 +100,7 @@
 
 在本节，我们将分析脉冲（短时出现，即刻消失的冲击）对经济体会产生如何影响，经济变量离开稳态后会如何收敛。为分析真实变动，我们根据下表设定一系列参数的季度值。
 
-\begin{table}[H]
+\begin{table}[!htbp]
     \centering
     \renewcommand{\arraystretch}{1.5}
     \begin{tabularx}{\dimexpr\linewidth-3pt\relax}{
@@ -111,7 +111,7 @@
         \toprule
         & 参数 & 季度值 & \quad 备注 \\
         \midrule
-        & \(\beta\) & 0.990 & \quad 季折现率 0.99 对应年利率约 4.1\% \sidenote{从欧拉方程\\[2pt]\scalebox{0.80}{\(u'_t=\beta\,\meant\bks{u'\nt\bka{1+r\nt}}\)}\\[2pt]得 \sidemath{\(r=\bka{1-\beta}/\,\beta\)}}\\
+        & \(\beta\) & 0.990 & \quad 季折现率 0.99 对应年利率约 4.1\% \sidenote{从欧拉方程\\[2pt]\scalebox{0.80}{\(u'_t=\beta\,\meant\bks{u'\nt\bka{1+r\nt}}\)}\\[2pt]得 \(r=\bka{1-\beta}/\,\beta\)}\\
         & \(\sigma\) & 1.000 & \quad 消费的相对风险厌恶系数，相当 \(\n{IES}=1/\sigma=1\) \\
         & \(\alpha\) & 0.360 & \quad 资本回报在总收入中占比 \\
         & \(\delta\) & 0.025 & \quad 季折旧率 2.5\% 对应年折旧率约 10\% \\
@@ -144,7 +144,7 @@
 \end{align*}
 同理还能得到许多变量的增长路径，此处不逐一推导。\ref{fig:IRFfig} 展示了各变量的脉冲响应路径。可以看到，技术冲击会导致资本存量、产出和消费的增长率在短期内上升，但随着时间推移，这些变量会逐渐回归稳态水平。
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
     \centering
     \sidenote{同样时间长度内，投资变动幅度比产出大得多（纵坐标跨度），可见投资是敏感变量}
     \MaybeIncludeGraphics[width=\textwidth]{chapter-10-irf.png}
@@ -164,7 +164,7 @@
 \begin{equation*}
     \hat k_t=\bka{\sum_{i=0}^{t-1}V_{kk}^i\cdot\psi^{t-1-i}}V_{kz}\,\varepsilon_1 = \begin{cases}
         \ \dfrac{\psi^t-V_{kk}^t}{\psi-V_{kk}}\cdot V_{kz}\,\varepsilon_1 & \psi\ne V_{kk}
-        \sidenote{\sidemath{\(V_{kk}\)} 表达式中不含 \sidemath{\(\psi\)}，二者取值无关}
+        \sidenote{\(V_{kk}\) 表达式中不含 \(\psi\)，二者取值无关}
         \\[2ex]
         \ t\cdot\psi^{t-1}\cdot V_{kz}\,\varepsilon_1 & \psi=V_{kk}
     \end{cases}
@@ -204,7 +204,7 @@
 \end{equation*}
 当中包含 \(\sigma\)，所以 \(\sigma\) 的变动会影响 \(V_{kk}\) 的数值，进而影响到其它迭代系数。\ref{fig:compasigma} 直观展示了 \(\sigma\) 上升时四个迭代系数的变化情况。迭代系数 \ref{eq:V} 间存在相互关系，所以图像呈现出相似的、对称的趋势。
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
     \centering
     \MaybeIncludeGraphics[width=0.7\textwidth]{chapter-10-sigma.png}
   \caption{\(\sigma\) 上升对迭代系数的影响}
@@ -252,9 +252,9 @@
 
 作线性 RBC 系统相图。在\ref{fig:ch04-saddle-linear} 的 \(\D\hat k_t=0\) 边界之下，由于消费水平较低，从 \ref{eq:linearsaddle1} 知 \(\D\hat k_t>0\)，我们可以推断出：在该边界之下，向右移动。同理得整张图的运动方向。
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
     \centering
-    \sidenote{\par \vspace{5em} 鞍路径斜率为 \sidemath{\(V_{kk}\)}}
+    \sidenote{\par \vspace{5em} 鞍路径斜率为 \(V_{kk}\)}
     \begin{tikzpicture}[
         scale=0.95,
         line cap=round,
@@ -358,7 +358,7 @@
 
 % \subsection{非线性 RBC 模型}\label{sec:NonlineSaddleRBC}
 
-% \begin{figure}[H]
+% \begin{figure}[!htbp]
 %     \centering
 %     \begin{tikzpicture}[
 %         scale=0.95,

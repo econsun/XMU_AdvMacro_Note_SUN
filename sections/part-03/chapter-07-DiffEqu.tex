@@ -17,7 +17,7 @@
 
 \subsection{差分的定义}\label{subsec:DiffDef}
 
-在微积分中，我们熟练使用微分来考查变化率，如 \(y\bkt\) 随时间的变化率为 \footnote{2026 年 4 月 19 日勘误：此前变化率公式存在错误}\sidenote{通常用 \sidemath{\(y\bkt\)} 表示时间连续变量，\sidemath{\(y_t\)} 表示时间离散变量}
+在微积分中，我们熟练使用微分来考查变化率，如 \(y\bkt\) 随时间的变化率为 \footnote{2026 年 4 月 19 日勘误：此前变化率公式存在错误}\sidenote{通常用 \(y\bkt\) 表示时间连续变量，\(y_t\) 表示时间离散变量}
 \begin{equation}
     \dot y\bkt\coloneq \lim_{h\to 0}\frac{y\bka{t+h} - y\bka t}{h}
 \end{equation}
@@ -56,7 +56,7 @@
 \begin{equation*}
     K_t - \bka{1-\delta} K\lt = I\lt\notag
 \end{equation*}
-并且它是一阶线性常系数非齐次差分方程 —— \AccentTerm{一阶}\,指最大下标与最小之差为 1；\AccentTerm{线性}\,指方程不包含 \(K_t\) 和 \(K\lt\) 的非线性函数；\AccentTerm{常系数}\,指系数不依赖于 \(t\)；\AccentTerm{非齐次}\sidenote{如 \sidemath{\(y_t-a\,y\lt=b\)} 写作 \sidemath{\(f\bka{y_t,y\lt;b}=0\)}，其中参数 \sidemath{\(b\)} 导致 \sidemath{\(f\)} 并不是 \sidemath{\(\bkd{y_t}\)} 的齐次函数}\,指方程中未知变量项是未知变量的齐次函数。
+并且它是一阶线性常系数非齐次差分方程 —— \AccentTerm{一阶}\,指最大下标与最小之差为 1；\AccentTerm{线性}\,指方程不包含 \(K_t\) 和 \(K\lt\) 的非线性函数；\AccentTerm{常系数}\,指系数不依赖于 \(t\)；\AccentTerm{非齐次}\sidenote{如 \(y_t-a\,y\lt=b\) 写作 \(f\bka{y_t,y\lt;b}=0\)，其中参数 \(b\) 导致 \(f\) 并不是 \(\bkd{y_t}\) 的齐次函数}\,指方程中未知变量项是未知变量的齐次函数。
 
 在《高级宏观经济学 II》，我们会围绕一阶线性常系数非齐次差分方程展开讨论，若无特殊说明，后文中将其简称为差分方程。
 
@@ -114,7 +114,7 @@
 
 \subsection{差分方程解的经济含义}\label{subsec:DiffEquSolnMean}
 
-考虑 \(\{y_t\}_{t\in\bb N}\) 是一个经济变量的时间序列，它的对数序列满足线性差分方程\sidenote{方程的未知变量为 \sidemath{\(\log y_t\)}}
+考虑 \(\{y_t\}_{t\in\bb N}\) 是一个经济变量的时间序列，它的对数序列满足线性差分方程\sidenote{方程的未知变量为 \(\log y_t\)}
 \begin{align}\label{eq:LogDiffEq}
     \log y\nt+a\log y_t=C
 \end{align}
@@ -193,7 +193,7 @@
 \begin{itemize}
     \item 当 \(|b|<1\) 时，\(b^t\to 0\)，\(y_t\to C\,/\bka
     {1+b}\)，系统具有稳态 \(\bar y = C\,/\bka
-    {1+b}\)\sidenote{\sidemath{\(|b|<1\)} 是差分系统具有稳态的充分条件}
+    {1+b}\)\sidenote{\(|b|<1\) 是差分系统具有稳态的充分条件}
     \item 当 \(|b|>1\) 时，\(b^t\to \infty\)，\(y_t\to \infty\)，系统不具有稳态
     \item 当 \(b=1\) 时，\(y_t=A+C\,t\)，系统不具有稳态
     \item 当 \(b=-1\) 时，\(y_t=\bka{-1
@@ -209,7 +209,7 @@
 \end{equation}
 我们在 \(\bka{y\nt,y_t}\) 平面中作出 \(0<b<1\) 情况中 \(y\nt=f\bka{y_t}\) 和 \(y\nt=y_t\)（即 45° 线）两条曲线的图像，此时 \(y\nt=f\bka{y_t}\) 是一条向右上方倾斜的曲线（直线）。
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
     \centering
     \begin{tikzpicture}[
         scale=0.95,
@@ -286,11 +286,11 @@
 
 最后来看参数 \(A\) 对收敛的影响。从差分方程的解 \ref{eq:DiffEquA} 可以看出 \(A=y_0-\bar y\)，即 \(A\) 是系统初始位置相对稳态的偏离。图中两条对比收敛轨迹刻画了不同 \(A\) 的情况，对比它们的水平线长度，发现：\(A\) 越大，即初始位置越远离稳态，每轮收敛的幅度就越大。
 
-参数 \(A\) 由 \(C\) 和 \(b\) 构成，实际上，影响收敛速度的只有 \(b\)。为得到该结论，我们要观察 \(y\nt=f\bka{y_t}\) 直线和 45° 线的夹角：\(b\) 越大，夹角越大，收敛速度越快；反之收敛速度越慢。而 \(C\) \sidenote{注意 \sidemath{\(C\)} 值会影响 \sidemath{\(A\)}，所以 \sidemath{\(C\)} 不影响收敛速度但影响收敛时间}是使 \(y\nt=f\bka{y_t}\) 直线上下平移的参数，并不影响夹角的大小，因此不影响收敛速度。
+参数 \(A\) 由 \(C\) 和 \(b\) 构成，实际上，影响收敛速度的只有 \(b\)。为得到该结论，我们要观察 \(y\nt=f\bka{y_t}\) 直线和 45° 线的夹角：\(b\) 越大，夹角越大，收敛速度越快；反之收敛速度越慢。而 \(C\) \sidenote{注意 \(C\) 值会影响 \(A\)，所以 \(C\) 不影响收敛速度但影响收敛时间}是使 \(y\nt=f\bka{y_t}\) 直线上下平移的参数，并不影响夹角的大小，因此不影响收敛速度。
 
 \subsection{高阶差分系统的稳定性}{\label{subsec:HDiffSysStable}}
 
-高阶系统难以作图，所以我们通过特征根来分析系统的稳定性\sidenote{一阶系统中 \sidemath{\(\lambda=b\)}，分析 \sidemath{\(b\)} 就是分析 \sidemath{\(\lambda\)}}。
+高阶系统难以作图，所以我们通过特征根来分析系统的稳定性\sidenote{一阶系统中 \(\lambda=b\)，分析 \(b\) 就是分析 \(\lambda\)}。
 
 \TopicLabel{初探稳定性}
 
@@ -332,7 +332,7 @@
 \begin{align*}
     p\bka\lambda=\bka{\lambda-\lambda_1}\bka{\lambda-\lambda_2}= \lambda^2 - \bka{\lambda_1+\lambda_2}\lambda + \lambda_1\,\lambda_2=0
 \end{align*}
-根据线性代数的知识，该特征方程的一次项系数为矩阵 \(\bsA\) 的迹，常数项为矩阵 \(\bsA\) 的行列式。具体来说\sidenote{本笔记的 \sidemath{\(\bsA\)} 定义和课堂上的不同，相当于课堂上的 \sidemath{\(-\bsA\)}，所以计算出行列式相同但迹的符号相反}
+根据线性代数的知识，该特征方程的一次项系数为矩阵 \(\bsA\) 的迹，常数项为矩阵 \(\bsA\) 的行列式。具体来说\sidenote{本笔记的 \(\bsA\) 定义和课堂上的不同，相当于课堂上的 \(-\bsA\)，所以计算出行列式相同但迹的符号相反}
 \begin{align*}
     &T\coloneq \tr\bka{\bsA}=\lambda_1+\lambda_2=a_1\\
     &D\coloneq \det\bka{\bsA}=\lambda_1\,\lambda_2=a_2
@@ -352,9 +352,9 @@
 
 % 待完成：D 其实是 p(0)
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
     \centering
-    \sidenote{落在边界上也是不可能稳定的（排除特殊情况）；箭头表示大于的方向，如 \sidemath{\(p\bka{1}>1\)}}
+    \sidenote{落在边界上也是不可能稳定的（排除特殊情况）；箭头表示大于的方向，如 \(p\bka{1}>1\)}
     \begin{tikzpicture}[
         scale=1.0,
         line cap=round,
@@ -531,7 +531,7 @@
         5 & \(p\bka{1}>0\,, \ p\bka{-1}>0\) & \(\Delta<0\,,\ D>1\) & 虚焦点 & 震荡发散\\
         \midrule
         6 & \(p\bka{1}>0\,, \ p\bka{-1}>0\) & \(\Delta<0\,,\ D<1\) & 虚焦点 & 震荡收敛\\
-        7 & \(p\bka{1}>0\,, \ p\bka{-1}>0\) & \(\Delta>0\,,\ D<1\) & 实结点 & 多种收敛情况\sidenote{结合 \sidemath{\(\Delta\)} 与 \sidemath{\(D\)} 值可得 \sidemath{\(T\)} 的范围，而对区域 \sidemath{\(7\)} 做更细致的划分，此处省略；\sidemath{\(T\)} 的符号影响根的符号}\\
+        7 & \(p\bka{1}>0\,, \ p\bka{-1}>0\) & \(\Delta>0\,,\ D<1\) & 实结点 & 多种收敛情况\sidenote{结合 \(\Delta\) 与 \(D\) 值可得 \(T\) 的范围，而对区域 \(7\) 做更细致的划分，此处省略；\(T\) 的符号影响根的符号}\\
         \bottomrule
     \end{tabular}
     \caption{奇点类型与稳定性的判定表}
@@ -545,7 +545,7 @@
 
 出现复根的系统必然震荡，这是因为 \(i^2=-1\) 相当于出现了负号\footnote{2026 年 4 月 19 日勘误：此前句中公式存在错误} 。(h) 图 \(\varrho=1\) 情况很好展示了系统在单位圆上 “震荡”（实际上是在复平面上旋转）的效果。
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
     \MaybeIncludeGraphics[width=\linewidth]{chapter-07-singularity.png}
   \caption{各种奇点类型汇总图}
   \label{fig:Sing}
@@ -559,7 +559,7 @@
 
 \section{特征方程法}{\label{sec:CharEquMethod}}
 
-定义位移算子 \(L\) 作用在 \(\bkd{x_t}\) 上的结果为 \(L\,x_t = x\lt\)；恒等算子 \(I\) 的效果为 \(I \, x_t=x_t\)。位移算子也有自己的特征值和特征向量，仿照线性变换的\sidenote{参考了线性变换的特征值和特征向量满足 \sidemath{\(\bs A\,\bs x=\lambda\,\bsx\)}}，写出
+定义位移算子 \(L\) 作用在 \(\bkd{x_t}\) 上的结果为 \(L\,x_t = x\lt\)；恒等算子 \(I\) 的效果为 \(I \, x_t=x_t\)。位移算子也有自己的特征值和特征向量，仿照线性变换的\sidenote{参考了线性变换的特征值和特征向量满足 \(\bs A\,\bs x=\lambda\,\bsx\)}，写出
 \begin{equation}
     L\,x_t=\lambda\,x_t=x\lt
 \end{equation}

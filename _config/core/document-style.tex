@@ -1,4 +1,4 @@
-% !TeX root = ../../AdvMacroNote_Sun.tex
+% !TeX root = ../../AMaN_SUN.tex
 \color{BodyText}
 \tikzset{every picture/.append style={color=DiagramPrimary}}
 \AtBeginDocument{\pagecolor{PageBackground}}
@@ -57,6 +57,17 @@
 \normalmarginpar
 \setlength{\marginparpush}{8pt}
 \raggedbottom
+% 浮动体在当前位置放不下时应延后排版，让后续正文继续填充本页。
+% 跨页表格仍使用 longtable；普通 figure/table 不使用强制定位 [H]。
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{5}
+\renewcommand{\topfraction}{0.90}
+\renewcommand{\bottomfraction}{0.80}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.78}
+\floatplacement{figure}{!htbp}
+\floatplacement{table}{!htbp}
 \setstretch{1.38}
 \setlength{\parindent}{2em}
 \setlength{\parskip}{2ex plus 0.3ex minus 0.2ex}
@@ -111,15 +122,13 @@
                 font=\normalfont\mdseries\small,
                 text=SecondaryText
             ] at ([xshift=8mm]current page.west)
-            {\CourseShortTitle\sideinfosep\CourseSideLevel\sideinfosep\CourseTerm\sideinfosep\CourseInstructor\sideinfosep\CourseCompileDate};
+            {\CourseSideInfo};
         \end{tikzpicture}%
     \fi
 }
 
 % Margin notes stay in the right margin on every page.
 \newcommand{\SidenoteScaleMath}[1]{\scalebox{\SidenoteMathScale}{#1}}
-\newcommand{\sidemath}[1]{\SidenoteScaleMath{#1}}
-\newcommand{\SidenoteMathIdentity}[1]{#1}
 % 在内容进入 marginnote 前，把每组 \(...\) 改写成完整且平衡的缩放组。
 % 这样用户只需正常输入 \sidenote{文字 \(公式\) 文字}。
 \ExplSyntaxOn
@@ -153,8 +162,6 @@
         \SidenoteFont
         \setstretch{1.08}%
         \color{SecondaryText}%
-        % 旧写法 \sidemath{\(...\)} 仍可使用，但不重复缩放。
-        \let\sidemath\SidenoteMathIdentity
         \SidenoteProcessMath{#1}%
     }%
 }

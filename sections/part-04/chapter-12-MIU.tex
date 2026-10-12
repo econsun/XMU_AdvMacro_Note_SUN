@@ -24,7 +24,7 @@
 \end{equation*}
 约束条件为
 \begin{equation*}
-    P_t\,C_t+Q_t\,B_t=B\lt +W_t\,N_t+T_t\sidenote{\sidemath{\(Q_t\)} 是债券价格\\\sidemath{\(B_t\)} 是债券数量\\\sidemath{\(T_t\)} 是转移支付}
+    P_t\,C_t+Q_t\,B_t=B\lt +W_t\,N_t+T_t\sidenote{\(Q_t\) 是债券价格\\\(B_t\) 是债券数量\\\(T_t\) 是转移支付}
 \end{equation*}
 构建拉格朗日函数
 \begin{equation*}
@@ -129,7 +129,7 @@
     & \hat y_t=(1-\alpha)\,\hat n_t+\hat a_t \label{eq:CMM-log-linear-3}\\
     & \hat y_t=\hat c_t \label{eq:CMM-log-linear-4}
 \end{align}
-联立 \ref{eq:CMM-log-linear-1} 和 \ref{eq:CMM-log-linear-2}，代入 \ref{eq:CMM-log-linear-4}，再代入 \ref{eq:CMM-log-linear-3}，得到只有 \(\hat n_t\) 和 \(\hat a_t\) 的方程\sidenote{这里求稳态和求系数，都代 3 和 4 入 1 和 2 联立的方程，解出 \sidemath{\(N\)}，再到 \sidemath{\(Y\)} 和 \sidemath{\(C\)}，最后 \sidemath{\(W^r\)}}
+联立 \ref{eq:CMM-log-linear-1} 和 \ref{eq:CMM-log-linear-2}，代入 \ref{eq:CMM-log-linear-4}，再代入 \ref{eq:CMM-log-linear-3}，得到只有 \(\hat n_t\) 和 \(\hat a_t\) 的方程\sidenote{这里求稳态和求系数，都代 3 和 4 入 1 和 2 联立的方程，解出 \(N\)，再到 \(Y\) 和 \(C\)，最后 \(W^r\)}
 \begin{align*}
     \sigma\,\hat a_t&+\sigma\bka{1-\alpha}\hat n_t+\phi\,\hat n_t=\hat a_t-\alpha\,\hat n_t\\
     &\hat n_t=\dfrac{1-\sigma}{\sigma\bka{1-\alpha}+\phi+\alpha}\cdot \hat a_t=\psi_{na}\,\hat a_t
@@ -156,12 +156,12 @@
 \end{align*}
 因为利率和通胀率都是比率，不适合取对数，所以直接作差定义偏离量
 \begin{align*}
-    &\hat\imath_t=i_t-\bar\imath\sidenote{为 \sidemath{\(i\)} 不和上方装饰混淆，改用规范记号 \sidemath{\(\imath\)}}\\
+    &\hat\imath_t=i_t-\bar\imath\sidenote{为 \(i\) 不和上方装饰混淆，改用规范记号 \(\imath\)}\\
     &\hat \pi_t=\pi_t-\bar \pi=\pi_t
 \end{align*}
 通货膨胀率本就衡量了价格波动，所以它是否 “戴帽” 无差异；但出于符号统一、避免疑惑的考虑，我们选择 “戴帽”。对数线性化欧拉方程 \ref{eq:CMM-asset-pricing-2} 为
 \begin{align}
-    -\hat\imath_t&=-\sigma\,\meant\bka{\hat c\nt-\hat c_t}-\meant\,\hat \pi\nt\label{eq:CMM-log-linear-6}\sidenote{\sidemath{\(\hat Q_t=\log\dfrac{e^{-i_t}}{e^{-\bar\imath}}=-\hat\imath_t\)}}
+    -\hat\imath_t&=-\sigma\,\meant\bka{\hat c\nt-\hat c_t}-\meant\,\hat \pi\nt\label{eq:CMM-log-linear-6}\sidenote{\(\hat Q_t=\log\dfrac{e^{-i_t}}{e^{-\bar\imath}}=-\hat\imath_t\)}
 \end{align}
 定义实际利率，并直接减去稳态得实际利率的波动
 \begin{align}
@@ -169,7 +169,7 @@
 \end{align}
 那么 \ref{eq:CMM-log-linear-6} 可以写成
 \begin{align}
-    \hat r_t&=\sigma\,\meant\bka{\hat c\nt-\hat c_t}=\sigma\,\meant\bka{\hat y\nt-\hat y_t}\sidenote{牢记左侧公式，可分离时恒成立；第二行使用到 \sidemath{\(\hat a\nt=\varrho_a\,\hat a_t+\varepsilon_{t+1}\)}}\notag\\
+    \hat r_t&=\sigma\,\meant\bka{\hat c\nt-\hat c_t}=\sigma\,\meant\bka{\hat y\nt-\hat y_t}\sidenote{牢记左侧公式，可分离时恒成立；第二行使用到 \(\hat a\nt=\varrho_a\,\hat a_t+\varepsilon_{t+1}\)}\notag\\
     &=\sigma\,\psi_{ya}\,\meant\bka{\hat a\nt-\hat a_t}=\sigma\,\psi_{ya}\bka{\varrho_a-1}\hat a_t\label{eq:CMM-log-linear}
 \end{align}
 最终，我们知道：在正向的技术脉冲发生后，\(\hat a_t>0\) 导致 \(\hat r_t<0\)。其中的传到路径为：正向冲击发生 \(\Rightarrow\) 工资增加 \(\Rightarrow\) 债券需求增加 \(\Rightarrow\) 债券价格上升 \(\Rightarrow\) 名义利率下降 \(\Rightarrow\) 实际利率下降。
@@ -232,12 +232,12 @@
 \end{align}
 对该结果进行对数线性化。首先看 \(1-e^{-i_t}\) ，我们将取对数再在 \(\bar\imath\) 附近 Taylor 展开
 \begin{align*}
-    \log\bka{1-e^{-i_t}}&\approx\log\bka{1-e^{-\bar\imath}}+\dfrac{e^{-\bar\imath}}{1-e^{-\bar\imath}}\bka{i_t-\bar\imath}\sidenote{\sidemath{\(1-e^{-i_t}\)} 不是百分比数，可定义对数偏离}\\
+    \log\bka{1-e^{-i_t}}&\approx\log\bka{1-e^{-\bar\imath}}+\dfrac{e^{-\bar\imath}}{1-e^{-\bar\imath}}\bka{i_t-\bar\imath}\sidenote{\(1-e^{-i_t}\) 不是百分比数，可定义对数偏离}\\
     \widehat{(1-e^{-i_t})}&=\dfrac{1}{e^{\bar\imath}-1}\cdot \hat\imath_t
 \end{align*}
 现在可以立即写出 \ref{eq:MIU-separable-equilibrium} 对数线性化结果
 \begin{align}
-    \hat m_t-\hat p_t=\hat y_t-\dfrac{1}{\nu\bka{e^{\bar\imath}-1}}\cdot \hat\imath_t\sidenote{假设 \sidemath{\(c_t=y_t\)}、\sidemath{\(\sigma=\nu\)}}\label{eq:MIU-separable-log-linear}
+    \hat m_t-\hat p_t=\hat y_t-\dfrac{1}{\nu\bka{e^{\bar\imath}-1}}\cdot \hat\imath_t\sidenote{假设 \(c_t=y_t\)、\(\sigma=\nu\)}\label{eq:MIU-separable-log-linear}
 \end{align}
 在可分离 MIU 模型中，实际货币余额由产出和名义利率决定；名义利率越高，持有货币的机会成本越高，实际货币余额越低。但由于效用函数可分离，形如
 \begin{align*}
@@ -259,7 +259,7 @@
         \ C_t^{1-\theta}\cal M_t^\theta & \nu=1
     \end{cases}
 \end{equation*}
-参数 \(1/\nu\) 是 \(C_t\) 和 \(\cal M_t\) 之间的替代弹性\sidenote{\sidemath{\(\nu>1\)}，货币和消费是互补品；反之替代品}，\(\theta\) 是两者的权重；如果 \(\nu=1\)，效用函数退化为柯布-道格拉斯函数。我们的讨论建立在 \(\nu\ne1\) 的基础上。
+参数 \(1/\nu\) 是 \(C_t\) 和 \(\cal M_t\) 之间的替代弹性\sidenote{\(\nu>1\)，货币和消费是互补品；反之替代品}，\(\theta\) 是两者的权重；如果 \(\nu=1\)，效用函数退化为柯布--道格拉斯函数。我们的讨论建立在 \(\nu\ne1\) 的基础上。
 
 计算边际效用。对消费求导
 \begin{align*}
@@ -302,7 +302,7 @@
 \end{align*}
 的结果我们在可分离情形中已经得到过
 \begin{align}
-    \hat m_t-\hat p_t=\hat c_t-\eta\,\hat\imath_t\qquad\qquad\eta\coloneq\dfrac{1}{\nu\bka{e^{\bar\imath}-1}}=\dfrac{\beta}{\nu\bka{1-\beta}}\label{eq:MIU-money-equilibrium-log-linear}\sidenote{\sidemath{\(\beta=e^{-\varrho}=e^{-\bar\imath}\)}}
+    \hat m_t-\hat p_t=\hat c_t-\eta\,\hat\imath_t\qquad\qquad\eta\coloneq\dfrac{1}{\nu\bka{e^{\bar\imath}-1}}=\dfrac{\beta}{\nu\bka{1-\beta}}\label{eq:MIU-money-equilibrium-log-linear}\sidenote{\(\beta=e^{-\varrho}=e^{-\bar\imath}\)}
 \end{align}
 
 \myskip
@@ -352,7 +352,7 @@
     \end{cases}
 \end{equation*}
 
-从参数 \(\chi\) 的定义来看，它代表稳态时，实际货币在 CES 函数中的权重。对 \(\chi\) 展开计算\sidenote{回顾求解过程，我们在没有求稳态的情况下直接开始对数线性化；求稳态的目的是让对数线性化结果彻底参数化，而目前系统里只有 \sidemath{\(\chi\)} 含稳态，现在开始计算该稳态并参数化}
+从参数 \(\chi\) 的定义来看，它代表稳态时，实际货币在 CES 函数中的权重。对 \(\chi\) 展开计算\sidenote{回顾求解过程，我们在没有求稳态的情况下直接开始对数线性化；求稳态的目的是让对数线性化结果彻底参数化，而目前系统里只有 \(\chi\) 含稳态，现在开始计算该稳态并参数化}
 \begin{align}
     \chi&=\dfrac{\theta\,\bar{\cal M}^{1-\nu}}{\bar X^{1-\nu}}=\dfrac{\theta\,\bar{\cal M}^{1-\nu}}{\bka{1-\theta}\bar C^{1-\nu}+\theta\,\bar{\cal M}^{1-\nu}}\notag\\
     &=\dfrac{\theta\bka{\bar{\cal M}/\bar C}^{1-\nu}}{1-\theta+\theta\bka{\bar{\cal M}/\bar C}^{1-\nu}}\eqcolon\dfrac{\theta\,k_m^{1-\nu}}{1-\theta+\theta\,k_m^{1-\nu}}\label{eq:MIU-chi}
@@ -398,7 +398,7 @@
 代入消费-产出关系 \(\hat c_t=\hat y_t\)，得到
 \begin{align*}
     \hat\imath_t-\meant\,\hat\pi\nt&=\sigma\,\meant\bka{\hat y\nt-\hat y_t}+\omega\,\meant\bka{\hat\imath\nt-\hat\imath_t}\\
-    \hat y_t&=\meant\,\hat y\nt-\dfrac{1}{\sigma}\bks{\hat\imath_t-\meant\,\hat\pi\nt-\omega\,\meant\bka{\hat\imath\nt-\hat\imath_t}}\sidenote{债券欧拉方程对数线性化结果为 \sidemath{\(\n{IS}\)} 曲线；如果效用可分离，则没有最右侧名义利率}
+    \hat y_t&=\meant\,\hat y\nt-\dfrac{1}{\sigma}\bks{\hat\imath_t-\meant\,\hat\pi\nt-\omega\,\meant\bka{\hat\imath\nt-\hat\imath_t}}\sidenote{债券欧拉方程对数线性化结果为 \(\n{IS}\) 曲线；如果效用可分离，则没有最右侧名义利率}
 \end{align*}
 如果名义利率波动，那么在 \(\omega>0\)（\(\nu>\sigma\)）时，\(\hat c_t\) 或 \(\hat y_t\) 上升。
 
@@ -545,7 +545,7 @@
 \begin{align*}
     \pi\nt=\phi_\pi\,\pi_t-\hat r_t+\xi_{t+1}\,,\qquad \meant\bks{\xi_{t+1}}=0
 \end{align*}
-这里的 \(\xi_{t+1}\) 是 sunspot 冲击，所以通胀和价格水平都不再唯一。换成 Blanchard-Kahn 条件来表述也是一样。系统
+这里的 \(\xi_{t+1}\) 是 sunspot 冲击，所以通胀和价格水平都不再唯一。换成 Blanchard--Kahn 条件来表述也是一样。系统
 \begin{align*}
     \meant\,\pi\nt=\phi_\pi\,\pi_t-\hat r_t
 \end{align*}

@@ -14,7 +14,7 @@
 
 在 N. Gregory Mankiw 著经典教材《Macroeconomics》（第 10 版）中，第 15.5 章的中文名为“结论：向 DSGE 模型迈进”，让对这章一知半解的我着迷：“到底是什么东西迈向如雷贯耳的 DSGE 呢？”
 
-\term{卢卡斯批判}{Lucas critique}指出，传统宏观模型中由历史数据估计得到的总量关系依赖于既定政策环境；一旦政策规则改变，私人部门预期和行为随之调整，这些关系便可能不再稳定。新凯恩斯学派在理性预期和微观最优化框架下引入垄断竞争、价格黏性等名义摩擦，从而为分析短期的名义冲击（如货币政策）产生的经济波动提供框架。\sidenote{\sidemath{\(\n{RBC}\)} 模型是实际冲击的分析框架}
+\term{卢卡斯批判}{Lucas critique}指出，传统宏观模型中由历史数据估计得到的总量关系依赖于既定政策环境；一旦政策规则改变，私人部门预期和行为随之调整，这些关系便可能不再稳定。新凯恩斯学派在理性预期和微观最优化框架下引入垄断竞争、价格黏性等名义摩擦，从而为分析短期的名义冲击（如货币政策）产生的经济波动提供框架。\sidenote{\(\n{RBC}\) 模型是实际冲击的分析框架}
 
 实际上，Mankiw 在第 15 章讨论的正是本章要展开的新凯恩斯（new Keynesian，NK）模型。身处今日的我们，或许难以感同身受 NK 模型诞生时追随凯恩斯步尘的后人能勇敢面对卢卡斯批判的振奋，但我们仍可以通过本章学习，感受到流派争论把人类智慧推向更高处的魅力。现在，是时候揭开面纱了！
 
@@ -28,7 +28,7 @@
 \begin{equation*}
     C_t\coloneq\bks{\int^1_0 C_t\bki^{\frac{\varepsilon-1}\varepsilon}\mathrm{d}i}^{\frac\varepsilon{\varepsilon-1}}
 \end{equation*}
-称 \(C_t\) 是 \term{聚合的}{aggregate}消费。接着，价格水平 \(P_t\) 是为获得 1 单位 \(C_t\) 所需的最小支出\sidenote{\sidemath{\(P_t\)} 还以可被称作价格指数，将其视为消费的“单价”有助于理解总支出}，因此先求解支出最小化问题：
+称 \(C_t\) 是 \term{聚合的}{aggregate}消费。接着，价格水平 \(P_t\) 是为获得 1 单位 \(C_t\) 所需的最小支出\sidenote{\(P_t\) 还以可被称作价格指数，将其视为消费的“单价”有助于理解总支出}，因此先求解支出最小化问题：
 \begin{align*}
     E_t =\;&P_t\,C_t= \min_{C_t} \ \int^1_0 P_t\bki \, C_t\bki \mathrm{d}i \\
     \text{s.t.} &\quad C_t=\bks{\int^1_0 C_t\bki^{\frac{\varepsilon-1}\varepsilon}\mathrm{d}i}^{\frac\varepsilon{\varepsilon-1}} \\
@@ -158,7 +158,7 @@ NK 模型是我们首次接触到有垄断势力的市场结构，我们之前�
 \end{align*}
 使用产品市场出清条件 \(Y_t\bki=C_t\bki\) 和 产品需求 \ref{eq:CES-demand}，再标准化 \(P_t=1\)（不影响结论）有
 \begin{align}
-    \dfrac{\p Y_t\bki}{\p P_t\bki}=\dfrac{\p P_t\bki^{-\varepsilon}\,Y_t}{\p P_t\bki}=-\varepsilon\,P_t\bki^{-\varepsilon-1}\,Y_t=-\varepsilon\cdot\dfrac{Y_t\bki}{P_t\bki}\sidenote{代入需求函数说明市场是非完全竞争的；本式结合 \ref{eq:CES-demand} 的旁注，不难发现 \sidemath{\(-\varepsilon\)} 是需求价格弹性}\label{eq:dYdP}
+    \dfrac{\p Y_t\bki}{\p P_t\bki}=\dfrac{\p P_t\bki^{-\varepsilon}\,Y_t}{\p P_t\bki}=-\varepsilon\,P_t\bki^{-\varepsilon-1}\,Y_t=-\varepsilon\cdot\dfrac{Y_t\bki}{P_t\bki}\sidenote{代入需求函数说明市场是非完全竞争的；本式结合 \ref{eq:CES-demand} 的旁注，不难发现 \(-\varepsilon\) 是需求价格弹性}\label{eq:dYdP}
 \end{align}
 代回一阶条件得
 \begin{align*}
@@ -221,7 +221,7 @@ NK 模型是我们首次接触到有垄断势力的市场结构，我们之前�
 再整理，最终得到（两个加和指标都为 \(k\) 但属不同运算）
 \begin{align}
     P_t^*&=\dfrac{\varepsilon}{\varepsilon-1}\cdot\dfrac{\meant\sum\limits^\infty_{k=0}\theta^k\,Q_{t,t+k}\,Y_{t+k\ivbar t}\,\n{MC}_{t+k\ivbar t}}{\meant\sum\limits^\infty_{k=0}\theta^k\,Q_{t,t+k}\,Y_{t+k\ivbar t}}\label{eq:staggered-markup}\\
-    &=\underbrace{ \ \dfrac{\varepsilon}{\varepsilon-1} \ }_{\n{markup}}\cdot \ \meant\sum^\infty_{k=0}\underbrace{ \ \dfrac{\theta^k\,Q_{t,t+k}\,Y_{t+k\ivbar t}}{\meant\sum\limits^\infty_{s=0}\theta^s\,Q_{t,t+k}\,Y_{t+k\ivbar t}} \ }_{\n{weight}}\cdot \ \underbrace{ \ \n{MC}_{t+k\ivbar t} \ }_{\n{MC}}\notag\sidenote{为避免混淆，在此修改分母的加和指标；\sidemath{\(\n{MC}_{t+k\ivbar t}\)} 同属加和内容}
+    &=\underbrace{ \ \dfrac{\varepsilon}{\varepsilon-1} \ }_{\n{markup}}\cdot \ \meant\sum^\infty_{k=0}\underbrace{ \ \dfrac{\theta^k\,Q_{t,t+k}\,Y_{t+k\ivbar t}}{\meant\sum\limits^\infty_{s=0}\theta^s\,Q_{t,t+k}\,Y_{t+k\ivbar t}} \ }_{\n{weight}}\cdot \ \underbrace{ \ \n{MC}_{t+k\ivbar t} \ }_{\n{MC}}\notag\sidenote{为避免混淆，在此修改分母的加和指标；\(\n{MC}_{t+k\ivbar t}\) 同属加和内容}
 \end{align}
 该式为交错定价机制下的加成定价法则。如果 \(\theta\) 趋近 0 或 1，上式会退化为之前讨论的加成法则。其中直觉：加成定价是从利润最大化中得到的法则，是厂商定价的唯一法则；引入交错定价对对利润最大化问题进行扩展并不改变这一法则的本质。就如引入完全竞争假设，加成定价依旧适用，能进一步退化。
 
@@ -230,7 +230,7 @@ NK 模型是我们首次接触到有垄断势力的市场结构，我们之前�
 我们的处理从 \ref{eq:staggered-markup} 开始，根据结构简化记号为
 \begin{align*}
     P^*_t=\mu\cdot\meant\sum^\infty_{k=0}\bka{\Xi_{k,t}\cdot\n{MC}_{k,t}}
-    \sidenote{\sidemath{\(\Xi\)} 与 \sidemath{\(\xi\)} 为一组希腊字母大小写（实在是找不到没用过的符号）}
+    \sidenote{\(\Xi\) 与 \(\xi\) 为一组希腊字母大小写（实在是找不到没用过的符号）}
 \end{align*}
 使用性质 \(\dis\sum_{k=0}^\infty X_k\) 对数线性化结果为 \(\dis\sum_{k=0}^\infty\dfrac{X_k}{\sum\limits_{s=0}^\infty X_s}\,\hat x_k\)，那么
 \begin{align}
@@ -255,7 +255,7 @@ NK 模型是我们首次接触到有垄断势力的市场结构，我们之前�
 对数线性化初步结果 \ref{eq:log-linear-staggered-markup} 要求我们计算 \(\sum\,\bar\Xi_k\,\hat\xi_{k,t}\)，代入上式有
 \begin{align*}
     \meant\sum^\infty_{k=0}\,\bar \Xi_k\,\hat \xi_{k,t}&=\meant\sum^\infty_{k=0}\,\bar \Xi_k\bka{\hat q_{k,t}+\hat y_{k,t}}-\meant \sum^\infty_{k=0}\bks{\bar \Xi_k \sum^\infty_{h=0}\,\bar \Xi_h\bka{\hat q_{h,t}+\hat y_{h,t}}}
-    \sidenote{\sidemath{\(\hat\xi_{k,t}\)} 表达式中的加和与此处独立，为避免混淆，修改加和符号}\\
+    \sidenote{\(\hat\xi_{k,t}\) 表达式中的加和与此处独立，为避免混淆，修改加和符号}\\
     &=\meant\sum^\infty_{k=0}\,\bar \Xi_k\bka{\hat q_{k,t}+\hat y_{k,t}}-\bka{\sum^\infty_{k=0}\bar \Xi_k} \cdot \meant \sum^\infty_{h=0}\,\bar \Xi_h\bka{\hat q_{h,t}+\hat y_{h,t}}\\
     &=\meant\sum^\infty_{k=0}\,\bar \Xi_k\bka{\hat q_{k,t}+\hat y_{k,t}}-\meant \sum^\infty_{h=0}\,\bar \Xi_h\bka{\hat q_{h,t}+\hat y_{h,t}}=0
 \end{align*}
@@ -293,7 +293,7 @@ NK 模型是我们首次接触到有垄断势力的市场结构，我们之前�
 \end{align*}
 上式表明了个有趣的事实：各部门层面 \(Y_t\bki=A_t\,N_t\bki^{1-\alpha}\)，但经济整体层面 \(Y_t\ne A_t\,N_t^{1-\alpha}\)，而要掺入相对价格 \(P_t\bki/\,P_t\)。为此，我们设置 \(D_t\) 来捕获价格在部门间的 \term{分散}{dispersion}程度。存在价格分散时
 \begin{align*}
-    D_t<1\means Y_t<A_t\,N_t^{1-\alpha}\sidenote{\sidemath{\(D_t<1\)} 可以被证明，在此省略}
+    D_t<1\means Y_t<A_t\,N_t^{1-\alpha}\sidenote{\(D_t<1\) 可以被证明，在此省略}
 \end{align*}
 即资源配置不够有效。我们将对该现象展开分析。
 
@@ -341,14 +341,14 @@ NK 模型是我们首次接触到有垄断势力的市场结构，我们之前�
 \begin{align}
     \widehat{\n{mc}}^r_t&=\hat w_t-\hat p_t+\alpha\,\hat n_t-\hat a_t\notag\\
     &\approx\hat w_t-\hat p_t-\dfrac{1}{1-\alpha}\bka{\hat a_t-\alpha\,\hat y_t}
-    \sidenote{利用本式可写出 \sidemath{\(\widehat{\n{mc}}\)} 在 \sidemath{\(t+k\)} 和 \sidemath{\(t+k\ivbar t\)} 的表达式}
+    \sidenote{利用本式可写出 \(\widehat{\n{mc}}\) 在 \(t+k\) 和 \(t+k\ivbar t\) 的表达式}
     \label{eq:real-mc-approximation}
 \end{align}
 
 对于在 \(t\) 期重新定价的厂商，他们在 \(t+k\) 期的条件产量为
 \begin{align}
     Y_{t+k\ivbar t}=Y_{t+k\ivbar t}\bki=\bka{\dfrac{P^*_{t+k}}{P_{t+k}}}^{-\varepsilon}Y_{t+k}=\bka{\dfrac{P^*_{t}}{P_{t+k}}}^{-\varepsilon}Y_{t+k}\label{eq:conditional-output}
-    \sidenote{因为对称均衡，可重新定价的产量不会有部门差异；\sidemath{\(t+k\ivbar t\)} 代表可重新定价部门，勿与总体混淆}
+    \sidenote{因为对称均衡，可重新定价的产量不会有部门差异；\(t+k\ivbar t\) 代表可重新定价部门，勿与总体混淆}
 \end{align}
 我们在此得到如何用总体产出水平来表示可重新定价部门的产出水平。
 
@@ -378,7 +378,7 @@ NK 模型是我们首次接触到有垄断势力的市场结构，我们之前�
 \begin{align*}
     \hat p^*_t&=\bka{1-\beta\,\theta}\cdot\bka{\beta\,\theta}^0\bka{\Theta\,\widehat{\n{mc}}_{t+0}^r+\hat p_{t+0}}+\bka{1-\beta\,\theta}\meant\bkd{\sum^\infty_{k=1}\bka{\beta\,\theta}^k\bka{\Theta\,\widehat{\n{mc}}^r_{t+k}-\hat p_{t+k}}}\\
     &=\bka{1-\beta\,\theta}\bka{\Theta\,\widehat{\n{mc}}^r_{t}+\hat p_{t}}+\underbrace{\beta\,\theta}_{\n{extra item}}\;\underbrace{\bka{1-\beta\,\theta}\meant\bkd{\sum^\infty_{k=0}\bka{\beta\,\theta}^{k}\bka{\Theta\,\widehat{\n{mc}}^r_{t+k+1}-\hat p_{t+k+1}}}}_{=\;\hat p^*\nt}
-    \sidenote{角标中 \sidemath{\(1\)} 由指标 \sidemath{\(k\)} 重组引出，但现在将其归为 \sidemath{\(\bka{t+1}+k\)}，这就引出了 \(\hat p\nt\) 的角标}\\
+    \sidenote{角标中 \(1\) 由指标 \(k\) 重组引出，但现在将其归为 \(\bka{t+1}+k\)，这就引出了 \(\hat p\nt\) 的角标}\\
     &=\bka{1-\beta\,\theta}\bka{\Theta\,\widehat{\n{mc}}^r_{t}+\hat p_{t}}+\beta\,\theta\,\hat p\nt^*
 \end{align*}
 \endgroup
@@ -391,7 +391,7 @@ NK 模型是我们首次接触到有垄断势力的市场结构，我们之前�
 \begin{align*}
     &\hat p_t=\theta\,\hat p\lt+\bka{1-\theta}\bka{1-\beta\,\theta}\bka{\Theta\,\widehat{\n{mc}}^r_t+\hat p_t}+\beta\,\theta\,\meant\,\hat p\nt-\beta\,\theta^2\,\hat p_t\\
     &\hspace{3em}\hat p_t-\hat p\lt={\dfrac{\bka{1-\theta}\bka{1-\beta\,\theta}}\theta\,\Theta}\,\widehat{\n{mc}}^r_t+\beta\bka{\meant\,\hat p\nt-\hat p_t}
-    \sidenote{将 \sidemath{\(\widehat{\n{mc}}^r_t\)} 系数记作 \sidemath{\(\lambda>0\)}}
+    \sidenote{将 \(\widehat{\n{mc}}^r_t\) 系数记作 \(\lambda>0\)}
     \\
     &\hspace{9em}\hat\pi_t=\lambda\,\widehat{\n{mc}}^r_t+\beta\,\meant\,\hat\pi\nt
 \end{align*}
@@ -408,7 +408,7 @@ NK 模型是我们首次接触到有垄断势力的市场结构，我们之前�
      \ \Rightarrow\quad
      \widehat{\n{mc}}_t^r=\dfrac{\phi+\alpha+\sigma\bka{1-\alpha}}{1-\alpha}\,\hat y_t-\dfrac{1+\phi}{1-\alpha}\,\hat a_t\label{eq:mc-output-gap}
 \end{align}
-如果 \(\hat y_t\) 能被替换为产出缺口 \(\tilde y_t\coloneq\hat y_t-\hat y_t^n\)，那么任务完成。\term{自然产出水平}{natural output，\(\hat y_t^n\)}是在价格具有完全弹性时的产出水平，那么所有厂商会采用相同加成策略\sidenote{相当于 \sidemath{\(\theta=0\)} 的情形，所有部门定价差异}，此时
+如果 \(\hat y_t\) 能被替换为产出缺口 \(\tilde y_t\coloneq\hat y_t-\hat y_t^n\)，那么任务完成。\term{自然产出水平}{natural output，\(\hat y_t^n\)}是在价格具有完全弹性时的产出水平，那么所有厂商会采用相同加成策略\sidenote{相当于 \(\theta=0\) 的情形，所有部门定价差异}，此时
 \begin{align*}
     P_t\bki=\mu\cdot\n{MC}_t=P_t
     \qquad\n{and}\qquad
@@ -416,13 +416,13 @@ NK 模型是我们首次接触到有垄断势力的市场结构，我们之前�
 \end{align*}
 那么 \(\widehat{\n{mc}}^r_t=0\) 且
 \begin{align}
-    \hat y_t^n=\dfrac{1+\phi}{\phi+\alpha+\sigma\bka{1-\alpha}}\,\hat a_t\sidenote{将 \sidemath{\(\hat a_t\)} 系数记作 \sidemath{\(\psi^n_{ya}>0\)}}\label{eq:natural-output}
+    \hat y_t^n=\dfrac{1+\phi}{\phi+\alpha+\sigma\bka{1-\alpha}}\,\hat a_t\sidenote{将 \(\hat a_t\) 系数记作 \(\psi^n_{ya}>0\)}\label{eq:natural-output}
 \end{align}
 回到 \ref{eq:mc-output-gap}
 \begin{align*}
     \widehat{\n{mc}}^r_t&=\dfrac{\phi+\alpha+\sigma\bka{1-\alpha}}{1-\alpha}\bka{\hat y^n_t+\tilde y_t}-\dfrac{1+\phi}{1-\alpha}\,\hat a_t\\
     &=\dfrac{1+\phi}{1-\alpha}\,\hat a_t+\dfrac{\phi+\alpha+\sigma\bka{1-\alpha}}{1-\alpha}\,\tilde y_t-\dfrac{1+\phi}{1-\alpha}\,\hat a_t\\
-    &=\dfrac{\phi+\alpha+\sigma\bka{1-\alpha}}{1-\alpha}\,\tilde y_t\sidenote{\sidemath{\(\tilde y_t\)} 的定义暗含 \sidemath{\(\hat a_t\)} 项会被消去}
+    &=\dfrac{\phi+\alpha+\sigma\bka{1-\alpha}}{1-\alpha}\,\tilde y_t\sidenote{\(\tilde y_t\) 的定义暗含 \(\hat a_t\) 项会被消去}
 \end{align*}
 \begingroup\emergencystretch=1em
 最终我们得到了著名的 \term{新凯恩斯菲利普斯方程}{New Keynesian Phillips Curve，NKPC}\par
@@ -450,13 +450,13 @@ NK 模型是我们首次接触到有垄断势力的市场结构，我们之前�
 再定义自然实际利率波动
 \begin{align}
     \hat r^n_t\coloneq\sigma\,\meant\bkd{\hat y\nt^n-\hat y^n_t}=\sigma\cdot\underbrace{\dfrac{\bka{1+\phi}}{\phi+\alpha+\sigma\bka{1-\alpha}}}_{\eqcolon\;\psi^n_{ya}}\,\meant\bkd{\D\hat a\nt}
-    \sidenote{使用 \sidemath{\(\hat y^n_t\)} 表达式 \ref{eq:natural-output}}\label{eq:natural-real-rate}
+    \sidenote{使用 \(\hat y^n_t\) 表达式 \ref{eq:natural-output}}\label{eq:natural-real-rate}
 \end{align}
 回到 \ref{eq:dynamic-is}
 \begin{align}
     \tilde y_t=-\dfrac1\sigma\bka{\hat r_t-\hat r^n_t}+\meant\,\tilde y\nt\label{eq:dynamic-is-gap}
 \end{align}
-这就是表示实际利率和产出缺口关系的 \term{动态 IS 曲线}{Dynamic IS Curve，DIS}\sidenote{因目前不考虑货币，没有 \sidemath{\(\n{LM}\)} 曲线，所以 \sidemath{\(\n{IS}\)} 曲线就是 \sidemath{\(\n{AD}\)} 曲线}。实际上，NKPC 和 DIS 都是（带期望）一阶线性方程，解得
+这就是表示实际利率和产出缺口关系的 \term{动态 IS 曲线}{Dynamic IS Curve，DIS}\sidenote{因目前不考虑货币，没有 \(\n{LM}\) 曲线，所以 \(\n{IS}\) 曲线就是 \(\n{AD}\) 曲线}。实际上，NKPC 和 DIS 都是（带期望）一阶线性方程，解得
 \begin{equation*}
     \begin{cases}\ \hat\pi_t=\beta\,\meant\,\hat\pi\nt+\kappa\,\tilde y_t&(\n{NKPC}) \\[8pt]
         \ \tilde y_t=-\dfrac1\sigma\bka{\hat r_t-\hat r^n_t}+\meant\,\tilde y\nt&(\n{DIS})
@@ -476,7 +476,7 @@ NKPC 帮助我们在给定产出缺口情况下确定通胀率，而 DIS 则是�
 
 John B. Taylor 从实际数据中总结经验，在 1993 年提出了个形式简单的货币政策规则，被称作 \term{泰勒规则}{Taylor principle}。他认为：中央银行应该根据通胀率和产出缺口的变化来确定名义利率目标，为制定货币政策提供方向。现泰勒规则被总结为
 \begin{align*}
-    \hat\imath_t=\phi_\pi\,\hat\pi_t+\phi_y\,\hat y_t+v_t\sidenote{\sidemath{\(\psi\)} 是传导系数，由众多参数代数表示；\sidemath{\(\phi\)} 是与 \sidemath{\(\psi\)} 不同的参数，不被其他参数表示}
+    \hat\imath_t=\phi_\pi\,\hat\pi_t+\phi_y\,\hat y_t+v_t\sidenote{\(\psi\) 是传导系数，由众多参数代数表示；\(\phi\) 是与 \(\psi\) 不同的参数，不被其他参数表示}
 \end{align*}
 其中 \(v_t\) 是均值为零的政策扰动项；\(\phi_\pi\) 和 \(\phi_y\) 都为正数。目前 NK 系统为
 \begin{equation*}

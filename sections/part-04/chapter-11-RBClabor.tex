@@ -12,9 +12,9 @@
 
 \chapter{RBC 模型：含劳动}\label{ch:11}
 
-毫无疑问，劳动是经济中的关键变量，而使用劳动建模一直是宏观经济中的难题，尤其在理论与数据匹配上。本章会讨论两种含劳动的 RBC 模型 —— Long-Plosser 模型 \footnote{John B. Long Jr. and Charles I. Plosser, ``Real Business Cycles,'' \emph{Journal of Political Economy}, 1983} 和 Hansen 模型 \footnote{Gary D. Hansen, ``Indivisible Labor and the Business Cycle,'' \emph{Journal of Monetary Economics}, 1985} ，分析它们的优缺点以及与数据的匹配情况。最后，我们还会简要介绍一些其他类型的效用函数，这些函数在 RBC 模型中被用来更好地捕捉劳动供给的行为特征。
+毫无疑问，劳动是经济中的关键变量，而使用劳动建模一直是宏观经济中的难题，尤其在理论与数据匹配上。本章会讨论两种含劳动的 RBC 模型 —— Long--Plosser 模型 \footnote{John B. Long Jr. and Charles I. Plosser, ``Real Business Cycles,'' \emph{Journal of Political Economy}, 1983} 和 Hansen 模型 \footnote{Gary D. Hansen, ``Indivisible Labor and the Business Cycle,'' \emph{Journal of Monetary Economics}, 1985} ，分析它们的优缺点以及与数据的匹配情况。最后，我们还会简要介绍一些其他类型的效用函数，这些函数在 RBC 模型中被用来更好地捕捉劳动供给的行为特征。
 
-\section{Long-Plosser 模型}\label{sec:long-plosser}
+\section{Long--Plosser 模型}\label{sec:long-plosser}
 
 \subsection{模型概况}\label{sec:chap05-model}
 
@@ -26,7 +26,7 @@
         & L_t=1-N_t
 \end{align*}
 \begin{itemize}
-    \item 效用函数满足（对数）Cobb-Douglas 形式
+    \item 效用函数满足（对数）Cobb--Douglas 形式
     \item 资本是完全折旧的，所以资源约束中不含 \(\bka{1-\delta}K_{t-1}\)
     \item LP 模型构建社会规划者问题，故不区分家庭和厂商两大主体
 \end{itemize}
@@ -37,8 +37,8 @@
 \end{equation*}
 最优化的一阶条件为（省略截断条件）\footnote{2026 年 5 月 7 日勘误：此前对资本存量求导结果有误}
 \begin{align}
-    \frac{\partial\mathcal{L}}{\p C_t}&=\frac{\theta}{C_t}-\lambda_t=0\label{eq:chap05-1}\sidenote{类似 \sidemath{\(\n{MUC}_t=\lambda_t\)}}\\
-    \frac{\partial\mathcal{L}}{\p N_t}&=-\frac{1-\theta}{1-N_t}+\lambda_t\bka{1-\alpha}Z_t\,K\lt^\alpha\,N_t^{-\alpha}=0\label{eq:chap05-2}\sidenote{类似 \sidemath{\(\n{MUN}_t=\lambda_t\,W_t\)}}\\
+    \frac{\partial\mathcal{L}}{\p C_t}&=\frac{\theta}{C_t}-\lambda_t=0\label{eq:chap05-1}\sidenote{类似 \(\n{MUC}_t=\lambda_t\)}\\
+    \frac{\partial\mathcal{L}}{\p N_t}&=-\frac{1-\theta}{1-N_t}+\lambda_t\bka{1-\alpha}Z_t\,K\lt^\alpha\,N_t^{-\alpha}=0\label{eq:chap05-2}\sidenote{类似 \(\n{MUN}_t=\lambda_t\,W_t\)}\\
     \frac{\partial\mathcal{L}}{\p K_t}&=-\beta^t\,\lambda_t+\beta^{t+1}\,\meant\bka{\lambda_{t+1}\,\alpha \,Z_{t+1}\,K_{t}^{\alpha-1}\,N_{t+1}^{1-\alpha}}=0\label{eq:chap05-3}
 \end{align}
 
@@ -48,7 +48,7 @@
     \frac{1}{C_t}&=\alpha\,\beta\,\meant\bks{\frac{Y\nt}{C_{t+1}}\frac{1}{K_t}}
     \label{eq:chap05-4}
 \end{align}
-由于在 LP 模型中，效用函数和生产函数都是 Cobb-Douglas 型函数，并且资本是完全折旧的，所以我们猜测：在最优路径上，储蓄率是固定的\sidenote{待未来证明储蓄率固定}。假设 \(K_t=s\,Y_t\)，则 \(C_t=\bka{1-s}Y_t\)，将它们代入 \ref{eq:chap05-4}，得到
+由于在 LP 模型中，效用函数和生产函数都是 Cobb--Douglas 型函数，并且资本是完全折旧的，所以我们猜测：在最优路径上，储蓄率是固定的\sidenote{待未来证明储蓄率固定}。假设 \(K_t=s\,Y_t\)，则 \(C_t=\bka{1-s}Y_t\)，将它们代入 \ref{eq:chap05-4}，得到
 \begin{align*}
     \dfrac{1}{\bka{1-s}Y_t}&=\alpha\,\beta\,\meant\bks{\dfrac{1}{\bka{1-s}}\cdot\dfrac{1}{s\,Y_t}}\quad\Rightarrow\quad s=\alpha\,\beta
 \end{align*}
@@ -95,7 +95,7 @@
 \end{equation*}
 以上结果来自于区分家庭和厂商两大经济主体的各自最优化问题，而不是 LP 模型。具体来说，劳动供给函数是家庭的劳动-闲暇选择；劳动需求函数则是我们熟悉 \(W=\n{MPN}\)。在 \(\bka{N,W}\) 平面中将供需曲线绘出\ref{fig:chap05-labor-market}。
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
     \centering
     \begin{tikzpicture}[
         x=1.02cm,
@@ -203,7 +203,7 @@
 假设效用函数为
 \begin{align*}
     &u\bka{C_t,N_t}=\ln C_t+A\ln\bka{1-N_t}\\
-    &u_{C,t}=\frac{1}{C_t} \qquad u_{N,t}=-\frac{A}{1-N_t}\sidenote{\sidemath{\(u_{N,t}<0\)} 代表工作会带来负效用}
+    &u_{C,t}=\frac{1}{C_t} \qquad u_{N,t}=-\frac{A}{1-N_t}\sidenote{\(u_{N,t}<0\) 代表工作会带来负效用}
 \end{align*}
 模型均衡由以下方程组表示
 \begin{empheq}[left=\empheqlbrace]{align}
@@ -248,7 +248,7 @@
 \end{itemize}
 因此，经济体中总劳动供给为 \(H_t\coloneq\pi_t\cdot n^*\cdot \bar L\)，其中 \(\bar L\) 是总劳动力人口；平均劳动时长 \(n_t=H_t/\,\bar L=\pi_t\cdot n^*\)。
 
-根据古典概型，\(\pi_t\) 也可视为一种 “概率”\sidenote{视 \sidemath{\(\pi_t\)} 为概率不代表是否工作是随机的，这仍然可以由劳动者自己选择}，在是否工作的不确定下，劳动者关于工作的期望效用是
+根据古典概型，\(\pi_t\) 也可视为一种 “概率”\sidenote{视 \(\pi_t\) 为概率不代表是否工作是随机的，这仍然可以由劳动者自己选择}，在是否工作的不确定下，劳动者关于工作的期望效用是
 \begin{align*}
     \meant\,v\bka{\tilde n_t}&=\pi_t\cdot v\bka{n^*}+\bka{1-\pi_t}\cdot v\bka{0}\\
     &= \pi_t\bka{-A\cdot n^*}+\pi_t\cdot0=-A\cdot n_t
@@ -283,13 +283,13 @@
     &u\bka{C_t,L_t}=\dfrac1{1-\sigma}\bkd{\bks{C_t\cdot v\bka{L_t}}^{1-\sigma}-1}\\
     &u_{C,t}=\bks{C_t\cdot v\bka{L_t}}^{-\sigma}v\bka{L_t}\qquad u_{L,t}=\bks{C_t\cdot v\bka{L_t}}^{-\sigma}C_t\cdot v'\bka{L_t}
 \end{align*}
-KPR 型效用函数（King-Plosser-Rebelo）因与现实的平衡增长路径较为匹配，所以在论文中被广泛使用。
+KPR 型效用函数（King--Plosser--Rebelo）因与现实的平衡增长路径较为匹配，所以在论文中被广泛使用。
 
 考虑这样一个 KPR 型效用函数
 \begin{equation*}
     u\bka{C_t,N_t}=\dfrac1{1-\sigma}\bks{\bka{C_t^\theta\cdot N_t^{1-\theta}}^{1-\sigma}-1}\,,\quad v\bka{L_t}=\bka{1-L_t}^{1-\theta}
 \end{equation*}
-当 \(\sigma\to1\) 时，KPR 型效用函数退化为我们在 LP 模型中设定的 Cobb-Douglas 型效用函数
+当 \(\sigma\to1\) 时，KPR 型效用函数退化为我们在 LP 模型中设定的 Cobb--Douglas 型效用函数
 \begin{equation*}
     u\bka{C_t,N_t}=\ln C_t+\bka{1-\theta}\ln\bka{1-N_t}
 \end{equation*}
@@ -299,7 +299,7 @@ KPR 型效用函数（King-Plosser-Rebelo）因与现实的平衡增长路径较
     &u\bka{C,N}=\dfrac1{1-\sigma}\bks{\bka{C-\dfrac{A\,N^{1+\chi}}{1+\chi}}^{1-\sigma}-1}\\
     &u_{C,t}=\bka{C_t-\dfrac{A\,N_t^{1+\chi}}{1+\chi}}^{-\sigma}\qquad u_{N,t}=-A\cdot N_t^\chi\bka{C_t-\dfrac{A\,N_t^{1+\chi}}{1+\chi}}^{-\sigma}
 \end{align*}
-GHH 型效用函数（Greenwood-Hercowitz-Huffman）的特征是：在劳动供给决策中没有财富效应。具体表现为边际替代率
+GHH 型效用函数（Greenwood--Hercowitz--Huffman）的特征是：在劳动供给决策中没有财富效应。具体表现为边际替代率
 \begin{align*}
     -\dfrac{u_{N,t}}{u_{C,t}}&=A\cdot N_t^\chi
 \end{align*}
@@ -309,7 +309,7 @@ GHH 型效用函数（Greenwood-Hercowitz-Huffman）的特征是：在劳动供�
 \begin{align*}
     &u\bka{C,L}=\dfrac{\bka{C_t-\psi\,X_t\,N^\theta_t}^{1-\sigma}-1}{1-\sigma}\,,\quad X_t=C_t^\gamma\,X_{t-1}^{1-\gamma}
 \end{align*}
-实际上，前文中 KPR 型和 GHH 型效用函数都可以看作 JR 型效用函数（Jaimovich-Rebelo）的特例：当 \(\gamma=1\) 时，\(X_t=C_t\)，JR 型效用函数退化为 KPR 型效用函数
+实际上，前文中 KPR 型和 GHH 型效用函数都可以看作 JR 型效用函数（Jaimovich--Rebelo）的特例：当 \(\gamma=1\) 时，\(X_t=C_t\)，JR 型效用函数退化为 KPR 型效用函数
 \begin{align*}
     u\bka{C_t,N_t}=\dfrac{\bks{C_t\bka{1-\psi\,N^\theta_t}}^{1-\sigma}-1}{1-\sigma}
 \end{align*}

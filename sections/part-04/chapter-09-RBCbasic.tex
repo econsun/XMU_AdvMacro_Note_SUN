@@ -43,13 +43,13 @@
 \end{align}
 \begin{itemize}
     \item \(C_t\) 是家庭在 \(t\) 时刻的消费，效用函数组从 CRRA 形式
-    \item \(\beta\) 是家庭的时间偏好折现因子，取值范围为 \(\bka{0,1}\)\sidenote{如果 \sidemath{\(\beta>1\)}，意味着同量消费留到未来更好，不符合人性}
+    \item \(\beta\) 是家庭的时间偏好折现因子，取值范围为 \(\bka{0,1}\)\sidenote{如果 \(\beta>1\)，意味着同量消费留到未来更好，不符合人性}
     \item \(\sigma\) 是家庭的相对风险厌恶系数，取值范围为 \((0,+\infty)\)
 \end{itemize}
 
 \TopicLabel{技术}
 
-生产函数为 Cobb-Douglas 形式
+生产函数为 Cobb--Douglas 形式
 \begin{align}
     &Y_t=Z_t\,K\lt^\alpha\,N_t^{1-\alpha}\\
     &\log Z_t=\bka{1-\psi}\log\bar Z+\psi\log Z\lt+\varepsilon_t\\
@@ -57,7 +57,7 @@
 \end{align}
 \begin{itemize}
     \item \(Y_t\) 和 \(N_t\) 分别是 \(t\) 时刻的产出、资本投入和劳动投入
-    \item \(K\lt\) 是 \(t-1\) 时刻的资本存量\sidenote{因为我们在 \sidemath{\(t\)} 时期只能使用上一期留存的资本存量，所以 \sidemath{\(K\)} 的角标为 \sidemath{\(t-1\)}}
+    \item \(K\lt\) 是 \(t-1\) 时刻的资本存量\sidenote{因为我们在 \(t\) 时期只能使用上一期留存的资本存量，所以 \(K\) 的角标为 \(t-1\)}
     \item \(\alpha\) 是资本的产出弹性，取值范围为 \(\bka{0,1}\)
     \item \(Z_t\) 是 \(t\) 时刻的技术水平，服从 AR(1)（一阶自回归）过程
     \item \(\psi\) 是技术水平的持续性参数，取值范围 \(\bka{0,1}\) 保证了 \(Z_t\) 的平稳性
@@ -71,12 +71,12 @@
 \end{align}
 \begin{itemize}
     \item 方程左侧是经济体的支出，右侧是经济体的收入
-    \item 资本存量的运动方程为 \(K_t-\bka{1-\delta}K\lt=i_t\)\sidenote{为避免和信息的记号 \sidemath{\(I_t\)} 重复，投资记作 \sidemath{\(i_t\)}}
+    \item 资本存量的运动方程为 \(K_t-\bka{1-\delta}K\lt=i_t\)\sidenote{为避免和信息的记号 \(I_t\) 重复，投资记作 \(i_t\)}
 \end{itemize}
 
 \TopicLabel{禀赋}
 
-为了优雅的模型结果和良好的经济学含义，我们标准化劳动投入 \(N_t=1\)\sidenote{\sidemath{\(N_t=1\)} 将被代入生产函数}，并设定初始资本存量 \(K_{-1}>0\)。
+为了优雅的模型结果和良好的经济学含义，我们标准化劳动投入 \(N_t=1\)\sidenote{\(N_t=1\) 将被代入生产函数}，并设定初始资本存量 \(K_{-1}>0\)。
 
 \TopicLabel{信息}
 
@@ -111,7 +111,7 @@
     \scr L_{K_t}&=-\lambda_t+\beta\,\mean_t\bks{\lambda_{t+1}\bka{\alpha\, Z_{t+1}\,K_t^{\alpha-1}+1-\delta}}=0\label{eq:foc2}\\
     \scr L_{\lambda_t}&=C_t+K_t-Z_t\,K\lt^\alpha-\bka{1-\delta}K\lt=0\label{eq:foc3}
 \end{align}
-将 \ref{eq:foc1} 代入 \ref{eq:foc2}，消去拉格朗日乘子 \(\lambda_t\)\sidenote{乘子 \sidemath{\(\lambda_t\)} 的含义在 \ref{sec:LagMult}中展开}，我们可以得到
+将 \ref{eq:foc1} 代入 \ref{eq:foc2}，消去拉格朗日乘子 \(\lambda_t\)\sidenote{乘子 \(\lambda_t\) 的含义在 \ref{sec:LagMult}中展开}，我们可以得到
 \begin{align}
     C_t^{-\sigma}=\beta\,\mean_t\bks{C_{t+1}^{-\sigma}\bka{\alpha\, Z_{t+1}\,K_t^{\alpha-1}+1-\delta}}\label{eq:eulereq}
 \end{align}
@@ -142,7 +142,7 @@
 
 \TopicLabel{技术水平的 AR(1) 过程}
 
-虽然技术水平 \(Z_t\) 的 AR(1) 过程始终具有随机性，但如果我们假设 \(\bar Z=1\)\sidenote{\sidemath{\(\bar Z\)} 取多少都可以，取 \sidemath{\(1\)} 可以简化模型，我们会沿用该做法}
+虽然技术水平 \(Z_t\) 的 AR(1) 过程始终具有随机性，但如果我们假设 \(\bar Z=1\)\sidenote{\(\bar Z\) 取多少都可以，取 \(1\) 可以简化模型，我们会沿用该做法}
 \begin{align*}
     \log Z_t=\underbrace{\bka{1-\psi}\log\bar Z}_{=\,0}+\psi\log Z\lt+\varepsilon_t=\psi\log Z\lt+\varepsilon_t
 \end{align*}
@@ -160,7 +160,7 @@
 
 \subsection{家庭的最优化问题}\label{subsec:HHProb}
 
-家庭面临如下效用最大化问题\sidenote{角标 \sidemath{\(s\)} 代表家庭为供给方；厂商为需求方则用 \sidemath{\(d\)}}
+家庭面临如下效用最大化问题\sidenote{角标 \(s\) 代表家庭为供给方；厂商为需求方则用 \(d\)}
 \begin{align*}
     \max_{\bkd{C_t,K^{(s)}_t}\wsito} \quad & U= \mean_0\bks{\sum\wsito \,\beta^t\,\dfrac{C_t^{1-\sigma}-1}{1-\sigma}} \\
     \text{s.t.} \quad & C_t+K_t^{(s)}=R\s t\,K\lt\w{(s)}+\bka{1-\delta}K\lt\w{(s)}
@@ -185,7 +185,7 @@
 \begin{align*}
     \log Z_t=\bka{1-\psi}\log\bar Z+\psi\log Z\lt+\varepsilon_t
 \end{align*}
-厂商的最优化问题的一阶条件为\sidenote{完全竞争市场中，租金 \sidemath{\(R_t\)} 等于 \sidemath{\(\n{MPK}_t\)}}
+厂商的最优化问题的一阶条件为\sidenote{完全竞争市场中，租金 \(R_t\) 等于 \(\n{MPK}_t\)}
 \begin{align*}
     &\scr L_{K\lt^{(d)}}=\alpha\, Z_t\,K\lt^{(d),\,\alpha-1}-R_t=0\\
     &\scr L_{\lambda_t}=\log Z_t-\bka{1-\psi}\log\bar Z-\psi\log Z\lt-\varepsilon_t=0
@@ -226,7 +226,7 @@
 \end{equation}
 其中\(\alpha\,\bar K^{\alpha-1}\) 是边际产出 \(\n{MPK}=\alpha\,Z_t\,K^{\alpha-1}_t\) 在稳态处的值，又是 \(\alpha\,Y_t\islash K_t\) 在稳态处的值。
 
-我们对欧拉方程右侧记新符号，来简化表达式（为后文分析和对数线性化做准备）\sidenote{注意 \sidemath{\(R\)} 是新记号，不再代表租金}
+我们对欧拉方程右侧记新符号，来简化表达式（为后文分析和对数线性化做准备）\sidenote{注意 \(R\) 是新记号，不再代表租金}
 \begin{align}
     &R_t\coloneq\underbrace{\n{MPK}_t+1-\delta}_{\n{投资的总回报}}=\alpha\,Z_t\,K_t^{\alpha-1}+1-\delta\label{eq:MPK}\\
     &\tilde\delta\coloneq1-\beta\bka{1-\delta}\label{eq:deltatilde}
@@ -281,7 +281,7 @@
 \begin{equation*}
     \mean_t\,g_{C,t}\propto \mean_t\,\widehat{\n{MPK}}\nt
 \end{equation*}
-从数学分析的角度来看，MPK 和 \(\tilde\delta\) 的上升会使消费增长率上升，即有冲击的下期消费比没冲击的更多；\(\sigma\) 的上升会使消费增长率下降，即有冲击的下期消费比没冲击的更少。从经济含义来看，MPK 上升代表产出更多，自然消费更多；\(\tilde\delta\) 的含义是资本产出占投资总回报的比例，它的上升只能由 MPK 上升引起\sidenote{由 \ref{eq:deltatilde2} 可知 \sidemath{\(\frac{\n d\, \tilde\delta}{\n d\, \n{MPK}}>0\)}}；\(\sigma\) 变动对 \(g_{C,t}\) 影响的比较静态分析，我们放在 \ref{sec:CRRA} 中展开。
+从数学分析的角度来看，MPK 和 \(\tilde\delta\) 的上升会使消费增长率上升，即有冲击的下期消费比没冲击的更多；\(\sigma\) 的上升会使消费增长率下降，即有冲击的下期消费比没冲击的更少。从经济含义来看，MPK 上升代表产出更多，自然消费更多；\(\tilde\delta\) 的含义是资本产出占投资总回报的比例，它的上升只能由 MPK 上升引起\sidenote{由 \ref{eq:deltatilde2} 可知 \(\frac{\n d\, \tilde\delta}{\n d\, \n{MPK}}>0\)}；\(\sigma\) 变动对 \(g_{C,t}\) 影响的比较静态分析，我们放在 \ref{sec:CRRA} 中展开。
 
 \TopicLabel{对数线性化技术运动}
 \begin{equation}
@@ -362,7 +362,7 @@
 \end{equation*}
 中，拉格朗日乘子 \(\lambda\) 的数值。
 
-是拉格朗日乘子 \(\lambda\) 希望捕获：如果约束条件被放松一些，目标函数的最优值会变动多少？比如上面的例子中，我们把约束条件从 \(9\) “放松” 到 \(10\)，成本函数的最优值变动了 2，所以 \(\lambda=2\)。我们让拉格朗日求导得 \(\bka{K,L;\lambda}\) 的方程组，可以验证 \(\lambda=2\) 确实为方程组的解\sidenote{或使用包络定理验证 \sidemath{\(\frac{\n{d}\,f^*\bka a}{\n{d}\,a}=\frac{\p f\bka{x;\,a}}{\p a}\biggbar{x^*\bka a}\)}}。
+是拉格朗日乘子 \(\lambda\) 希望捕获：如果约束条件被放松一些，目标函数的最优值会变动多少？比如上面的例子中，我们把约束条件从 \(9\) “放松” 到 \(10\)，成本函数的最优值变动了 2，所以 \(\lambda=2\)。我们让拉格朗日求导得 \(\bka{K,L;\lambda}\) 的方程组，可以验证 \(\lambda=2\) 确实为方程组的解\sidenote{或使用包络定理验证 \(\frac{\n{d}\,f^*\bka a}{\n{d}\,a}=\frac{\p f\bka{x;\,a}}{\p a}\biggbar{x^*\bka a}\)}。
 
 再举一个例子。因为市场火爆，厂老板要求工人工作 8 小时变为 9 小时（约束条件改变），使得厂商额外多挣 10 万元，那么 \(\lambda\) 值就是 10 万。这额外的理论几乎全由工人劳动贡献，理应全部作为工人工资，所以 \(\lambda\) 还有 \term{影子价格}{shadow price}的含义；但厂老板可能只给 8 万、只给 4 万，甚至分毫不给，因此影子价格中的 “影子” 代表未必能实现。
 
@@ -430,7 +430,7 @@
     \sigma\,\hat c_t&=\sigma\,\mean_t\,\hat c\nt-\mean_t\,\hat r\nt\label{eq:LogLinEuler}
 \end{align}
 
-现在获得 \(\hat r\nt\)\sidenote{计算 \sidemath{\(\hat r\nt\)} 乃至整个欧拉方程，方法非常多，此处给出较为优雅的方式}。根据其定义式 \ref{eq:MPK}，我们有
+现在获得 \(\hat r\nt\)\sidenote{计算 \(\hat r\nt\) 乃至整个欧拉方程，方法非常多，此处给出较为优雅的方式}。根据其定义式 \ref{eq:MPK}，我们有
 \begin{align*}
 R\nt&=\n{MPK}\nt+1-\delta
 \end{align*}

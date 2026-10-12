@@ -45,7 +45,7 @@
     \tilde y_t&=-\dfrac1{\sigma}\bka{\hat\imath_t-\meant\,\pi\nt-\hat r_t^n}+\meant\,\tilde y\nt\\
     \Rightarrow\quad\hat x_t&=-\dfrac1{\sigma}\bka{\hat\imath_t-\meant\,\pi\nt-\hat r_t^n}+\meant\,\hat x\nt+\meant\bkd{\hat y\nt^e-\hat y\nt^e}-\meant\bkd{\hat y\nt^n-\hat y\nt^n}\\
     &= -\dfrac1\sigma\bka{\hat\imath_t-\meant\,\pi\nt-\hat r_t^n+\sigma\,\meant\bkd{\D \hat y\nt^n}-\sigma\,\meant\bkd{\D \hat y\nt^e}}+\meant\,\hat x\nt
-    \sidenote{此处 \sidemath{\(\hat r_t^n\)} 是第 \scalebox{0.95}{\(8\)} 章推导 \sidemath{\(\n{DIS}\)} 方程时通过定义而得的变量；\sidemath{\(\hat r_t^e\)} 采用相似定义方式}
+    \sidenote{此处 \(\hat r_t^n\) 是第 \scalebox{0.95}{\(8\)} 章推导 \(\n{DIS}\) 方程时通过定义而得的变量；\(\hat r_t^e\) 采用相似定义方式}
     \\
     &= -\dfrac1\sigma\bka{\hat\imath_t-\meant\,\pi\nt-\hat r_t^n+\hat r_t^n-\hat r_t^e}+\meant\,\hat x\nt\\
     &=-\dfrac1\sigma\bka{\hat\imath_t-\meant\,\pi\nt-\hat r_t^e}+\meant\,\hat x\nt
@@ -63,10 +63,10 @@
 善时变的央行只关注当期社会福利，所以他面临的最优化问题是
 \begin{align*}
     \min_{\hat x_t,\,\hat\pi_t} \quad & \hat \pi_t^2 + \alpha_x\,\hat x_t^2
-    \sidenote{福利损失函数的由来略，记住形式即可；显然 \sidemath{\(\hat x_t=\hat\pi_t=0\)} 是最好的解，但该解常不可实现，福利必有损}\\
+    \sidenote{福利损失函数的由来略，记住形式即可；显然 \(\hat x_t=\hat\pi_t=0\) 是最好的解，但该解常不可实现，福利必有损}\\
     \n{s.t.} \quad & \hat \pi_t = \kappa\,\hat x_t + \underbrace{\beta\,\meant\,\hat\pi\nt + u_t}_{=\;v_t}
 \end{align*}
-即，央行要确定能够让当期社会福利损失最小的 \(\hat x_t\) 和 \(\hat \pi_t\)。该最优化受到 NKPC 方程的约束，原因是 NKPC 方程体现通胀和产出缺口的权衡 —— 二者同高同低，而我们希望产出高、通胀低。DIS 方程描述的是需求侧\sidenote{不考虑货币时没有 \sidemath{\(\n{LM}\)} 方程，\sidemath{\(\n{DIS}\)} 就是 \sidemath{\(\n{AD}\)} 方程}利率和产出缺口的关系，不含通胀且无法分析供给冲击，故不构成约束。
+即，央行要确定能够让当期社会福利损失最小的 \(\hat x_t\) 和 \(\hat \pi_t\)。该最优化受到 NKPC 方程的约束，原因是 NKPC 方程体现通胀和产出缺口的权衡 —— 二者同高同低，而我们希望产出高、通胀低。DIS 方程描述的是需求侧\sidenote{不考虑货币时没有 \(\n{LM}\) 方程，\(\n{DIS}\) 就是 \(\n{AD}\) 方程}利率和产出缺口的关系，不含通胀且无法分析供给冲击，故不构成约束。
 
 求解最优化问题。构造拉格朗日函数
 \begin{align*}
@@ -100,7 +100,7 @@
 
 下图绘出了 \(\varrho_u\) 为 0 和 0.8 两种情况下的时变政策脉冲响应路径。不难看出，\(\varrho_u\) 越大，冲击持续时间越长，通胀和产出缺口的持续时间也越长。脉冲响应图给出的更重要信息是，正向供给冲击带来通胀上升和负产出缺口，在冲击消退后，通胀和产出缺口回归零，但价格水平不会回落。这就是所谓的 \term{滞胀}{stagflation}现象。
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
     \centering
     \MaybeIncludeGraphics[width=0.8\textwidth]{chapter-16-discretion-irf.png}
     \caption{成本推动冲击下时变政策的脉冲响应路径}
@@ -204,7 +204,7 @@
 
 这也体现了所谓的 \term{时间不一致性}{time inconsistency}：承诺计划在未来到来时未必仍是当期最优，因此缺乏可信承诺的央行会倾向于每期重新优化，无法利用未来政策承诺来稳定当前预期；而可信央行可以承诺未来路径，从而以较小的社会成本控制通胀。
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
     \centering
     \MaybeIncludeGraphics[width=0.8\textwidth]{chapter-16-persistent-policy-irf.png}
     \caption{成本推动冲击下时变和承诺对比}
@@ -238,7 +238,7 @@
 在有效率时，\(\n{MRS}_{C,N,t}=\n{MPN}_{t}\)；因无效率的存在，我们人为增加系数
 \begin{align*}
     \n{MRS}_{C,N,t}=\bka{1-\omega}\n{MPN}_{t}\,,\quad\omega=1-\dfrac1\mu
-    \sidenote{此处 \sidemath{\(\mu\)} 即加成系数}
+    \sidenote{此处 \(\mu\) 即加成系数}
 \end{align*}
 同法定义 \(\hat x_t\)，形式不如之前简洁但后续不会再使用到 DIS 方程，所以影响不大。NKPC 方程也保持不变，福利损失函数增加惩罚项 \(\Lambda\,\hat x_t\)，其中 \(\Lambda=\lambda\,\omega\islash\varepsilon\)，具体损失函数形式见后文。
 

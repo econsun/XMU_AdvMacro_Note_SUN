@@ -1,4 +1,4 @@
-% !TeX root = ../AdvMacroNote_Sun.tex
+% !TeX root = ../AMaN_SUN.tex
 % 项目基本信息。
 
 \newcommand{\DocumentTitle}{Advanced Macroeconomics I \& II}
@@ -32,11 +32,13 @@
 \newcommand{\CourseInstructor}{Yinong TAN}
 
 % 编译日期。
+\newcommand{\TwoDigitDatePart}[1]{\ifnum#1<10 0\fi\number#1}
 \newcommand{\CourseCompileDate}{%
-    \ifcase\month\or
-        January\or February\or March\or April\or May\or June\or
-        July\or August\or September\or October\or November\or December%
-    \fi~\number\day,~\number\year
+    \number\year-\TwoDigitDatePart{\month}-\TwoDigitDatePart{\day}%
+}
+\newcommand{\CourseSideInfo}{%
+    \CourseShortTitle\sideinfosep\CourseSideLevel\sideinfosep
+    \CourseTerm\sideinfosep\CourseInstructor\sideinfosep\CourseCompileDate
 }
 
 \newcommand{\UseSharedCourseCover}{%
@@ -48,6 +50,9 @@
     \renewcommand{\CourseTerm}{Fall 2026}%
     \renewcommand{\CourseInstructor}{Yinong TAN}%
     \renewcommand{\CourseVolumeRoman}{I}%
+    \renewcommand{\CourseSideInfo}{%
+        \CourseShortTitle\sideinfosep\CourseSideLevel\sideinfosep
+        \CourseTerm\sideinfosep\CourseInstructor\sideinfosep\CourseCompileDate}%
     \setcourseaccent{VolumeOneAccent}%
 }
 \newcommand{\UseMacroIICourse}{%
@@ -55,7 +60,16 @@
     \renewcommand{\CourseTerm}{Spring 2026}%
     \renewcommand{\CourseInstructor}{Chengyuan HE}%
     \renewcommand{\CourseVolumeRoman}{II}%
+    \renewcommand{\CourseSideInfo}{%
+        \CourseShortTitle\sideinfosep\CourseSideLevel\sideinfosep
+        \CourseTerm\sideinfosep\CourseInstructor\sideinfosep\CourseCompileDate}%
     \setcourseaccent{VolumeTwoAccent}%
+}
+\newcommand{\UseAppendixCourse}{%
+    \renewcommand{\CourseSideInfo}{%
+        Notes on Adv MacroEcon I \& II\sideinfosep\CourseSideLevel\sideinfosep
+        Appendix\sideinfosep\CourseCompileDate}%
+    \setcourseaccent{AppendixAccent}%
 }
 
 % 参考文献开关；正文出现引用后再启用。

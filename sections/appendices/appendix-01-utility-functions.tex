@@ -9,11 +9,12 @@
 \input{../../_config/core/chapter-standalone}
 \def\FinishStandaloneChapter{\end{document}}
 \fi
-% Migrated appendix content.
 
 \chapter{常见效用函数}\label{app:utility-functions}
 
 \section{常替代弹性效用函数}\label{subsec:apdx-ces}
+
+% 待完成：CES 垄断竞争的加成系数 σ / (σ-1)
 
 考虑具有常替代弹性（Constant Elasticity of Substitution，CES）的效用函数
 \sidenote{编写本节源起于本人在读论文中遇到微观个体对多个商品的消费选择问题，所以这里的推导更偏向高微\allowbreak（需求侧）}
@@ -32,7 +33,7 @@
 计算偏导数得一阶条件
 \begin{align}
     \dfrac{\p \scr L}{\p c_i}= \underbrace{ \; A \bka{\sum^N_{n=1} \alpha^{\frac1\sigma}_n \, c_n^{\frac{\sigma-1}{\sigma}}}^{\frac{1}{\sigma-1}}}_{=\;A\,\bka{u/A}\,^{1/\sigma}\;\ne\;u} \alpha^{\frac1\sigma}_i \,c_i^{-\frac{1}{\sigma}} - \lambda \,p_i = 0\label{eq:CES-opt-condition}
-    \sidenote{常见将括号项记作 \sidemath{\(S\)} 来简化运算，但为过程清晰，故不改记法}
+    \sidenote{常见将括号项记作 \(S\) 来简化运算，但为过程清晰，故不改记法}
 \end{align}
 同理亦可得关于商品 \(j\) 的最优必要条件，与上式相除而消去拉格朗日乘子
 \begin{align}
@@ -53,7 +54,7 @@
 \begin{align}
     c_i = \dfrac{\alpha_i\,p_i^{-\sigma}}{\sum_n \alpha_n\,p_n^{1-\sigma}} \cdot w = s_i\,w
     \label{eq:CES-marshall-demand}
-    \sidenote{该处理帮助我们避免求解 \sidemath{\(\lambda\)} 及复杂计算；将必要条件 \sidemath{\ref{eq:CES-opt-condition-ij}} 代入预算约束同样可行}
+    \sidenote{该处理帮助我们避免求解 \(\lambda\) 及复杂计算；将必要条件 \ref{eq:CES-opt-condition-ij} 代入预算约束同样可行}
 \end{align}
 它告诉我们：每个商品消费量与其他商品的无关，但和所有商品的价格有关。稍微变换得支出占比表达式
 \begin{align*}
@@ -127,7 +128,7 @@
 \end{align*}
 这就是里昂替夫（Leontief）效用函数。
 
-\textbf{(iii) 柯布-道格拉斯}
+\textbf{(iii) 柯布--道格拉斯}
 
 当\(\sigma\to1\) 时效用函数也是未定式，所以我们要单独考虑这种情况中效用函数会变成如何。首先看是怎么样的未定式
 \begin{align*}
@@ -141,12 +142,12 @@
     = \lim_{\sigma\to1} \dfrac{\sum_n \bka{\ln c_n-\ln\alpha_n}\,\alpha^{1/\sigma}_n\,c_n^{\bka{\sigma-1}/\sigma}}{\sum_n \alpha^{1/\sigma}_n\,c_n^{\bka{\sigma-1}/\sigma}}
     = \sum^N_{n=1} \alpha_n\ln\dfrac{c_n}{\alpha_n}
 \end{align*}
-第一个等式中使用了洛必达（L'Hôpital）法则，分子分母分别对 \(\sigma\) 求导数。得到中间式后，其为定式，直接代入 \(\sigma=1\) 即得最后结果。回到效用函数
+第一个等式中使用了洛必达（L'Hôpital）法则，分式上下分别对 \(\sigma\) 求导数。得到中间式后，其为定式，直接代入 \(\sigma=1\) 即得最后结果。回到效用函数
 \begin{align*}
-    u\bka{\bs c}=A\cdot\exp\bkd{\sum^N_{n=1} \alpha_n\ln\dfrac{c_n}{\alpha_n}}=A\prod^N_{n=1}\bka{\dfrac{c_n}{\alpha_n}}^{\alpha_n}=\tilde A \prod^N_{n=1}c_n^{\alpha_n}
-    \sidenote{\sidemath{\(\dis\tilde A=A\prod^N_{n=1}\alpha_n^{-\alpha_n}\)}}
+    u\bka{\bs c}=A\cdot\exp\bkd{\sum^N_{n=1} \alpha_n\ln\dfrac{c_n}{\alpha_n}}=A\prod^N_{n=1}\bka{\dfrac{c_n}{\alpha_n}}^{\alpha_n}\eqcolon \tilde A \prod^N_{n=1}c_n^{\alpha_n}
+    \sidenote{令 \(\dis\tilde A\coloneq A\prod^N_{n=1}\alpha_n^{-\alpha_n}\)}
 \end{align*}
-这就是柯布-道格拉斯（Cobb-Douglas）效用函数。
+这就是柯布--道格拉斯（Cobb--Douglas）效用函数。
 
 \mysec{相关弹性}
 
@@ -165,7 +166,7 @@
 \begin{align*}
     s_i = \dfrac{p_i\,c_i}{w} = \dfrac{p_i}w \cdot \dfrac{\alpha_i\,p_i^{-\sigma}\,w}{\sum_n \alpha_n\,p_n^{1-\sigma}}= \dfrac{\alpha_i\,p_i^{1-\sigma}}{\sum_n \alpha_n\,p_n^{1-\sigma}}
 \end{align*}
-既然知道以上弹性大的具体表达式，那么代入 \(\sigma\) 值即得特殊形式 CES 函数的弹性；尤其关注柯布-道格拉斯的 —— 两个弹性均为常数，与价格和消费量无关。
+既然知道以上弹性大的具体表达式，那么代入 \(\sigma\) 值即得特殊形式 CES 函数的弹性；尤其关注柯布--道格拉斯的 —— 两个弹性均为常数，与价格和消费量无关。
 
 \textbf{(ii) 替代弹性}
 

@@ -1,4 +1,4 @@
-% !TeX root = ../AdvMacroNote_Sun.tex
+% !TeX root = ../AMaN_SUN.tex
 \usepackage{xparse}    % 更灵活设置命令
 \usepackage{mfirstuc}  % 大写首字母命令
 
@@ -556,8 +556,8 @@
 
 \newcommand{\BeginBookAppendix}{%
     \@InBookAppendixtrue
-    % 全书附录及其后的后记区域持续使用独立主题色。
-    \setcourseaccent{AppendixAccent}%
+    % 全书附录使用独立主题色与不含册次、学期、教师的页边信息。
+    \UseAppendixCourse
     \appendix
     \setcounter{chapter}{0}%
     \setcounter{section}{0}%
