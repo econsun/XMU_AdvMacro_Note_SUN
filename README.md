@@ -39,8 +39,8 @@
 ├── logo/                  # 产出图标
 ├── rednote/               # 产出小红书
 │
-├── AdvMacroNote_Sun.tex   # 核心入口
-├── AdvMacroNote_Sun_vX.Y.Z.pdf # 正式发布版，仅由 make release 更新
+├── AMaN_SUN.tex   # 核心入口
+├── AMaN_SUN_vX.Y.Z.pdf # 正式发布版，仅由 make release 更新
 │
 ├── references.bib         # 参考文献
 └── Makefile               # 编译命令
@@ -73,7 +73,7 @@ git clone git@github.com:econsun/XMU_AdvMacro_Note_SUN.git
 - 我个人使用方式是 VS Code + LaTeX workshop + Makefile 三大工具
     - 找到笔记文件进行修改
     - 点击 LW 插件提供的 build LaTeX project 即可编译当前笔记
-    - 对根目录 AdvMacroNote_Sun.tex 使用 build LaTeX project 编译可得完整笔记
+    - 对根目录 AMaN_SUN.tex 使用 build LaTeX project 编译可得完整笔记
     - 除此之外，Makefile 提供了三类命令行编译方式
 
 ```bash
@@ -91,7 +91,7 @@ make post 03
 make release VERSION=v2.1.0
 ```
 
-日常的 `make`、`make all`、Build LaTeX project 和 View PDF 都使用 `_build/book/AdvMacroNote_Sun.pdf`，不会修改根目录正式版。只有 `make release VERSION=vX.Y.Z` 会完整编译、把根目录正式版更新为 `AdvMacroNote_Sun_vX.Y.Z.pdf`、提交、创建标签、推送到 `main`、创建 GitHub Release，并自动更新方法一的版本下载链接后提交 `doc: update readme`。发布前要求工作区干净、本地 `main` 与 `origin/main` 同步，并已通过 GitHub CLI 登录。
+日常的 `make`、`make all`、Build LaTeX project 和 View PDF 都使用 `_build/book/AMaN_SUN.pdf`，不会修改根目录正式版。只有 `make release VERSION=vX.Y.Z` 会完整编译、把根目录正式版更新为 `AMaN_SUN_vX.Y.Z.pdf`、提交、创建标签、推送到 `main`、创建 GitHub Release，并自动更新方法一的版本下载链接后提交 `doc: update readme`。发布前要求工作区干净、本地 `main` 与 `origin/main` 同步，并已通过 GitHub CLI 登录。
 
 </br>
 

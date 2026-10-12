@@ -18,7 +18,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 REDNOTE_ROOT = PROJECT_ROOT / "rednote"
 BUILD_ROOT = PROJECT_ROOT / "_build"
 TEMPLATE_FILE = REDNOTE_ROOT / "poster-template.txt"
-MAIN_PDF = BUILD_ROOT / "book" / "AdvMacroNote_Sun.pdf"
+MAIN_PDF = BUILD_ROOT / "book" / "AMaN_SUN.pdf"
 MACTEX_BIN = os.environ.get("MACTEX_BIN")
 XELATEX = str(Path(MACTEX_BIN) / "xelatex") if MACTEX_BIN else "xelatex"
 

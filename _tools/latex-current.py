@@ -17,7 +17,7 @@ CHAPTER_OUTPUT_ROOT = PROJECT_ROOT / "_build" / "book"
 
 
 def build_directory(source_path: Path) -> Path:
-    return CHAPTER_OUTPUT_ROOT / source_path.parent.name
+    return CHAPTER_OUTPUT_ROOT
 
 
 def main() -> int:

@@ -10,8 +10,11 @@ import sys
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-BUILD_PDF = PROJECT_ROOT / "_build" / "book" / "AdvMacroNote_Sun.pdf"
-LEGACY_PDF = PROJECT_ROOT / "AdvMacroNote_Sun.pdf"
+BUILD_PDF = PROJECT_ROOT / "_build" / "book" / "AMaN_SUN.pdf"
+LEGACY_PDFS = (
+    PROJECT_ROOT / "AdvMacroNote_Sun.pdf",
+    PROJECT_ROOT / "AMaN_SUN.pdf",
+)
 README_FILE = PROJECT_ROOT / "README.md"
 VERSION_PATTERN = re.compile(r"^v[0-9]+\.[0-9]+\.[0-9]+$")
 README_DOWNLOAD_PATTERN = re.compile(
@@ -83,10 +86,13 @@ def release(version: str) -> None:
     require_clean_worktree()
     if not BUILD_PDF.is_file() or BUILD_PDF.stat().st_size == 0:
         raise ReleaseError("完整笔记构建失败或 PDF 为空")
-    release_pdf = PROJECT_ROOT / f"AdvMacroNote_Sun_{version}.pdf"
-    previous_pdfs = sorted(PROJECT_ROOT.glob("AdvMacroNote_Sun_v*.pdf"))
-    tracked_pdfs = [LEGACY_PDF, *previous_pdfs, release_pdf]
-    for old_pdf in [LEGACY_PDF, *previous_pdfs]:
+    release_pdf = PROJECT_ROOT / f"AMaN_SUN_{version}.pdf"
+    previous_pdfs = sorted({
+        *PROJECT_ROOT.glob("AdvMacroNote_Sun_v*.pdf"),
+        *PROJECT_ROOT.glob("AMaN_SUN_v*.pdf"),
+    })
+    tracked_pdfs = [*LEGACY_PDFS, *previous_pdfs, release_pdf]
+    for old_pdf in [*LEGACY_PDFS, *previous_pdfs]:
         if old_pdf != release_pdf:
             old_pdf.unlink(missing_ok=True)
     shutil.copy2(BUILD_PDF, release_pdf)

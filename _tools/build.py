@@ -20,11 +20,11 @@ CHAPTER_OUTPUT_ROOT = BUILD_ROOT / "book"
 MACTEX_BIN = os.environ.get("MACTEX_BIN")
 LATEXMK = str(Path(MACTEX_BIN) / "latexmk") if MACTEX_BIN else "latexmk"
 XELATEX = str(Path(MACTEX_BIN) / "xelatex") if MACTEX_BIN else "xelatex"
-MAIN_TEX = PROJECT_ROOT / "AdvMacroNote_Sun.tex"
+MAIN_TEX = PROJECT_ROOT / "AMaN_SUN.tex"
 MAIN_BUILD_DIR = BUILD_ROOT / "book"
-MAIN_PDF = MAIN_BUILD_DIR / "AdvMacroNote_Sun.pdf"
-MAIN_SYNCTEX = MAIN_BUILD_DIR / "AdvMacroNote_Sun.synctex.gz"
-MAIN_LOG = MAIN_BUILD_DIR / "AdvMacroNote_Sun.log"
+MAIN_PDF = MAIN_BUILD_DIR / "AMaN_SUN.pdf"
+MAIN_SYNCTEX = MAIN_BUILD_DIR / "AMaN_SUN.synctex.gz"
+MAIN_LOG = MAIN_BUILD_DIR / "AMaN_SUN.log"
 CONTENT_MANIFEST = PROJECT_ROOT / "_config" / "core" / "content-map.tex"
 
 PART_DIRECTORY = re.compile(r"^part-(\d{2})$")
@@ -193,7 +193,7 @@ def verify_references() -> None:
         r"Label\(s\) may have changed",
     )
     if any(re.search(pattern, log) for pattern in problems):
-        raise BuildError("完整构建后仍有未解决的引用，请检查 _build/book/AdvMacroNote_Sun.log")
+        raise BuildError("完整构建后仍有未解决的引用，请检查 _build/book/AMaN_SUN.log")
 
 
 def build_all() -> None:
@@ -207,7 +207,7 @@ def build_all() -> None:
     ensure_nonempty(MAIN_PDF)
     ensure_nonempty(MAIN_SYNCTEX)
     verify_references()
-    print("完整构建完成：_build/book/AdvMacroNote_Sun.pdf（根目录发布版未修改）")
+    print("完整构建完成：_build/book/AMaN_SUN.pdf（根目录发布版未修改）")
 
 
 def normalize_chapter(value: str) -> str:
@@ -230,22 +230,22 @@ def find_chapter(value: str) -> Path:
 def build_chapter(value: str) -> None:
     require_executable(XELATEX)
     chapter_file = find_chapter(value)
-    part_dir = CHAPTER_OUTPUT_ROOT / chapter_file.parent.name
-    part_dir.mkdir(parents=True, exist_ok=True)
+    output_dir = CHAPTER_OUTPUT_ROOT
+    output_dir.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="advanced-macro-chapter-") as temporary:
         temporary_dir = Path(temporary)
         run([
             *XELATEX_COMMAND, f"-jobname={chapter_file.stem}",
             f"-output-directory={temporary_dir}", chapter_file.name,
         ], chapter_file.parent)
-        pdf = part_dir / f"{chapter_file.stem}.pdf"
-        synctex = part_dir / f"{chapter_file.stem}.synctex.gz"
+        pdf = output_dir / f"{chapter_file.stem}.pdf"
+        synctex = output_dir / f"{chapter_file.stem}.synctex.gz"
         publish(temporary_dir / pdf.name, pdf)
         publish(
             temporary_dir / synctex.name,
             synctex,
         )
-    print(f"单章构建完成：{part_dir.relative_to(PROJECT_ROOT)}（一次 XeLaTeX）")
+    print(f"单章构建完成：{pdf.relative_to(PROJECT_ROOT)}（一次 XeLaTeX）")
 
 
 def remove_matching_intermediates() -> int:
