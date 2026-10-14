@@ -109,10 +109,10 @@
     \begingroup
     \setlength{\fboxsep}{0pt}%
     \mathchoice
-        {\colorbox{#1!\MathHighlightTint!PageBackground}{\MathEmphasisPaddedContent{\MathHighlightHorizontalPadding}{\MathHighlightVerticalPadding}{\(\displaystyle\color{BodyText}#2\)}}}%
-        {\colorbox{#1!\MathHighlightTint!PageBackground}{\MathEmphasisPaddedContent{\MathHighlightHorizontalPadding}{\MathHighlightVerticalPadding}{\(\textstyle\color{BodyText}#2\)}}}%
-        {\colorbox{#1!\MathHighlightTint!PageBackground}{\MathEmphasisPaddedContent{\MathHighlightHorizontalPadding}{\MathHighlightVerticalPadding}{\(\scriptstyle\color{BodyText}#2\)}}}%
-        {\colorbox{#1!\MathHighlightTint!PageBackground}{\MathEmphasisPaddedContent{\MathHighlightHorizontalPadding}{\MathHighlightVerticalPadding}{\(\scriptscriptstyle\color{BodyText}#2\)}}}%
+        {\colorbox{#1!\MathHighlightTint!PageBackground}{\MathEmphasisPaddedContent{\MathHighlightDisplayHorizontalPadding}{\MathHighlightDisplayVerticalPadding}{\(\displaystyle\color{BodyText}#2\)}}}%
+        {\colorbox{#1!\MathHighlightTint!PageBackground}{\MathEmphasisPaddedContent{\MathHighlightInlineHorizontalPadding}{\MathHighlightInlineVerticalPadding}{\(\textstyle\color{BodyText}#2\)}}}%
+        {\colorbox{#1!\MathHighlightTint!PageBackground}{\MathEmphasisPaddedContent{\MathHighlightInlineHorizontalPadding}{\MathHighlightInlineVerticalPadding}{\(\scriptstyle\color{BodyText}#2\)}}}%
+        {\colorbox{#1!\MathHighlightTint!PageBackground}{\MathEmphasisPaddedContent{\MathHighlightInlineHorizontalPadding}{\MathHighlightInlineVerticalPadding}{\(\scriptscriptstyle\color{BodyText}#2\)}}}%
     \endgroup
 }
 \newcommand{\MathHighlightA}[1]{\MathHighlight[MathEmphasisA]{#1}}
@@ -124,10 +124,10 @@
     \setlength{\fboxsep}{0pt}%
     \setlength{\fboxrule}{\MathFrameRuleWidth}%
     \mathchoice
-        {\fcolorbox{#1}{PageBackground}{\MathEmphasisPaddedContent{\MathFrameHorizontalPadding}{\MathFrameVerticalPadding}{\(\displaystyle\color{BodyText}#2\)}}}%
-        {\fcolorbox{#1}{PageBackground}{\MathEmphasisPaddedContent{\MathFrameHorizontalPadding}{\MathFrameVerticalPadding}{\(\textstyle\color{BodyText}#2\)}}}%
-        {\fcolorbox{#1}{PageBackground}{\MathEmphasisPaddedContent{\MathFrameHorizontalPadding}{\MathFrameVerticalPadding}{\(\scriptstyle\color{BodyText}#2\)}}}%
-        {\fcolorbox{#1}{PageBackground}{\MathEmphasisPaddedContent{\MathFrameHorizontalPadding}{\MathFrameVerticalPadding}{\(\scriptscriptstyle\color{BodyText}#2\)}}}%
+        {\fcolorbox{#1}{PageBackground}{\MathEmphasisPaddedContent{\MathFrameDisplayHorizontalPadding}{\MathFrameDisplayVerticalPadding}{\(\displaystyle\color{BodyText}#2\)}}}%
+        {\fcolorbox{#1}{PageBackground}{\MathEmphasisPaddedContent{\MathFrameInlineHorizontalPadding}{\MathFrameInlineVerticalPadding}{\(\textstyle\color{BodyText}#2\)}}}%
+        {\fcolorbox{#1}{PageBackground}{\MathEmphasisPaddedContent{\MathFrameInlineHorizontalPadding}{\MathFrameInlineVerticalPadding}{\(\scriptstyle\color{BodyText}#2\)}}}%
+        {\fcolorbox{#1}{PageBackground}{\MathEmphasisPaddedContent{\MathFrameInlineHorizontalPadding}{\MathFrameInlineVerticalPadding}{\(\scriptscriptstyle\color{BodyText}#2\)}}}%
     \endgroup
 }
 \newcommand{\MathFrameA}[1]{\MathFrame[MathEmphasisA]{#1}}

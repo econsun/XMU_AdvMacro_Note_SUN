@@ -1,0 +1,8 @@
+% !TeX root = ../../AMaN_SUN.tex
+% 数学排版实现；用户可调参数统一放在 _config/setting-general.tex。
+
+\begingroup
+    \catcode61=13
+    \gdef={\mathrel{\color{MathEqualsColor}\mathchar"003D}}
+\endgroup
+\AtBeginDocument{\mathcode61="8000}
