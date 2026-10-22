@@ -91,12 +91,16 @@ def release(version: str) -> None:
         *PROJECT_ROOT.glob("AdvMacroNote_Sun_v*.pdf"),
         *PROJECT_ROOT.glob("AMaN_SUN_v*.pdf"),
     })
-    tracked_pdfs = [*LEGACY_PDFS, *previous_pdfs, release_pdf]
+    tracked_pdf_paths = {
+        *output(["git", "ls-files", "--", "*.pdf"]).splitlines(),
+        *(str(path.relative_to(PROJECT_ROOT)) for path in previous_pdfs),
+        str(release_pdf.relative_to(PROJECT_ROOT)),
+    }
     for old_pdf in [*LEGACY_PDFS, *previous_pdfs]:
         if old_pdf != release_pdf:
             old_pdf.unlink(missing_ok=True)
     shutil.copy2(BUILD_PDF, release_pdf)
-    run(["git", "add", "-A", "--", *(path.name for path in tracked_pdfs)])
+    run(["git", "add", "-A", "--", *sorted(tracked_pdf_paths)])
     run(["git", "commit", "-m", f"release: publish {version}"])
     run(["git", "tag", "-a", version, "-m", f"Release {version}"])
     run(["git", "push", "--atomic", "origin", "main", f"refs/tags/{version}"])
