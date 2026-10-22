@@ -11,101 +11,150 @@
 
 
 % 为什么 d ln X / d t = g_X
-% 求增长率的两种方法：直接求导（像 Romer 获得 k 的运动方程），第二种是用增长率性质（可能放在全书附录）
+
 % 会不会收敛 > 怎么收敛（收敛方向） > 多快收敛
+
 
 \chapter{Solow 模型}\label{ch:01}
 
-Solow 模型把储蓄率、人口增长和技术进步视为外生变量，用一个资本积累方程解释经济如何从初始状态走向长期均衡。它不能回答家庭为什么储蓄，却清楚地区分了两个问题：资本积累如何改变经济的水平，技术进步如何决定人均变量的长期增长率。
+由家庭和厂商构成的两部门只有消费和生产循环。Solow 模型暂不考虑消费和技术进步，针对生产端进行分析，从简单的运动方程得到深刻的经济增长结论。
 
-本章先建立生产与积累结构，再把总量变量转换为有效人均变量。这样，一个不断增长的经济体会被转写为一维动态系统，我们便能研究稳态、比较静态与收敛速度。
+在本节，我们会从基本假设出发，推导出有效人均资本的运动方程，再从运动方程中分析稳态的性质。到此模型构建就基本完毕，转入比较静态分析，关心最重要的储蓄率变动会对稳态产生什么影响、偏离均衡后怎么回到均衡。
+
+在标准的 Solow 模型中，储蓄率会影响到稳态的位置，所以在储蓄率变动的瞬间经济体会偏离稳态，再逐步收敛到新的稳态。所以我们要先从定性来看储蓄率变动是让稳态水平上升还是下降，然后再看经济体要以什么速度收敛至新稳态。
+
+内容展开的总路径为“会不会收敛 --> 怎么收敛 --> 多快收敛”。
+
+Robert Solow 和 T. W. Swan 在 1956 年分别独立发表经济增长论文\,\footnote{Robert M. Solow, ``A Contribution to the Theory of Economic Growth'', \emph{The Quarterly Journal of Economics}, 1956}\,\footnote{T. W. Swan, ``Economic Growth and Capital Accumulation'', \emph{Economic Record}, 1956}，他们的研究框架被合称为 Solow--Swan 模型。Solow 的论文核心变量是 \(K\islash L\)，他于次年针对性地补充了关于技术进步的讨论；另一边，在 1956 年时 Swan 就有了成熟的抽象生产函数研究框架，同时他以 \(Y\islash K\) 构建模型，纳入了技术进步话题，但正式论文中采用的居然是具体的 Cobb--Douglas 形式。
+
+Solow 曾表达了对 Swan 的欣赏，并谦虚地分析了为什么自己的模型现在有更大的影响力，可简单概括为：1. 自己使用了抽象函数，而 Swan 采用了 CD 函数；2. Swan 的模型被认为是对“剑桥资本争论”的回应，而学术圈已经对那个话题失去了兴趣；3. 自己是美国人，论文发表在 Q\,J\,E，而 Swan 是澳大利亚人\sidenote{不可忽略没有互联网时跨洋投稿的难度}，论文只能发表在影响力较小的期刊上。Swan 的女儿 Spencer 后来与他人合作发表论文\,\footnote{Robert W. Dimand and Barbara J. Spencer, ``Trevor Swan and the Neoclassical Growth Model'', \emph{History of Political Economy}, 2009}，称：“Solow 为了不让 Swan 的贡献被埋没，付出了慷慨的努力。”
+
+后人未必了解英雄惜英雄的故事，但也能在模型学习中被七十年前的经济学家那穿透现实的惊人洞察力震撼。
 
 \section{基础假设}\label{sec:SolowAssumptions}
 
-在《高级宏观经济学》中，所有模型都是动态的，即变量可以随时间变化，那么接触新模型时，我们有必要先明确时间是离散的还是连续的，具体讨论在 \ref{sec:SolowDiscreteContinuous}。
+在《高级宏观经济学》中，所有模型都是动态的，即变量可以随时间变化。接触新模型时，我们要先明确时间是离散的还是连续的。
 
-\subsection{生产函数}\label{subsec:SolowProduction}
+本章讨论的 Solow 模型是发展在连续时间上的，识别特征为：连续时间上的变量记作 \(X\bkt\)；而如果是离散时间，记作 \(X_t\)。有时若无歧义，会省去时间标记。
 
-Solow 模型的分析集中在生产端，生产函数举足轻重，所以我们有必要从生产函数开始本章内容。
+连续时间变量的\,\term{瞬时增长率}{instantaneous growth rate}有如下定义
+\begin{align}
+    \MathHighlightA{g_X\bkt \coloneq \frac{\dot X\bkt}{X\bkt} = \frac{\n d\log X\bkt}{\n d t}}\label{eq:SolowGrowthRate}
+\end{align}
+其中 \(\dot X\bkt\coloneq\n d X\bkt/\,\n d t\)；最右侧式子显示出“取对数”“对时间求导” 是求增长率的重要步骤。通常我们将 \(g_X\) 简称为增长率，它的含义就如我们在汽车仪表盘上看到的当前车速。
 
-我们采用抽象的（不具有具体形式的）生产函数
+% 具体讨论在 \ref{sec:SolowDiscreteContinuous}
+
+既然 Solow 模型是生产端的模型，那么我们有必要好好从生产函数展开叙事。
+
+\subsection{生产技术}\label{subsec:SolowProduction}
+
+我们采用抽象的、无具体形式的生产函数
 \begin{align}
     Y\bkt=F\bkKALt\label{eq:SolowProductionFunction}
 \end{align}
-其中，\(K\) 是资本存量；\(L\) 是劳动；\(A\) 是技术；\(Y\) 是产出。生产函数意为：经济体使用劳动和资本，借助技术 \(A\) 的帮助生产出 \(Y\)。
+其中，\(K\) 是资本存量；\(L\) 是劳动；\(A\) 是技术；\(Y\) 是产出。生产函数意为：经济体使用劳动和资本，借助技术 \(A\) 的帮助生产出 \(Y\)。要求 \(K\bkt\)、\(Y\bkt\)、\(L\bkt\)、\(A\bkt> 0\)。\sidenote{请记住这里所有变量为正假设，后文有用}
 
-技术以 \(A\,L\) 的形式进入生产函数，可见技术进步作用于劳动而非资本，因此生产函数 \ref{eq:SolowProductionFunction} 属于\,\term{劳动增进型技术进步}{labor-augmenting technological progress}，也称 Harrod 中性技术进步。要求 \(K\bkt\geq 0\)、\(A\bkt>0\)、\(L\bkt>0\)、\(Y\bkt\geq 0\)。
+技术以 \(A\,L\) 的形式进入生产函数，可见技术进步作用于劳动而非资本，因此该生产函数属\,\term{劳动增进型技术进步}{labor-augmenting technological progress}，也称 Harrod 中性技术进步。
 
 \subsection{规模报酬}\label{subsec:SolowCRS}
 
-生产函数满足\,\term{规模报酬不变}{constant returns to scale}性质：
-\begin{align}
-    F\bka{c\,K,c\,A\,L}=c\,F\bka{K,A\,L}\,,\qquad \forall\,c>0\label{eq:SolowCRS}
-\end{align}
-
-
-令 \(c=1\,/\bka{A\,L}\)，利用式 \ref{eq:SolowCRS} 得
+生产函数满足\,\term{规模报酬不变}{constant returns to scale, CRS}性质 —— 同时以固定倍数增加所有要素投入，产量也会增加相同倍数。数学表示为，对任意 \(c>0\) 有
 \begin{align*}
+    F\bka{c\,K,c\,A\,L}=c\,F\bkKAL=c\,Y
+\end{align*}
+马上利用该性质，令 \(c=\bka{AL}\inv\)，则
+\begin{align}
     \frac{Y}{A\,L}
     &=F\bka{\frac{K}{A\,L},1}
-\end{align*}
+    \label{eq:SolowIntensiveForm}
+    \sidenote{除以劳动消去了劳动的规模效应，同时具有良好的经济含义}
+\end{align}
 定义\,\term{有效人均资本}{capital per effective worker}和\,\AccentTerm{有效人均产出}\,分别为
 \begin{align*}
     k\coloneq\frac{K}{A\,L}
     \qquad \& \qquad 
     y\coloneq\frac{Y}{A\,L}
 \end{align*}
-再记 \(f\bkk\coloneq F\bka{k,1}\)，总量生产函数就被化为\,\term{集约形式}{intensive form}
-\begin{align}
-    y=f\bkk\label{eq:SolowIntensive}
-\end{align}
-我们最终关心的是 \(Y\islash L=A\,f\bkk\)，但先研究 \(k\) 和 \(y\) 能够剥离人口与技术的趋势，使动态问题变成一维问题。
+再记 \(f\bkk\coloneq F\bka{k,1}\)，总量生产函数 \ref{eq:SolowIntensiveForm} 就被化为\,\term{集约形式}{intensive form}
+\begin{align*}
+    y=f\bkk
+\end{align*}
 
-\subsection{新古典生产技术}\label{subsec:SolowTechnology}
+生产函数简化到集约形式有两大好处：1. 原先生产函数 \ref{eq:SolowProductionFunction} 至少是二维函数，现在被压缩为一维，方便进行图像分析；2. （有效）人均变量本就是我们更关心的指标，相比起 \(Y\)，\(y\) 更能反应人们的生活状况。
 
-集约生产函数满足以下条件：
-\begin{align}
-    f\bko&=0\label{eq:SolowZeroInput}\\
-    f'\bkk&>0\label{eq:SolowPositiveMPK}\\
-    f''\bkk&<0\label{eq:SolowDiminishingMPK}\\
-    \lim_{k\to 0^+}f'\bkk&=+\infty\,,\qquad
-    \lim_{k\to+\infty}f'\bkk=0\label{eq:SolowInada}
-    \sidenote{Inada 条件是宏观模型的常见假设，后续保证 Solow 模型稳定性与唯一性}
-\end{align}
-前两条分别表示没有投入便没有产出、资本边际产出为正；第三条表示资本边际产出递减；最后一组是 Inada 条件，保证资本极少时的边际产出足够高、资本极多时的边际产出趋近于零。
+现在回头想想：假设规模报酬不变合理吗？难说现实经济是否规模报酬不变，但从研究来说，它是后续分析的基石；配合上后文完全竞争假设，我们可知生产端是零经济利润的。
 
-最常用的例子是 Cobb--Douglas 生产函数
-\begin{align}
-    F\bka{K,A\,L}&=K^\alpha\bka{A\,L}^{1-\alpha}\,,\qquad 0<\alpha<1\label{eq:SolowCD}\sidenote{CD 函数可以被写作 \(F\bka{AK,L}\)，但这不是目的}\\
-    f\bkk&=k^\alpha
-\end{align}
-它满足规模报酬不变、边际产出递减和 Inada 条件。
+\myskip
 
-\subsection{劳动、技术与资本的运动}\label{subsec:SolowInputDynamics}
+在集约式基础上，对生产函数作进一步假设：\sidenote{以下条件都能写成总量生产函数形式，并非针对集约式}
+\begin{align*}
+    \begin{cases}
+        \quad \text{无投入无产出} \quad & f\bko=0\\[6pt]
+        \quad \text{边际产出为正} \quad & f'\bkk>0\\[6pt]
+        \quad \text{边际产出递减} \quad & f''\bkk<0\\[6pt]
+        \quad \text{Inada 条件} \quad & \dis\lim_{k\to 0^+}\,f'\bkk=+\infty\,,\quad \lim_{k\to+\infty}\,f'\bkk=0\sidenote{思考其中第二个极限不成立的后果}
+    \end{cases}
+\end{align*}
+最常见的 Cobb--Douglas 形式生产函数
+\begin{align*}
+    F\bkKAL=K^\alpha\bka{AL}^{1-\alpha} \means f\bkk=k^\alpha
+\end{align*}
+显然符合以上所有假设。
 
-时间连续时，变量 \(X\bkt\) 的瞬时增长率为
-\begin{align}
-    g_X\bkt
-    &\coloneq\frac{\dot X\bkt}{X\bkt}
-    =\frac{\mathrm d\log X\bkt}{\mathrm d t}\label{eq:SolowGrowthRate}
-\end{align}
-Solow 模型假设人口与技术分别以外生常数 \(n\) 和 \(g\) 增长：
-\begin{align}
-    \frac{\dot L\bkt}{L\bkt}&=n
-    \means L\bkt=L\bko\,e^{n\,t}\label{eq:SolowLaborPath}\\
-    \frac{\dot A\bkt}{A\bkt}&=g
-    \means A\bkt=A\bko\,e^{g\,t}\label{eq:SolowTechnologyPath}
-\end{align}
-产出只在消费和投资之间分配。家庭储蓄固定比例 \(s\) 的收入，储蓄全部转化为投资；资本则以固定比例 \(\delta\) 折旧。因此
-\begin{align}
-    C\bkt&=\bka{1-s}Y\bkt\label{eq:SolowConsumption}\\
-    \dot K\bkt&=s\,Y\bkt-\delta\,K\bkt\label{eq:SolowCapitalLaw}
-\end{align}
-其中 \(0<s<1\)、\(0<\delta<1\)，并假设 \(n+g+\delta>0\)。储蓄率在这里是外生参数；把储蓄选择建立在家庭最优化之上，将是后续 RCK 模型的任务。
+\subsection{完全竞争}
 
-\section{运动方程}\label{sec:SolowDynamics}
+令 \(r\) 和 \(w\) 分别表示资本租金与每单位原始劳动的工资。完全竞争厂商将要素价格视为给定，选择资本和劳动以最大化利润\sidenote{注意不是选择有效劳动 \(A\,L\) 以最大化利润}
+\begin{align*}
+    \max_{K,\,L} \quad & \pi=F\bka{K,A\,L}-r\,K-w\,L
+\end{align*}
+获得一阶条件，并利用 \(Y=A\,L\,f\bkk\) 和 \(K = A\,L\,k\) 将一阶条件转成集约生产函数形式。首先是资本的一阶条件 \(\p\pi\islash\p K=0\) 有
+\begin{align*}
+    r&=\frac{\p Y}{\p K}=\frac{\p [AL\,f\bkk]}{\p k}\cdot\dfrac{\p k}{\p AL\,k}
+    =A\,L\, f'\bkk\cdot\dfrac1{A\,L}
+    =\MathHighlightA{f'\bkk}
+    \sidenote{\(\dfrac{\p F}{\p K} = \dfrac{\p f}{\p k}\)}
+\end{align*}
+同理劳动的一阶条件给出
+\begin{align*}
+    w&=\frac{\p Y}{\p L} = \dfrac{\p [AL\,f\bkk]}{\p L}=A\,f\bkk+A\,L\cdot f'\bkk\cdot\frac{\partial }{\p L}\dfrac K{A\,L}\notag\\
+    &=A\,f\bkk-A\,L\cdot f'\bkk\cdot\frac{K}{A\,L^2}=\MathHighlightA{A\bks{f\bkk-k\,f'\bkk}}
+    \sidenote{高亮的中括号中，是产出剔除支付给资本的剩余}
+\end{align*}
+要素市场均衡时，\(r=\n{MPK}\) 和 \(w=\n{MPL}\) 成立，即 \(\n{MFC}=\n{MRP}\)。
+
+定义新弹性记号
+\begin{align}
+    \alpha_K\bkk \coloneq \dfrac KY\dfrac{\p Y}{\p K} = \dfrac{r\,K}{Y} = \dfrac{r\,K\bka{AL}\inv}{Y\islash AL}=\MathHighlight{\dfrac{k\,f'\bkk}{f\bkk}}\label{eq:SolowCapitalShare}
+\end{align}
+第一个等式是定义，后面的等式全是前文的推导结果。以上是产出的资本投入弹性，也是资本收入份额。值得注意的是，该弹性是随 \(k\) 变化的而非固定参数，所以在符号中作了强调。
+
+\section{动态系统}\label{sec:SolowDynamics}
+
+\term{运动方程}{law of motion}以微分方程的形式描述了变量增长的规则，是动态模型的核心地基。在本节，我们将引入重要变量的运动方程，构建 Solow 模型的动态系统。
+
+\subsection{劳动与技术的运动方程}\label{subsec:SolowInputDynamics}
+
+首先是较为容易的劳动和技术，它们都是模型的外生变量，即无论如何变化都不影响经济体的其他变量。Solow 模型假设人口 \(L\bkt\) 与技术 \(A\bkt\) 分别以外生常数 \(n\) 和 \(g\) 增长。根据瞬时增长率的定义 \ref{eq:SolowGrowthRate} 式，有
+\begin{align*}
+    g_L\bkt=\grtt L = n \qquad\&\qquad g_A\bkt=\grtt A = g
+\end{align*}
+仔细观察，不难发现它们是容易求解的微分方程，解得
+\begin{align*}
+    L\bkt=L\bko\,e^{n\,t} \qquad\&\qquad A\bkt=A\bko\,e^{g\,t}
+\end{align*}
 
 \subsection{大 K 的运动方程}\label{subsec:SolowKLaw}
+
+假设经济中只有消费和投资两种行为，投资量为 \(Y\bkt-C\bkt\)。投资是资本存量的“收入项”，而资本折旧是“支出项”，二者相减即得资本存量的增加量
+\begin{align*}
+    \dot K\bkt &= Y\bkt-C\bkt-\delta\,K\bkt
+\end{align*}
+Solow 模型暂不关心家庭获得收入之后会如何动态地分配消费和储蓄，而是静态地以固定储蓄率 \(s\) 划分收入\sidenote{RCK 会继承 Solow 的假设，增加对最优储蓄率的分析}。故上式可改写为
+\begin{align}
+    \MathHighlightA{\dot K\bkt = s\,Y\bkt-\delta\,K\bkt}\label{eq:SolowKLaw}
+\end{align}
+显然，以上微分方程也是个运动方程，并且在生产函数确定时有求解出 \(K\bkt\) 路径的可能性。
 
 \subsection{小 k 的运动方程}\label{subsec:SolowkLaw}
 
@@ -113,63 +162,125 @@ Solow 模型假设人口与技术分别以外生常数 \(n\) 和 \(g\) 增长：
 
 \mysec{方法一：直接求导}
 
-让 \(k\equiv K\islash AL\) 两边对时间求导得
+对 \(k\bkt\coloneq \dfrac{K\bkt}{A\bkt L\bkt}\) 两边的时间求导得
 \begin{align*}
-    \dot k\bkt &= \dfrac{\dot K\bkt}{A\bkt L\bkt}-\dfrac{K\bkt}{\bks{A\bkt L\bkt}^2}\bks{A\bkt\dot L\bkt+\dot A\bkt L\bkt}\\
+    \dot k\bkt &= \dfrac{\dot K\bkt A\bkt L\bkt-K\bkt \dot A\bkt L\bkt-K\bkt A\bkt \dot L\bkt}{\bks{A\bkt L\bkt}^2}\\
     &= \dfrac{\dot K\bkt}{A\bkt L\bkt}-\dfrac{K\bkt}{A\bkt L\bkt}\bks{\dfrac{\dot A\bkt}{A\bkt}+\dfrac{\dot L\bkt}{L\bkt}}
 \end{align*}
-代入 \(K\) 的运动方程
+代入 \(K\) 的运动方程 \ref{eq:SolowKLaw} 以及劳动和技术的增长率
 \begin{align*}
-    \dot k\bkt&= \dfrac{s\,Y\bkt-\delta\,K\bkt}{A\bkt L\bkt}-n\,k\bkt-g\,k\bkt\\
-    &=s\,f\bks{k\bkt}-\qa{n+g+\delta}k\bkt
+    \dot k\bkt&= \dfrac{s\,Y\bkt-\delta\,K\bkt}{A\bkt L\bkt}-n\,k\bkt-g\,k\bkt
 \end{align*}
+最终整理得
+\begin{align}
+    \MathHighlightA{\dot k\bkt=s\,f\bks{k\bkt}-\qa{n+g+\delta}k\bkt}\label{eq:SolowkLaw}
+\end{align}
+对比总量和有效人均两种形式的资本运动方程，发现后者的支出项为 \(\bka{n+g+\delta}k\)，称作\,\term{收支相抵投资}{break-even investment}，而非前者的 \(\delta\,K\)，其中差异就来自“有效”和“人均”。这是因为更多人和更好技术都要配备更多资本，人口增长和技术进步稀释了资本积累的稀释，这一事实可以在下种方法中得到更好体现。
 
-\myskip
 \mysec{方法二：利用结论}
 
+增长率有两大性质
 \begin{align*}
-    \frac{\dot k}{k}=\frac{\dot K}{K}-\frac{\dot A}{A}-\frac{\dot L}{L}=\frac{s\,Y-\delta\,K}{K}-g-n
+    & Z = X\,Y \quad\Rightarrow\quad g_Z = g_X+g_Y \\
+    & Z = X^\alpha \quad\Rightarrow\quad g_Z = \alpha\,g_X
 \end{align*}
-利用 \(Y\islash\bka{A\,L}=f\bkk\) 和 \(K\islash\bka{A\,L}=k\)，得到 Solow 模型最重要的运动方程
-\begin{align}
-    \dot k=s\,f\bkk-\qa{n+g+\delta}k\label{eq:SolowKLaw}
-\end{align}
-式 \ref{eq:SolowKLaw} 右侧包含两股相反的力量。\(s\,f\bkk\) 是有效人均投资；\(\qa{n+g+\delta}k\) 是\,\term{收支平衡投资}{break-even investment}，它补偿人口增长、技术进步与折旧对有效人均资本的稀释。若前者更大，\(k\) 上升；若后者更大，\(k\) 下降。
-
-\subsection{稳态的存在、唯一与稳定}\label{subsec:SolowSteadyState}
-
-\,\term{稳态}{steady state}是有效人均资本不再变化的状态。正稳态 \(k^*>0\) 满足
-\begin{align}
-    s\,f\bkkstar&=\qa{n+g+\delta}k^*\label{eq:SolowSS}\\
-    \frac{f\bkkstar}{k^*}&=\frac{n+g+\delta}{s}\label{eq:SolowSSAverageProduct}
-\end{align}
-为了判断正稳态是否存在且唯一，定义资本平均产出 \(h\bkk\coloneq f\bkk\islash k\)。由 Inada 条件可得
+由于 \(k = K\,A\inv\,L\inv\)，利用性质马上得
 \begin{align*}
-    \lim_{k\to0^+}h\bkk=+\infty\,,\qquad
-    \lim_{k\to+\infty}h\bkk=0
+    \grtt k &= \grtt K - \grtt A - \grtt L = \frac{s\,Y\bkt-\delta\,K\bkt}{K\bkt}-g-n\\
+    \Rightarrow\quad \dot k\bkt &= \dfrac{s\,Y\bkt}{K\bkt}\dfrac{K\bkt}{A\bkt L\bkt}-\bka{n+g+\delta}k\bkt\\
+    \Rightarrow\quad \dot k\bkt & =s\,f\bks{k\bkt}-\qa{n+g+\delta}k\bkt
 \end{align*}
-又因为 \(f\) 严格凹且 \(f\bko=0\)，切线斜率小于从原点出发的割线斜率，即 \(f'\bkk<f\bkk\islash k\)。因此
-\begin{align}
-    h'\bkk
-    &=\frac{k\,f'\bkk-f\bkk}{k^2}<0\label{eq:SolowAverageProductSlope}
-\end{align}
-连续且严格递减的 \(h\bkk\) 会且只会与常数 \(\qa{n+g+\delta}\islash s\) 相交一次，所以正稳态存在且唯一。
+从第一行便能看出，在有效人均层面，只有资本积累速度超过人口增长和技术进步的速度，有效人均资本才会增加；而总量资本存量不必考虑二者的增长率。
 
-稳定性直接来自运动方向：
-\begin{itemize}
-    \item 当 \(0<k<k^*\) 时，\(s\,f\bkk>\qa{n+g+\delta}k\)，所以 \(\dot k>0\)
-    \item 当 \(k>k^*\) 时，\(s\,f\bkk<\qa{n+g+\delta}k\)，所以 \(\dot k<0\)
-\end{itemize}
-因此，只要初始资本 \(k\bko>0\)，经济就会收敛到唯一正稳态 \(k^*\)。由于 \(f\bko=0\)，\(k=0\) 也是一个边界稳态：若经济恰好没有任何资本，它会停留在原点；但对任意足够小的正资本，Inada 条件都使 \(\dot k>0\)，所以 \(k=0\) 并不是从右侧局部稳定的稳态。
+\subsection{稳定性分析}\label{subsec:SolowSteadyState}
+
+\term{稳态}{steady state}是经济变量不随时间变化的状态。在 Solow 模型最核心的变量为有效人均资本存量 \(k\bkt\)。我们令 \(\dot k\bkt=0\)，得稳态条件为
+\begin{align}
+    \MathHighlightA{s\,f\bkkstar=\qa{n+g+\delta}k^*}\label{eq:SolowSteadyState}
+    \sidenote{稳态路径不随时间变化，可去掉时间记号}
+\end{align}
+以上方程的解即为稳态。显然，\(k^*=0\) 可使上式成立的，但我们已经用假设 \(K\bkt>0\) 排除过这个情况了。此外，Inada 条件对生产函数的形态进行约束，保证了稳态解存在且唯一，具体证明略。
+
+其实从谨慎来说，\(k^*\) 到目前为止只能称作系统的\,\term{奇点}{singularity}，因为我们还没有分析它的稳定性。举个简单的例子，山峰顶和山谷底都是地形上的“特殊点”，放置一个小球在山峰的任何位置都会在重力作用下背离山峰顶运动，而山谷里的则是落向底部。
+
+简单起见，我们不用严格的数学工具，仅通过 \ref{fig:SolowSteadyStateStability} 查看稳定性。当 \(k<k^*\) 时，投资曲线在收支相抵投资曲线之上，意味着资本的收入大于支出，所以 \(\dot k>0\)；当 \(k>k^*\) 时，投资曲线在收支相抵投资曲线之下，意味着资本的收入小于支出，所以 \(\dot k<0\)。因此，奇点 \(k^*\) 是稳定点，\(k^*\) 确实是稳态。
+
+\begin{figure}[!htbp]
+    \centering
+    \begin{tikzpicture}[
+        x=0.90cm,
+        y=0.82cm,
+        line cap=round,
+        line join=round,
+        >=Latex,
+        every node/.style={font=\small},
+        declare function={investment(\x)=2.765*\x^0.32; breakeven(\x)=0.95*\x;}
+    ]
+        % 图形范围与由两条曲线交点确定的正稳态
+        \pgfmathsetmacro{\xmax}{8.2}
+        \pgfmathsetmacro{\ymax}{6.7}
+        \pgfmathsetmacro{\kstar}{(2.765/0.95)^(1/(1-0.32))}
+        \pgfmathsetmacro{\ystar}{breakeven(\kstar)}
+
+        % 坐标轴与稳态辅助线
+        \draw[semithick,DiagramPrimary]
+            (0,0) -- (\xmax,0) node[below] {\(k\)};
+        \draw[semithick,DiagramPrimary]
+            (0,0) -- (0,\ymax);
+        \node[rotate=90] at (-0.36,{0.5*\ymax}) {每单位有效劳动的投资};
+        \draw[densely dashed,DiagramGuide] (\kstar,0) -- (\kstar,\ystar);
+        \node[below] at (\kstar,0) {\(k^*\)};
+
+        % 横轴上的运动方向：两侧均向稳态收敛
+        \foreach \xa/\xb in {0.55/1.15,1.55/2.15,2.55/3.15,3.55/4.15}{
+            \draw[-{Latex[length=2.0mm,width=1.45mm]},DiagramPrimary,line width=0.8pt]
+                (\xa,0) -- (\xb,0);
+        }
+        \foreach \xa/\xb in {7.75/7.15,6.75/6.15,5.85/5.25}{
+            \draw[-{Latex[length=2.0mm,width=1.45mm]},DiagramPrimary,line width=0.8pt]
+                (\xa,0) -- (\xb,0);
+        }
+        \fill[DiagramPrimary] (\kstar,0) circle (1.35pt);
+
+        % 实际投资曲线与收支相抵投资直线
+        \draw[DiagramPrimary,very thick,domain=0:6.70,samples=2]
+            plot (\x,{breakeven(\x)});
+        \draw[DiagramHighlight,very thick,domain=0:6.85,samples=220]
+            plot (\x,{investment(\x)});
+
+        % 直接标注曲线，不使用引线
+        \fill[DiagramHighlight] (\kstar,\ystar) circle (1.8pt);
+        \node[DiagramPrimary,anchor=south east] at (6.55,6.08)
+            {收支相抵投资 \(\bka{n+g+\delta}k\)};
+        \node[DiagramHighlight,anchor=west] at (6.98,5.12)
+            {实际投资 \(s\,f\bkk\)};
+    \end{tikzpicture}
+    \caption{实际投资与收支相抵投资}
+    \label{fig:SolowSteadyStateStability}
+\end{figure}
 
 \subsection{平衡增长路径}\label{subsec:SolowBGP}
 
-稳态只要求有效人均变量保持不变，并不意味着总量变量停止增长。当 \(\dot k=0\) 时，\(k\) 和 \(y=f\bkk\) 的增长率均为零。由 \(K=k\,A\,L\) 得
+理解\,\term{平衡增长路径}{balanced growth path, BGP}这一概念，我们要从“路径”来看。路径是变量关于时间的函数，如 \(X\bkt\)。但这么说太过宽泛，我们通常关心有特别含义的路径，比如经济体受到冲击后变量收敛到稳态的最优路径，还比如这里所说的在稳态实现后各变量会的平衡增长路径。
+
+我们把增长率保持固定的状态称作“平衡”（好似我们是在实际投资和收支相抵投资之间平衡才找到稳态），那么平衡增长路径就是所有变量保持固定增长率的路径。现在，我们就来看各个变量在平衡增长路径上的增长率。
+
+首先，从稳态条件入手。因为稳态条件 \ref{eq:SolowSteadyState} 是由 \(\dot k\bkt\) 的运动方程得来，可见变量 \(k\bkt\) 的重要性，所以我们得到的第一个结论是：在平衡增长路径上，\(k\bkt\) 的增长率 \(\MathHighlightA{g_k\bkt=0}\)\sidenote{\(g_k\bkt\coloneq \dot k\bkt/\,k\bkt\)；为了突出路径含义，此处不省略时间符号}。
+
+接着，\(k\bkt\) 是 Solow 模型的\,\term{状态变量}{state variable} —— 知道状态变量的实现值，就知道系统的当前状态，且能推断出下一状态的位置。\(y\bkt\) 和 \(c\bkt\) 都是 \(k\bkt\) 的\,\term{派生变量}{derived variable}，它们的值由 \(f\bks{k\bkt}\) 和 \(\bka{1-s}f\bks{k\bkt}\) 决定。显然，\(\MathHighlightA{g_y\bkt=g_c\bkt=0}\)。
+
+下一步是总量的增长率。对 \(K=A\,L\,k\) 使用增长率的性质求 \(K\) 的增长率
 \begin{align*}
-    \frac{\dot K}{K}
-    &=\frac{\dot k}{k}+\frac{\dot A}{A}+\frac{\dot L}{L}=n+g
+    g_K\coloneq\grtt K = \grtt k + \grtt A + \grtt L = 0 + g + n = n+g
 \end{align*}
-其余变量同理。所有变量以固定速率增长的轨道称为\,\term{平衡增长路径}{balanced growth path，BGP}，其增长率汇总如下。
+同理可求得 \(Y\) 和 \(C\) 的增长率也为 \(n+g\)；非有效人均变量如 \(K\islash L\) 的增长率都是 \(g\)。假设经济在 \(t^*\) 时刻实现平衡增长，那么 \(K\) 的平衡增长路径是
+\begin{align*}
+    K\bkt=K\bka{t^*}e^{(n+g)\,\bka{t-t^*}}
+\end{align*}
+上式是为了突出我们常说的平衡增长路径是个时间的函数，而不是指一种状态。
+
+最后是技术和劳动，它们是外生变量，无论经济是否实现平衡增长，它们的增长率都是固定的，前文已经给出 \(g_A=g\) 和 \(g_L=n\)。
+
 \begin{table}[htbp]
     \centering
     \renewcommand{\arraystretch}{1.35}
@@ -177,179 +288,464 @@ Solow 模型假设人口与技术分别以外生常数 \(n\) 和 \(g\) 增长：
         \toprule
         变量 & 定义 & BGP 增长率\\
         \midrule
-        有效人均资本 & \(k=K\islash\bka{A\,L}\) & \(0\)\\
-        有效人均产出、消费 & \(y=Y\islash\bka{A\,L}\)、\(c=C\islash\bka{A\,L}\) & \(0\)\\
-        人均资本、产出、消费 & \(K\islash L\)、\(Y\islash L\)、\(C\islash L\) & \(g\)\\
-        劳动与知识 & \(L\)、\(A\) & \(n\)、\(g\)\\
-        资本、产出、消费总量 & \(K\)、\(Y\)、\(C\) & \(n+g\)\\
+        有效人均变量 & \(X\,/\bka{AL}\) & \(0\)\\
+        人均变量    & \(X\islash L\)    & \(g\)\\
+        总量变量    & \(X\)             & \(n+g\)\\
+        劳动       & \(L\)             & \(n\)\\
+        技术       & \(A\)             & \(g\)\\
         \bottomrule
     \end{tabular}
     \caption{Solow 模型平衡增长路径上的增长率}
     \label{tab:SolowBGPRates}
     \renewcommand{\arraystretch}{0}
 \end{table}
-\ref{tab:SolowBGPRates} 给出 Solow 模型的核心增长结论：资本积累能改变长期水平，却不能持续提高人均变量的增长率；长期人均增长率最终由外生技术进步 \(g\) 决定。
 
-\section{储蓄率变化的影响}\label{sec:SolowSavingShock}
+\section{比较静态}
 
-\subsection{资本与产出}\label{subsec:SolowSavingOutput}
+上一节已经给出了完整的 Solow 模型，并分析了稳态的稳定性和各变量在平衡增长路径上的增长率。现在我们要转入比较静态分析，以储蓄率为例，给出研究参数变化对模型影响的框架。既然提到储蓄率，我们先补充黄金律水平的概念。
 
-假设经济最初处在稳态，储蓄率在 \(t_0\) 时刻永久上升。有效人均资本 \(k\) 是存量，冲击发生时不能跳跃；投资流量 \(s\,f\bkk\) 却会立刻上升，因此 \(\dot k\) 向上跳跃，经济随后逐步走向更高的新稳态。
-
-稳态条件也直接说明 \(k^*\) 随 \(s\) 上升。储蓄率越高，给定 \(k\) 下投资曲线越高，与收支平衡投资的交点便越靠右。
-
-人均产出为 \(Y\islash L=A\,f\bkk\)，其增长率满足
-\begin{align}
-    \frac{\mathrm d\log\bka{Y\islash L}}{\mathrm d t}
-    &=g+\frac{f'\bkk}{f\bkk}\,\dot k \label{eq:SolowOutputGrowthTransition}
-\end{align}
-冲击发生前后，经济都位于平衡增长路径，\(\dot k=0\)，所以人均产出增长率都等于 \(g\)。转型期间 \(\dot k>0\)，人均产出暂时增长得更快；当 \(k\) 接近新稳态时，额外增长逐渐消失，增长率回落到 \(g\)。因此，储蓄率上升带来人均产出\AccentTerm{水平}的一次永久提高，却不改变其长期\AccentTerm{增长率}。
-
-\subsection{消费与黄金律}\label{subsec:SolowGoldenRule}
-
-有效人均消费为
-\begin{align}
-    c=\bka{1-s}f\bkk\label{eq:SolowEffectiveConsumption}
-\end{align}
-储蓄率上升时，\(1-s\) 立即下降而 \(k\) 尚未变化，所以消费会在冲击当期下降。此后资本积累推高产出，消费逐步回升；新稳态消费究竟高于还是低于原稳态，取决于最初是否储蓄不足或储蓄过度。
-
-在稳态条件下，\(s\,f\bkkstar=\qa{n+g+\delta}k^*\)，所以稳态消费可以写成
-\begin{align}
-    c^*=f\bkkstar-\qa{n+g+\delta}k^*\label{eq:SolowSSConsumption}
-\end{align}
-对储蓄率求导得
-\begin{align}
-    \frac{\p c^*}{\p s}
-    &=\bks{f'\bkkstar-\qa{n+g+\delta}}\frac{\p k^*}{\p s}\label{eq:SolowConsumptionSavingDerivative}
-\end{align}
-下一节将证明 \(\p k^*\islash\p s>0\)。因此，使稳态消费达到最大的\,\term{黄金律资本水平}{Golden Rule level of capital}满足
-\begin{align}
-    f'\bka{k_{\mathrm{GR}}}=n+g+\delta\label{eq:SolowGoldenRule}
-\end{align}
-黄金律要求资本的边际产出等于持有一单位有效人均资本的机会成本。若 \(k^*<k_{\mathrm{GR}}\)，提高储蓄率会增加长期消费；若 \(k^*>k_{\mathrm{GR}}\)，经济存在动态无效率，提高储蓄率反而减少长期消费。
-
-\section{定量结论}\label{sec:SolowQuantitative}
-
-\subsection{稳态对储蓄率的弹性}\label{subsec:SolowElasticity}
-
-对稳态条件式 \ref{eq:SolowSS} 关于 \(s\) 进行隐函数求导：
+\term{黄金律水平}{golden-rule level}是针对 \(k^*\) 而言的，它指经济体能够实现 \(c^*_{\max}\) 的 \(k^*\) 水平。这一最优化要靠调整储蓄率实现
 \begin{align*}
-    f\bkkstar+s\,f'\bkkstar\frac{\p k^*}{\p s}
-    &=\qa{n+g+\delta}\frac{\p k^*}{\p s}
+\max_s \quad c^*=f\bkkstar - \underbrace{\bka{n+g+\delta}k^*}_{s\,f\bkkstar}
+\end{align*}
+由一阶条件可快速得到黄金律水平条件
+\begin{align*}
+    f'\bka{k^*}\cdot\frac{\p k^*}{\p s}-\bka{n+g+\delta}\cdot\frac{\p k^*}{\p s}=0 \means \MathHighlightA{f'\bka{k^*_{\n{GR}}}=n+g+\delta}
+\end{align*}
+储蓄率是最优化问题的控制变量，经济体要实现 \(k^*_{\n{GR}}\) 必须选择合适的储蓄率 \(s_{\n{GR}}\)。从 \ref{fig:SolowGoldenRule} 可见，生产曲线固定，收支相抵曲线固定，黄金律水平 \(k^*_{\n{GR}}\) 已经确定。现在要选择 \(s\) 来控制 \(s\,f\bkk\) 的位置，使得 \(s_{\n{GR}}\,f\qa{k^*_{\n{GR}}}\) 落在收支相抵线上，稳态实现。
+
+\begin{figure}[!htbp]
+    \centering
+    \begin{tikzpicture}[
+        x=0.90cm,
+        y=0.82cm,
+        line cap=round,
+        line join=round,
+        >=Latex,
+        every node/.style={font=\small},
+        declare function={
+            output(\x)=\outputscale*sqrt(\x)-\curvature*\x*(\x-\kgr)^2;
+            breakeven(\x)=\goldenslope*\x;
+            saving(\x)=\sgr*output(\x);
+            tangent(\x)=\ygr+\goldenslope*(\x-\kgr);
+        }
+    ]
+        % 图形范围与黄金律资本水平
+        \pgfmathsetmacro{\xmax}{8.2}
+        \pgfmathsetmacro{\ymax}{6.7}
+        \pgfmathsetmacro{\kgr}{(0.40*2.8/0.55)^(1/(1-0.40))}
+        \pgfmathsetmacro{\ygrtarget}{2.8*\kgr^0.40}
+        \pgfmathsetmacro{\outputscale}{\ygrtarget/sqrt(\kgr)}
+        \pgfmathsetmacro{\curvature}{0.006}
+        \pgfmathsetmacro{\goldenslope}{0.50*\ygrtarget/\kgr}
+        \pgfmathsetmacro{\ygr}{output(\kgr)}
+        \pgfmathsetmacro{\igr}{breakeven(\kgr)}
+        \pgfmathsetmacro{\sgr}{\igr/\ygr}
+
+        % 坐标轴与黄金律辅助线
+        \draw[semithick,DiagramPrimary]
+            (0,0) -- (\xmax,0) node[below] {\(k\)};
+        \draw[semithick,DiagramPrimary]
+            (0,0) -- (0,\ymax);
+        \node[rotate=90] at (-0.36,{0.5*\ymax}) {每单位有效劳动的产出与投资};
+        \draw[densely dashed,DiagramGuide] (\kgr,0) -- (\kgr,\igr);
+        \node[below] at (\kgr,0) {\(k^*_{\n{GR}}\)};
+
+        % 生产函数、黄金律储蓄对应的投资曲线、收支相抵投资线及切线
+        \draw[DiagramPrimary,very thick,domain=0:7.10,samples=220]
+            plot (\x,{output(\x)});
+        \draw[DiagramComparison,very thick,domain=0:7.10,samples=220]
+            plot (\x,{saving(\x)});
+        \draw[DiagramAnnotation,very thick,domain=0:7.10,samples=2]
+            plot (\x,{breakeven(\x)});
+        \draw[DiagramHighlight,very thick,domain=1.65:5.00,samples=2]
+            plot (\x,{tangent(\x)});
+
+        % 黄金律消费是产出与收支相抵投资之间的最大垂直距离
+        \draw[{Latex[length=2.2mm,width=1.6mm]}-{Latex[length=2.2mm,width=1.6mm]},DiagramAnnotation,line width=0.9pt]
+            (\kgr,{\igr+0.10}) -- (\kgr,{\ygr-0.10});
+        \node[DiagramAnnotation,anchor=west] at ({\kgr+0.18},{(\igr+\ygr)/2})
+            {\(c^*_{\n{GR}}\)};
+
+        % 切点和斜率相等的直接标注
+        \fill[DiagramHighlight] (\kgr,\ygr) circle (1.8pt);
+        \fill[DiagramComparison] (\kgr,\igr) circle (1.6pt);
+        \node[DiagramHighlight,anchor=west] at (1.25,6.05)
+            {\(f'\qa{k^*_{\n{GR}}}=n+g+\delta\)};
+        \node[DiagramPrimary,anchor=west] at (7.18,{output(7.10)})
+            {\(f\bkk\)};
+        \node[DiagramAnnotation,anchor=west] at (7.18,{breakeven(7.10)})
+            {\(\qa{n+g+\delta}k\)};
+        \node[DiagramComparison,anchor=west] at (7.18,{saving(7.10)})
+            {\(s\,f\bkk\)};
+    \end{tikzpicture}
+    \caption{黄金律资本水平与斜率相等条件}
+    \label{fig:SolowGoldenRule}
+\end{figure}
+
+\subsection{定性分析}\label{subsec:SolowSavingOutput}
+
+我们先以感性的方式，从储蓄率入手做比较静态分析，看它的突然变化会对经济体中各变量产生什么影响。
+
+如 \ref{fig:SolowSavingComparativeStatics} 所示，储蓄率越高，实际投资与收支相抵投资的交点便越靠右。具体来说，假设经济最初处在稳态，储蓄率在 \(t_0\) 时刻永久上升。有效人均资本 \(k\bkt\) 是存量，冲击发生时不能跳跃；投资流量 \(s\,y\bkt\) 却会立刻上升，根据运动方程，\(\dot k\bkt\) 向上跳跃，经济随后逐步走向更高的新稳态。
+
+\begin{figure}[!htbp]
+    \centering
+    \begin{tikzpicture}[
+        x=0.90cm,
+        y=0.82cm,
+        line cap=round,
+        line join=round,
+        >=Latex,
+        every node/.style={font=\small},
+        declare function={
+            oldinvestment(\x)=2.25*\x^0.32;
+            newinvestment(\x)=2.765*\x^0.32;
+            breakeven(\x)=0.95*\x;
+        }
+    ]
+        % 图形范围、储蓄率变化与两个稳态
+        \pgfmathsetmacro{\xmax}{8.2}
+        \pgfmathsetmacro{\ymax}{6.7}
+        \pgfmathsetmacro{\kold}{(2.25/0.95)^(1/(1-0.32))}
+        \pgfmathsetmacro{\knew}{(2.765/0.95)^(1/(1-0.32))}
+        \pgfmathsetmacro{\yold}{breakeven(\kold)}
+        \pgfmathsetmacro{\ynew}{breakeven(\knew)}
+
+        % 坐标轴与两个稳态的辅助线
+        \draw[semithick,DiagramPrimary]
+            (0,0) -- (\xmax,0) node[below] {\(k\)};
+        \draw[semithick,DiagramPrimary]
+            (0,0) -- (0,\ymax);
+        \node[rotate=90] at (-0.36,{0.5*\ymax}) {每单位有效劳动的投资};
+        \draw[densely dashed,DiagramGuide] (\kold,0) -- (\kold,\yold);
+        \draw[densely dashed,DiagramGuide] (\knew,0) -- (\knew,\ynew);
+        \node[below] at (\kold,0) {\(k_{\n{old}}^*\)};
+        \node[below] at (\knew,0) {\(k_{\n{new}}^*\)};
+
+        % 收支相抵投资以及储蓄率变化前后的实际投资
+        \draw[DiagramPrimary,very thick,domain=0:6.70,samples=2]
+            plot (\x,{breakeven(\x)});
+        \draw[DiagramComparison,very thick,domain=0:6.85,samples=220]
+            plot (\x,{oldinvestment(\x)});
+        \draw[DiagramHighlight,very thick,dashed,domain=0:6.85,samples=220]
+            plot (\x,{newinvestment(\x)});
+
+        % 储蓄率上升使投资曲线向上移动
+        \draw[-{Latex[length=2.5mm,width=1.8mm]},DiagramAnnotation,line width=0.9pt]
+            (5.90,{oldinvestment(5.90)+0.15})-- (5.90,{newinvestment(5.90)-0.15});
+
+        % 交点与曲线标注
+        \fill[DiagramComparison] (\kold,\yold) circle (1.7pt);
+        \fill[DiagramHighlight] (\knew,\ynew) circle (1.8pt);
+        \node[DiagramPrimary,anchor=south east] at (6.55,6.08)
+            {\(\bka{n+g+\delta}k\)};
+        \node[DiagramHighlight,anchor=west] at (6.98,5.12)
+            {\(s_{\n{new}}\,f\bkk\)};
+        \node[DiagramComparison,anchor=west] at (6.98,4.15)
+            {\(s_{\n{old}}\,f\bkk\)};
+    \end{tikzpicture}
+    \caption{储蓄率上升对稳态资本的影响}
+    \label{fig:SolowSavingComparativeStatics}
+\end{figure}
+
+回顾以上看到的所有图像，会发现没有一张图与时间有关，我们所看到的是某个时间截面的经济状态。要想更准确地看到动态变化，之前说过“路径”是变量关于时间的函数，所以我们要看如下时间路径图。
+
+\begin{figure}[!htbp]
+    \centering
+    % 每一行左侧预留说明区，右侧绘制具有相同坐标轴长度的时间路径。
+    \begin{minipage}[t][2.65cm][t]{0.50\textwidth}
+        \vspace{0pt}\setstretch{1.3}\raggedright
+        根据运动方程 \ref{eq:SolowkLaw}，\(\dot k\) 是储蓄率的函数，所以储蓄率的永久变化会立即改变 \(\dot k\)（储蓄率决定投资，投资决定资本积累速度）
+    \end{minipage}%
+    \begin{minipage}[t][2.65cm][t]{0.50\textwidth}
+        \vspace{0pt}\raggedleft
+        \begin{tikzpicture}[
+            x=0.62cm,
+            y=0.95cm,
+            line cap=round,
+            line join=round,
+            every node/.style={font=\small},
+            declare function={capitalchange(\x)=0.75+1.05*exp(-0.92*(\x-2.20));}
+        ]
+            \pgfmathsetmacro{\xmax}{8.2}
+            \pgfmathsetmacro{\ymax}{2.45}
+            \pgfmathsetmacro{\tshock}{2.2}
+            \path[use as bounding box] (-1.75,-0.50) rectangle (8.35,\ymax);
+            \draw[semithick,DiagramPrimary] (0,0) -- (\xmax,0) node[below] {\(t\)};
+            \draw[semithick,DiagramPrimary] (0,0) -- (0,\ymax);
+            \node[left] at (0,0.75) {\(0\)};
+            \node[below left] at (0,\ymax) {\(\dot{k}\)};
+            \draw[densely dashed,DiagramGuide] (0,0.75) -- (\xmax,0.75);
+            \draw[DiagramPrimary,very thick] (0,0.75) -- (\tshock,0.75);
+            \draw[densely dashed,DiagramGuide] (\tshock,0) -- (\tshock,0.75);
+            \draw[DiagramPrimary,very thick] (\tshock,0.75) -- (\tshock,{capitalchange(\tshock)});
+            \draw[DiagramPrimary,very thick,domain=2.20:8.0,samples=160]
+                plot (\x,{capitalchange(\x)});
+            \node[below] at (\tshock,0) {\(t_0\)};
+        \end{tikzpicture}
+    \end{minipage}
+
+    \vspace{0.65cm}
+    \begin{minipage}[t][2.65cm][t]{0.50\textwidth}
+        \vspace{0pt}\setstretch{1.3}\raggedright
+        储蓄率立即改变了当期投资，但投资无法立即转为资本，所以 \(k\) 不会突变；\(\dot k\) 突变产生了 \(k\) 的路径在 \(t_0\) 出现不光滑点
+    \end{minipage}%
+    \begin{minipage}[t][2.65cm][t]{0.50\textwidth}
+        \vspace{0pt}\raggedleft
+        \begin{tikzpicture}[
+            x=0.62cm,
+            y=0.95cm,
+            line cap=round,
+            line join=round,
+            every node/.style={font=\small},
+            declare function={capitalpath(\x)=0.65+1.05*(1-exp(-0.78*(\x-2.20)));}
+        ]
+            \pgfmathsetmacro{\xmax}{8.2}
+            \pgfmathsetmacro{\ymax}{2.45}
+            \pgfmathsetmacro{\tshock}{2.2}
+            \path[use as bounding box] (-1.75,-0.50) rectangle (8.35,\ymax);
+            \draw[semithick,DiagramPrimary] (0,0) -- (\xmax,0) node[below] {\(t\)};
+            \draw[semithick,DiagramPrimary] (0,0) -- (0,\ymax);
+            \node[below left] at (0,\ymax) {\(k\)};
+            \draw[densely dashed,DiagramGuide] (0,0.65) -- (\xmax,0.65);
+            \draw[densely dashed,DiagramGuide] (0,1.70) -- (\xmax,1.70);
+            \node[left,DiagramAnnotation] at (0,0.65) {\(k_1^*\)};
+            \node[left,DiagramAnnotation] at (0,1.70) {\(k_2^*\)};
+            \draw[densely dashed,DiagramGuide] (\tshock,0) -- (\tshock,0.65);
+            \draw[DiagramPrimary,very thick] (0,0.65) -- (\tshock,0.65);
+            \draw[DiagramPrimary,very thick,domain=2.20:8.0,samples=160]
+                plot (\x,{capitalpath(\x)});
+            \node[below] at (\tshock,0) {\(t_0\)};
+        \end{tikzpicture}
+    \end{minipage}
+
+    \vspace{0.65cm}
+    \begin{minipage}[t][2.65cm][t]{0.50\textwidth}
+        \vspace{0pt}\setstretch{1.3}\raggedright
+        人均产出是有效人均资本存量的函数，增长率随之突变；但新旧稳态处增长率都是 \(g\)，说明储蓄率的永久变动不会带来持久的增长动力
+    \end{minipage}%
+    \begin{minipage}[t][2.65cm][t]{0.50\textwidth}
+        \vspace{0pt}\raggedleft
+        \begin{tikzpicture}[
+            x=0.62cm,
+            y=0.95cm,
+            line cap=round,
+            line join=round,
+            every node/.style={font=\small},
+            declare function={growthpath(\x)=0.75+1.05*exp(-0.92*(\x-2.20));}
+        ]
+            \pgfmathsetmacro{\xmax}{8.2}
+            \pgfmathsetmacro{\ymax}{2.45}
+            \pgfmathsetmacro{\tshock}{2.2}
+            \path[use as bounding box] (-1.75,-0.50) rectangle (8.35,\ymax);
+            \draw[semithick,DiagramPrimary] (0,0) -- (\xmax,0) node[below] {\(t\)};
+            \draw[semithick,DiagramPrimary] (0,0) -- (0,\ymax);
+            \node[below left] at (0,\ymax) {\(g_{Y/L}\)};
+            \node[left] at (0,0.75) {\(g\)};
+            \draw[densely dashed,DiagramGuide] (0,0.75) -- (\xmax,0.75);
+            \draw[densely dashed,DiagramGuide] (\tshock,0) -- (\tshock,0.75);
+            \draw[DiagramPrimary,very thick] (0,0.75) -- (\tshock,0.75);
+            \draw[DiagramPrimary,very thick] (\tshock,0.75) -- (\tshock,{growthpath(\tshock)});
+            \draw[DiagramPrimary,very thick,domain=2.20:8.0,samples=160]
+                plot (\x,{growthpath(\x)});
+            \node[below] at (\tshock,0) {\(t_0\)};
+        \end{tikzpicture}
+    \end{minipage}
+
+    \vspace{0.65cm}
+    \begin{minipage}[t][2.65cm][t]{0.50\textwidth}
+        \vspace{0pt}\setstretch{1.3}\raggedright
+        图像中的斜率是 \(Y/L\) 的增长率，且
+        \begingroup
+        \setlength{\abovedisplayskip}{2pt}
+        \setlength{\belowdisplayskip}{4pt}
+        \setlength{\abovedisplayshortskip}{2pt}
+        \setlength{\belowdisplayshortskip}{4pt}
+        \begin{align*}
+            g_{Y/L} = g_A + g_y = g + \dot k\cdot f'\islash f
+        \end{align*}
+        \endgroup
+        \(t_0\) 处随 \(\dot k\) 突变，出现了不光滑点
+    \end{minipage}%
+    \begin{minipage}[t][2.65cm][t]{0.50\textwidth}
+        \vspace{0pt}\raggedleft
+        \begin{tikzpicture}[
+            x=0.62cm,
+            y=0.95cm,
+            line cap=round,
+            line join=round,
+            every node/.style={font=\small},
+            declare function={oldtrend(\x)=0.28+0.16*\x; newtrend(\x)=oldtrend(\x)+0.78; outputpath(\x)=oldtrend(\x)+0.78*(1-exp(-0.78*(\x-2.20)));}
+        ]
+            \pgfmathsetmacro{\xmax}{8.2}
+            \pgfmathsetmacro{\ymax}{2.45}
+            \pgfmathsetmacro{\tshock}{2.2}
+            \path[use as bounding box] (-1.75,-0.50) rectangle (8.35,\ymax);
+            \draw[semithick,DiagramPrimary] (0,0) -- (\xmax,0) node[below] {\(t\)};
+            \draw[semithick,DiagramPrimary] (0,0) -- (0,\ymax);
+            \node[below left] at (0,\ymax) {\(\log\dfrac YL\)};
+            \draw[densely dashed,DiagramGuide] (\tshock,0) -- (\tshock,{oldtrend(\tshock)});
+            \draw[densely dashed,DiagramGuide,domain=0:8.0,samples=2]
+                plot (\x,{oldtrend(\x)});
+            \draw[densely dashed,DiagramGuide,domain=0:8.0,samples=2]
+                plot (\x,{newtrend(\x)});
+            \draw[DiagramPrimary,very thick,domain=0:2.20,samples=2]
+                plot (\x,{oldtrend(\x)});
+            \draw[DiagramPrimary,very thick,domain=2.20:8.0,samples=160]
+                plot (\x,{outputpath(\x)});
+            \node[below] at (\tshock,0) {\(t_0\)};
+        \end{tikzpicture}
+    \end{minipage}
+
+    \vspace{0.65cm}
+    \begin{minipage}[t][2.65cm][t]{0.50\textwidth}
+        \vspace{0pt}\setstretch{1.3}\raggedright
+        不同于资本，储蓄变化会立即改变消费，所以 \(t_0\) 时刻 \(c\) 突变；但最终 \(c\) 会高于还是低于原先，这是不确定的
+    \end{minipage}%
+    \begin{minipage}[t][2.65cm][t]{0.50\textwidth}
+        \vspace{0pt}\raggedleft
+        \sidenote{\(c=\bka{1-s}f\bkk\) 对时间求导可知 \(t_0\) 时刻之后消费一定是往上走的而不会下降}
+        \begin{tikzpicture}[
+            x=0.62cm,
+            y=0.95cm,
+            line cap=round,
+            line join=round,
+            every node/.style={font=\small},
+            declare function={
+                consumptionhigh(\x)=0.43+1.38*(1-exp(-0.72*(\x-2.20)));
+                consumptionlow(\x)=0.43+0.56*(1-exp(-0.72*(\x-2.20)));
+            }
+        ]
+            \pgfmathsetmacro{\xmax}{8.2}
+            \pgfmathsetmacro{\ymax}{2.45}
+            \pgfmathsetmacro{\tshock}{2.2}
+            \path[use as bounding box] (-1.75,-0.50) rectangle (8.35,\ymax);
+            \draw[semithick,DiagramPrimary] (0,0) -- (\xmax,0) node[below] {\(t\)};
+            \draw[semithick,DiagramPrimary] (0,0) -- (0,\ymax);
+            \node[below left] at (0,\ymax) {\(c\)};
+            \draw[densely dashed,DiagramGuide] (0,1.42) -- (\xmax,1.42);
+            \node[left,DiagramAnnotation] at (0,1.42) {\(c^*\)};
+            \draw[densely dashed,DiagramGuide] (\tshock,0) -- (\tshock,{consumptionhigh(\tshock)});
+            \draw[DiagramPrimary,very thick] (0,1.42) -- (\tshock,1.42);
+            \draw[DiagramPrimary,very thick] (\tshock,1.42) -- (\tshock,{consumptionhigh(\tshock)});
+            \draw[DiagramComparison,very thick,densely dashed,domain=2.20:8.0,samples=160]
+                plot (\x,{consumptionhigh(\x)});
+            \draw[DiagramAnnotation,very thick,densely dashed,domain=2.20:8.0,samples=160]
+                plot (\x,{consumptionlow(\x)});
+            \node[below] at (\tshock,0) {\(t_0\)};
+        \end{tikzpicture}
+    \end{minipage}
+    \caption{储蓄率永久上升后的时间路径}
+    \label{fig:SolowSavingTransitionPaths}
+\end{figure}
+
+\subsection{定量分析}
+
+\noindent\textbf{定量分析：偏导}
+
+\noindent 作图只是帮助我们快速判断参数变动的影响，接下来定量分析不仅能看到变动方向，还能得到变动的线性近似幅度（非真实值），而这一分析由求偏导数给出。
+
+因为我们想看到的是参数对稳态的影响，所以求导从稳态方程开始；同时，稳态方程是关于资本存量的隐函数，那我们就让稳态方程左右两侧 \(k^*\) 对 \(s\) 求偏导数
+\begin{align*}
+    f\bkkstar+s\,f'\bkkstar\,\frac{\p k^*}{\p s}&=\bka{n+g+\delta}\frac{\p k^*}{\p s}
 \end{align*}
 整理得
-\begin{align}
-    \frac{\p k^*}{\p s}
-    &=\frac{f\bkkstar}{n+g+\delta-s\,f'\bkkstar}\label{eq:SolowKSavingDerivative}
-\end{align}
-定义资本的产出弹性，也就是资本收入份额
-\begin{align}
-    \alpha_K\bkk
-    &\coloneq\frac{k\,f'\bkk}{f\bkk}\label{eq:SolowCapitalShare}
-\end{align}
-由严格凹性可知 \(0<\alpha_K\bkk<1\)。再利用稳态关系 \(s=\qa{n+g+\delta}k^*\islash f\bkkstar\)，式 \ref{eq:SolowKSavingDerivative} 可写成
-\begin{align}
-    \frac{\p k^*}{\p s}
-    &=\frac{f\bkkstar}{\qa{n+g+\delta}\bks{1-\alpha_K\bkkstar}}>0\label{eq:SolowKSavingDerivativeShare}
-\end{align}
-于是稳态有效人均资本和产出对储蓄率的弹性分别为
-\begin{align}
-    \frac{s}{k^*}\frac{\p k^*}{\p s}
-    &=\frac{1}{1-\alpha_K\bkkstar}\label{eq:SolowKSavingElasticity}\\
-    \frac{s}{y^*}\frac{\p y^*}{\p s}
-    &=\frac{\alpha_K\bkkstar}{1-\alpha_K\bkkstar}\label{eq:SolowYSavingElasticity}
-\end{align}
-
 \begin{align*}
-    \dfrac{s}{y^*}\dfrac{\p y^*}{\p s}&=\dfrac s{f\bkkstar}\dfrac{f'\bkkstar f\bkkstar}{\qa{n+g+\delta}-s\,f'\bkkstar}\\
-    &=\dfrac{\dfrac{\MathHighlightA{\qa{n+g+\delta}}\,k^*}{f\bkkstar}}{\MathHighlightB{f\bkkstar}}\dfrac{f'\bkkstar \MathHighlightB{f\bkkstar}}{\MathHighlightA{\qa{n+g+\delta}}-\dfrac{\MathHighlightA{\qa{n+g+\delta}}\,k^*}{f\bkkstar}\,f'\bkkstar}
+    \MathHighlightA{\frac{\p k^*}{\p s}=\frac{f\bkkstar}{\qa{n+g+\delta}-s\,f'\bkkstar}}\sidenote{如果使用隐函数求导公式，能更快得到该结果且不容易算错}
+\end{align*}
+该结果给出了 \(s\) 变动后 \(k^*\) 的变动方向以及用偏导数线性近似结果，体现出 \(k^*\) 对 \(s\) 有多敏感。上式的符号主要看分母
+\begin{align*}
+    \bka{n+g+\delta}-s\,f'\bkkstar =  s\bks{\dfrac{f\bkkstar}{k^*}-f'\bkkstar}=s\bka{\n{AC}^*-\n{MC}^*}>0
+\end{align*}
+所以 \(\p k^*\islash\p s>0\)，\(k^*\) 与 \(s\) 同向变动。
+
+既然已经得到 \(k^*\) 的求导结果，那么 \(y^*\) 的就很容易了
+\begin{align*}
+    \frac{\p y^*}{\p s} = f'\bkkstar\,\frac{\p k^*}{\p s} = \frac{f'\bkkstar f\bkkstar}{\qa{n+g+\delta}-s\,f'\bkkstar}>0
+\end{align*}
+\(c^*\) 的求导结果为
+\begin{align*}
+    \dfrac{\p c^*}{\p s}&=\dfrac{\partial}{\p s}\bks{f\bkkstar-\bka{n+g+\delta}k^*}=\bks{f'\bkkstar-\bka{n+g+\delta}}\dfrac{\p k^*}{\p s}
 \end{align*}
 
-导数依赖变量的计量单位，不便跨经济体比较；弹性消除了量纲，因此更适合描述储蓄率变化带来的长期数量效应。在 Cobb--Douglas 情形中，\(\alpha_K\bkk=\alpha\)，上述弹性都是常数，无论 \(k^*\) 是多少。更进一步，生产函数确定时，\(k^*\) 仅由参数决定，可以说 CD 时弹性和参数无关。
+\mysec{定量分析：弹性}
 
-\subsection{要素报酬与收入份额}\label{subsec:SolowFactorPayment}
+\noindent 弹性是经济学更常用的“求导”。因为计算弹性会反复用到储蓄率的表达式，所以我们先从稳态条件中推导出
+\begin{align*}
+    s=\dfrac{\qa{n+g+\delta}k^*}{f\bkkstar}
+\end{align*}
 
-令 \(r\) 和 \(w\) 分别表示资本租金与每单位原始劳动的工资。完全竞争厂商选择资本和劳动以最大化利润：
+依旧从 \(k^*\) 开始。计算稳态有效人均资本的储蓄率弹性
 \begin{align*}
-    \max_{K,L} \quad & F\bka{K,A\,L}-r\,K-w\,L
+    \dfrac{s}{k^*}\dfrac{\p k^*}{\p s}&=\dfrac{s\,f\bkkstar}{\qa{n+g+\delta}k^*-s\,k^*\,f'\bkkstar}=\dfrac{\MathMarkA{s}\,f\bkkstar}{\MathMarkA{s}\,f\bkkstar-\MathMarkA{s}\,k^*\,f'\bkkstar}\sidenote{推导思路是分子分母都凑出 \(s\) 再同时消去}\\
+    &=\dfrac{1}{1-{k^*\,f'\bkkstar}\islash{f\bkkstar}}=\dfrac{1}{1-\alpha_K^*}
 \end{align*}
-一阶条件要求要素价格等于边际产出：
-\begin{align}
-    r&=\frac{\p Y}{\p K}=f'\bkk\label{eq:SolowRentalRate}\\
-    w&=\frac{\p Y}{\p L}
-    =A\bks{f\bkk-k\,f'\bkk}\label{eq:SolowWage}
-\end{align}
-若把 \(A\,L\) 视为有效劳动投入，则每单位有效劳动的报酬为 \(f\bkk-k\,f'\bkk\)。规模报酬不变进一步给出 Euler 分解
-\begin{align}
-    Y=r\,K+w\,L\label{eq:SolowEulerDecomposition}
-\end{align}
-因此资本收入份额为
+其中 \(\alpha_K^*\) 由 \ref{eq:SolowCapitalShare} 在稳态处定义。同理，稳态有效人均产出的储蓄率弹性为
 \begin{align*}
-    \frac{r\,K}{Y}
-    &=\frac{k\,f'\bkk}{f\bkk}=\alpha_K\bkk
+    \dfrac s{y^*}\dfrac{\p y^*}{\p s}&=\dfrac{s\,f'\bkkstar \MathMarkA{f\bkkstar}}{\qa{n+g+\delta}\MathMarkA{f\bkkstar}-s\,f'\bkkstar \MathMarkA{f\bkkstar}}\sidenote{上下同时乘以 \(k^*\)、同时除以 \(\qs{f\bkkstar}^2\)}\\
+    &=\dfrac{\MathMarkB{s}\cdot\MathMarkC{k^*\,f'\bkkstar/\,f\bkkstar}}{\MathMarkB{\qa{n+g+\delta}k^*\islash f\bkkstar}-\MathMarkB{s}\cdot\MathMarkC{k^*\,f'\bkkstar/\,f\bkkstar}}=\dfrac{\alpha_K^*}{1-\alpha_K^*}
 \end{align*}
-劳动收入份额则为 \(1-\alpha_K\bkk\)。这也解释了式 \ref{eq:SolowAverageProductSlope} 的符号：\(f\bkk-k\,f'\bkk\) 是每单位有效劳动的边际产出，必为正数。
+以上两个弹性值形式接近并非巧合
+\begin{align*}
+    \dfrac{s}{y^*}\cdot\dfrac{\p y^*}{\p s}=\dfrac{s}{y^*}\cdot f'\bkkstar\dfrac{\p k^*}{\p s}=\dfrac{k^*\,f'\bkkstar}{f\bkkstar}\cdot\dfrac{s}{k^*}\dfrac{\p k^*}{\p s}=\alpha_K^*\cdot\dfrac{s}{k^*}\dfrac{\p k^*}{\p s}
+\end{align*}
+在 Cobb--Douglas 情形中，\(\alpha_K\bkk=\alpha\)，无论 \(k^*\) 是多少，上述弹性都是常数。
+
+\mysec{定量分析：其他比较静态}
+
+\noindent 相同的分析方法，以 \(n\) 为例，展示收支平衡线斜率对稳态的影响。直接给出关键结果，具体推导过程留作练习
+\begin{align*}
+    & \dfrac{\p k^*}{\p n}=-\dfrac{k^*}{\qa{n+g+\delta}-s\,f'\bkkstar}<0\\
+    & \frac{n}{y^*}\dfrac{\p y^*}{\p n}=-\dfrac n{n+g+\delta}\cdot\dfrac{\alpha^*_K}{1-\alpha^*_K}<0
+\end{align*}
 
 \subsection{收敛速度}\label{subsec:SolowConvergence}
 
-把资本运动方程右侧记为
-\begin{align*}
-    \Phi\bkk\coloneq s\,f\bkk-\qa{n+g+\delta}k
-\end{align*}
-于是 \(\dot k=\Phi\bkk\)。在稳态附近对 \(\Phi\bkk\) 作一阶 Taylor 展开：
-\begin{align*}
-    \dot k
-    &=\Phi\bkkstar+\Phi'\bkkstar\bka{k-k^*}+o\bka{k-k^*}\approx-\lambda\bka{k-k^*}
-\end{align*}
-其中
+从比较静态分析开始，我们就多次考虑如果脱离了稳态，变量会如何收敛、如何回到平衡增长状态。前文已知经济体受到冲击之后稳态的变动方向和近似幅度，现在来看会以多快速度实现预期的幅度，这被称作\,\term{收敛速度}{speed of convergence}。
+
+这里澄清一件事，\(y\bkt\) 随 \(k\bkt\) 同步变化，所以二者收敛到某个均衡的用时应该是相同的；另一边，\(y^*-y\bko\ne k^*-k\bko\)，那么距离不同、时间相同，速度则不可能相同。实际上，此“速度”非比收敛速度，收敛速度是百分比的瞬时增长率，那么就能理解我们后文会用到 \(y\bkt\) 和 \(k\bkt\) 的收敛速度相同了。
+
+收敛速度实际就是 \(\dot k\bkt\)，我们用一阶泰勒近似，让 \(\dot k\bkt\)\sidenote{\(\dot k\bkt\Leftrightarrow \dot k\bks{k\bkt}\)} 关于 \(k\bkt\) 在稳态 \(k^*\) 附近线性化
 \begin{align}
-    \lambda
-    &\coloneq-\Phi'\bkkstar=n+g+\delta-s\,f'\bkkstar\\
-    &=\bks{1-\alpha_K\bkkstar}\qa{n+g+\delta}>0\label{eq:SolowConvergenceRate}
+    \dot k &\approx \dot k\bkkstar + \bks{\dfrac{\p \dot k\bkk}{\p k}\biggbar{k=k^*}}\bka{k-k^*}\label{eq:SolowConvergenceSpeed}
+    \sidenote{省略时间记号}
 \end{align}
-收敛速度完全用参数表示，是固定的，并且好校准的
-
-局部近似系统的解为
-\begin{align}
-    k\bkt-k^*
-    &\approx\bks{k\bko-k^*}e^{-\lambda\,t}\label{eq:SolowConvergencePath}
-\end{align}
-因此，\(\lambda\) 衡量偏离稳态部分消失的速度；其半衰期约为 \(\log 2\islash\lambda\)。收敛速度分析描述的是转型过程，属于短期动态；平衡增长路径上的固定增长率则是长期结论。
-
-不同经济体只有在储蓄率、人口增长率、技术增长率、折旧率和生产技术相同，从而拥有相同稳态时，贫穷经济体才会比富裕经济体增长得更快。这种结论称为\,\term{条件趋同}{conditional convergence}，并不意味着所有经济体都会无条件地收敛到同一收入水平。
-
-\section{扩展：技术门槛}\label{sec:SolowTechnologyThreshold}
-
-若生产技术在资本跨过门槛 \(\tilde k\) 后发生离散变化，可以用分段生产函数表示：
-\begin{align}
-    f\bkk
-    &=
-    \begin{cases}
-        \,A\,k^\alpha, & k<\tilde k\\
-        \,B\,k^\alpha-b, & k\geq\tilde k
-    \end{cases}\label{eq:SolowThresholdTechnology}
-\end{align}
-此时，技术门槛可能改变投资曲线与收支平衡投资的交点数量。是否出现多个稳态或所谓“中等收入陷阱”，取决于 \(A\)、\(B\)、\(b\) 和 \(\tilde k\) 的具体取值；仅有分段形式本身还不足以推出陷阱必然存在。
-
-\BeginChapterAppendix
-
-\section{离散与连续}\label{sec:SolowDiscreteContinuous}
-
-aaa
-
-\section{零散推导}\label{sec:SolowMiscDerivations}
-
-\myskip
-\mysec{规模报酬不变获得零利润}
-
-利用反证法，假设厂商获得非零最大利润，即
+等式右侧第一项，在稳态 \(\dot k=0\)；第二项将 \(k-k^*\) 的系数记作 \(-\lambda\) 并作具体计算
 \begin{align*}
-    \pi_{\text{max}}=P\,F\bka{K,L}-r\,K-w\,L>0
+    \lambda \coloneq -\dfrac{\p \dot k\bkk}{\p k}\biggbar{k=k^*}&=-\bks{s\,f'\bkkstar-\bka{n+g+\delta}}\\
+    &=\bka{n+g+\delta}-\dfrac{\bka{n+g+\delta}k^*\,f'\bkkstar}{f\bkkstar}\\
+    &=\MathHighlightA{\bka{n+g+\delta}\bka{1-\alpha^*_K}}
 \end{align*}
-将要素投入量扩大 \(\lambda>1\) 倍，根据规模报酬不变性质可得
+代回 \ref{eq:SolowConvergenceSpeed}，然后解微分方程得有效人均资本的路径
 \begin{align*}
-    P\,F\bka{\lambda\,L,\lambda\,K} -w\,\lambda\,L-r\lambda\,K = \lambda\,P\,F\bka{L,K} -w\,\lambda\,L-r\,\lambda\,K = \lambda\,\pi _{\text{max}}>\pi_{\text{max}}
+    \dot k\bkt\approx-\lambda\bks{k\bkt-k^*}\means k\bkt\approx k^*+\bks{k\bko-k^*}e^{-\lambda t}
+    \sidenote{从 \(-\lambda\) 出现在指数中作为时间的系数，就可知它是瞬时变化率}
 \end{align*}
-说明通过扩大生产，厂商可以获得更大的利润，与假设相悖。于是，厂商最大利润为零。
+
+前文说过 \(y\bkt\) 和 \(k\bkt\) 有相同的收敛速度，那么能直接写出
+\begin{align*}
+    y\bkt\approx y^*+\bks{y\bko-y^*}e^{-\lambda t}
+\end{align*}
+
+
+% \BeginChapterAppendix
+
+% \section{离散与连续}\label{sec:SolowDiscreteContinuous}
+
+% \section{零散推导}\label{sec:SolowMiscDerivations}
+
+% \myskip
+% \mysec{规模报酬不变获得零利润}
+
+% 利用反证法，假设厂商获得非零最大利润，即
+% \begin{align*}
+%     \pi_{\text{max}}=P\,F\bka{K,L}-r\,K-w\,L>0
+% \end{align*}
+% 将要素投入量扩大 \(\lambda>1\) 倍，根据规模报酬不变性质可得
+% \begin{align*}
+%     P\,F\bka{\lambda\,L,\lambda\,K} -w\,\lambda\,L-r\lambda\,K = \lambda\,P\,F\bka{L,K} -w\,\lambda\,L-r\,\lambda\,K = \lambda\,\pi _{\text{max}}>\pi_{\text{max}}
+% \end{align*}
+% 说明通过扩大生产，厂商可以获得更大的利润，与假设相悖。于是，厂商最大利润为零。
 
 \FinishStandaloneChapter
