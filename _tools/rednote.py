@@ -18,6 +18,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 REDNOTE_ROOT = PROJECT_ROOT / "rednote"
 BUILD_ROOT = PROJECT_ROOT / "_build"
 TEMPLATE_FILE = REDNOTE_ROOT / "poster-template.txt"
+DEFAULT_DPI = 300
 MAIN_PDF = BUILD_ROOT / "book" / "AMaN_SUN.pdf"
 MACTEX_BIN = os.environ.get("MACTEX_BIN")
 XELATEX = str(Path(MACTEX_BIN) / "xelatex") if MACTEX_BIN else "xelatex"
@@ -75,6 +76,17 @@ def pdf_pixel_size(pdf_path: Path, dpi: int) -> tuple[int, int]:
         raise RednoteError(f"无法读取 PDF 页面尺寸：{pdf_path.relative_to(PROJECT_ROOT)}")
     width_pt, height_pt = map(float, match.groups())
     return round(width_pt * dpi / 72), round(height_pt * dpi / 72)
+
+
+def output_dpi() -> int:
+    value = os.environ.get("REDNOTE_DPI", str(DEFAULT_DPI))
+    try:
+        dpi = int(value)
+    except ValueError as exc:
+        raise RednoteError("REDNOTE_DPI 必须是正整数") from exc
+    if dpi <= 0:
+        raise RednoteError("REDNOTE_DPI 必须是正整数")
+    return dpi
 
 
 def normalize_number(value: str) -> str:
@@ -306,18 +318,19 @@ def build_poster(number: str, issue_dir: Path) -> None:
         ensure_nonempty(temporary_pdf)
         verify_log(temporary_dir / "cover.log", "海报")
         shutil.copy2(temporary_pdf, poster_pdf)
+    dpi = output_dpi()
     poster_png = pages_dir / "00-cover.png"
     poster_png.unlink(missing_ok=True)
-    width_px, height_px = pdf_pixel_size(poster_pdf, 300)
+    width_px, height_px = pdf_pixel_size(poster_pdf, dpi)
     poster_pdf_relative = poster_pdf.relative_to(PROJECT_ROOT)
     poster_prefix_relative = (pages_dir / "00-cover").relative_to(PROJECT_ROOT)
     run([
-        "pdftoppm", "-png", "-r", "300", "-f", "1", "-l", "1",
+        "pdftoppm", "-png", "-r", str(dpi), "-f", "1", "-l", "1",
         "-scale-to-x", str(width_px), "-scale-to-y", str(height_px),
         "-singlefile", str(poster_pdf_relative), str(poster_prefix_relative),
     ], PROJECT_ROOT)
     ensure_nonempty(poster_png)
-    print(f"封面已生成：{poster_png.relative_to(PROJECT_ROOT)}（300 DPI）")
+    print(f"封面已生成：{poster_png.relative_to(PROJECT_ROOT)}（{dpi} DPI）")
 
 
 def build_main_document() -> None:
@@ -345,6 +358,16 @@ def pdf_page_count() -> int:
     return int(match.group(1))
 
 
+def export_chapter_pdf(first_page: int, last_page: int, output: Path) -> None:
+    require_command("gs")
+    run([
+        "gs", "-q", "-dBATCH", "-dNOPAUSE", "-sDEVICE=pdfwrite",
+        f"-dFirstPage={first_page}", f"-dLastPage={last_page}",
+        f"-sOutputFile={output}", str(MAIN_PDF),
+    ], PROJECT_ROOT)
+    ensure_nonempty(output)
+
+
 def next_structural_page(destinations: dict[str, int], first_page: int, total_pages: int) -> int:
     pages = [
         page for name, page in destinations.items()
@@ -358,6 +381,7 @@ def export_pages(
     destinations: dict[str, int] | None = None, total_pages: int | None = None,
 ) -> None:
     require_command("pdftoppm")
+    dpi = output_dpi()
     if rebuild_main:
         build_main_document()
     destinations = destinations or pdf_destinations()
@@ -370,12 +394,14 @@ def export_pages(
     if last_page < first_page:
         raise RednoteError("计算出的导出页码范围无效")
     output_name = chapter_metadata(number)["OUTPUT_NAME"]
-    output_dir = BUILD_ROOT / "posts" / output_name / "pages"
+    post_dir = BUILD_ROOT / "posts" / output_name
+    output_dir = post_dir / "pages"
     output_dir.mkdir(parents=True, exist_ok=True)
+    export_chapter_pdf(first_page, last_page, post_dir / "chapter.pdf")
     with tempfile.TemporaryDirectory(prefix="advanced-macro-rednote-") as temporary:
         temporary_prefix = Path(temporary) / "page"
         run([
-            "pdftoppm", "-png", "-r", "300", "-f", str(first_page),
+            "pdftoppm", "-png", "-r", str(dpi), "-f", str(first_page),
             "-l", str(last_page), MAIN_PDF.name, str(temporary_prefix),
         ], MAIN_PDF.parent)
         pages = sorted(

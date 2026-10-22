@@ -36,6 +36,12 @@
 \newcommand{\CourseCompileDate}{%
     \number\year-\TwoDigitDatePart{\month}-\TwoDigitDatePart{\day}%
 }
+\newcommand{\CourseCoverCompileDate}{%
+    \ifcase\month
+        \or January\or February\or March\or April\or May\or June
+        \or July\or August\or September\or October\or November\or December
+    \fi\ \number\day, \number\year%
+}
 \newcommand{\CourseSideInfo}{%
     \CourseShortTitle\sideinfosep\CourseSideLevel\sideinfosep
     \CourseTerm\sideinfosep\CourseInstructor\sideinfosep\CourseCompileDate

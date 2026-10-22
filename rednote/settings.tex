@@ -9,31 +9,57 @@
 
 % 顶部 Logo 的整体纵向位置；内部参数见 ../logo/poster-settings.tex。
 \newcommand{\PosterLogoTop}{\PosterVerticalInset}
+\newcommand{\PosterHeaderLogoScale}{2.05}
+\newcommand{\PosterHeaderLogoWidth}{52mm}
+% 白色矢量花纹：在页面边缘裁切，透明度保留文字的优先层级。
+\newcommand{\PosterFlowerOpacity}{0.3}
+% 右上角花朵。
+\newcommand{\PosterFlowerUpperWidth}{160mm}
+\newcommand{\PosterFlowerUpperRotation}{90}
+\newcommand{\PosterFlowerUpperX}{-15mm}
+\newcommand{\PosterFlowerUpperY}{-35mm}
+% 左侧花朵。
+\newcommand{\PosterFlowerSideWidth}{170mm}
+\newcommand{\PosterFlowerSideRotation}{-20}
+\newcommand{\PosterFlowerSideX}{-10mm}
+\newcommand{\PosterFlowerSideY}{-130mm}
+% 右下角花朵。
+\newcommand{\PosterFlowerLowerWidth}{135mm}
+\newcommand{\PosterFlowerLowerRotation}{10}
+\newcommand{\PosterFlowerLowerX}{-60mm}
+\newcommand{\PosterFlowerLowerY}{55mm}
 
-% 底部信息栏：距底边、栏高、内边距与统一顶边粗细。
+% 底部信息栏：距底边、栏高、内边距，以及与柱状图共用的顶边粗细。
 \newcommand{\PosterFooterBottom}{\PosterVerticalInset}
-\newcommand{\PosterFooterPanelHeight}{30mm}
+\newcommand{\PosterFooterPanelHeight}{34mm}
 \newcommand{\PosterInfoPanelPadding}{6mm}
 \newcommand{\PosterInfoRuleHeight}{1mm}
+\newcommand{\PosterFooterLabelInset}{6.5mm}
+\newcommand{\PosterFooterMainInset}{6.5mm}
+\newcommand{\PosterFooterChartWidth}{174mm}
+\newcommand{\PosterFooterChartHeight}{38mm}
+\newcommand{\PosterFooterChartBarWidth}{1.6mm}
 
-% 标题模块：一位数和两位数允许使用不同宽度；高度始终等于标题高度。
-\newcommand{\PosterTitleSingleDigitWidth}{31mm}
-\newcommand{\PosterTitleDoubleDigitWidth}{43mm}
-\newcommand{\PosterTitleNumberGap}{8mm}
-\newcommand{\PosterTitleVerticalShift}{-2mm}
+% 序号与标题组成三行文字组，共用左侧网格。
+\newcommand{\PosterTitleLeft}{24mm}
+% 正值向上、负值向下；章节文件可在 \input{../template} 前用 \newcommand 覆盖。
+\providecommand{\PosterTitleVerticalShift}{18mm}
+\newcommand{\PosterChapterNumberGap}{12mm}
 \newcommand{\PosterTitleShadowX}{2mm}
 \newcommand{\PosterTitleShadowY}{-2mm}
 \newcommand{\PosterTitleShadowOpacity}{0.58}
+\providecommand{\RednotePosterChapterNumberSize}{\RednotePosterFirstLineSize}
+\newcommand{\PosterChapterNumberSize}{\RednotePosterChapterNumberSize}
 
 % 两行标题的全局默认字号和行间距；各章只在 poster-xx.tex 中按需覆盖字号。
-\newcommand{\PosterTitleFirstLineDefaultSize}{70}
-\newcommand{\PosterTitleSecondLineDefaultSize}{70}
-\newcommand{\PosterTitleLineGap}{6mm}
+\newcommand{\PosterTitleFirstLineDefaultSize}{88}
+\newcommand{\PosterTitleSecondLineDefaultSize}{82}
+\newcommand{\PosterTitleLineGap}{10mm}
 \providecommand{\RednotePosterFirstLineSize}{\PosterTitleFirstLineDefaultSize}
 \providecommand{\RednotePosterSecondLineSize}{\PosterTitleSecondLineDefaultSize}
 
 % 底部作者与日期信息的字号。
 \newcommand{\PosterCourseSize}{18}
-\newcommand{\PosterFooterMetaSize}{11}
-\newcommand{\PosterAuthorSize}{22}
-\newcommand{\PosterDateSize}{21}
+\newcommand{\PosterFooterMetaSize}{18}
+\newcommand{\PosterAuthorSize}{34}
+\newcommand{\PosterDateSize}{33}

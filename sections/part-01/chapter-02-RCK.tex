@@ -11,400 +11,400 @@
 
 \chapter{RCK 模型}\label{ch:02}
 
-RCK 模型是精致与优雅的
+% RCK 模型是精致与优雅的
 
-Solow 模型把储蓄率视为外生参数，因此不能解释家庭为何选择某一储蓄水平。Ramsey--Cass--Koopmans 模型把跨期消费选择纳入一般均衡：家庭在预算约束下最大化终身效用，厂商在完全竞争市场中选择要素投入，储蓄率则成为均衡路径上的内生结果。
+% Solow 模型把储蓄率视为外生参数，因此不能解释家庭为何选择某一储蓄水平。Ramsey--Cass--Koopmans 模型把跨期消费选择纳入一般均衡：家庭在预算约束下最大化终身效用，厂商在完全竞争市场中选择要素投入，储蓄率则成为均衡路径上的内生结果。
 
-本章先建立家庭与厂商的最优化问题，再推导消费的 Euler 方程和资本积累方程。二者共同构成二维动态系统；其稳态是鞍点，只有唯一的鞍点路径同时满足可行性与横截条件。最后，我们在线性近似下刻画收敛速度，并汇总平衡增长路径上的增长率。
+% 本章先建立家庭与厂商的最优化问题，再推导消费的 Euler 方程和资本积累方程。二者共同构成二维动态系统；其稳态是鞍点，只有唯一的鞍点路径同时满足可行性与横截条件。最后，我们在线性近似下刻画收敛速度，并汇总平衡增长路径上的增长率。
 
-这一处理也回应了 Lucas 批判的核心关切：当政策改变约束或价格路径时，不能假定私人部门仍沿用历史上观察到的固定决策规则。RCK 模型仍然高度抽象，但储蓄行为已经由偏好、技术与均衡价格共同决定。
+% 这一处理也回应了 Lucas 批判的核心关切：当政策改变约束或价格路径时，不能假定私人部门仍沿用历史上观察到的固定决策规则。RCK 模型仍然高度抽象，但储蓄行为已经由偏好、技术与均衡价格共同决定。
 
-\section{环境与基本假设}\label{sec:RCKEnvironment}
+% \section{环境与基本假设}\label{sec:RCKEnvironment}
 
-\subsection{生产部门}\label{subsec:RCKFirms}
+% \subsection{生产部门}\label{subsec:RCKFirms}
 
-时间 \(t\in\left[0,+\infty\right)\) 连续。总产出由资本 \(K\bkt\) 与有效劳动 \(A\bkt\,L\bkt\) 生产：
-\begin{align*}
-    Y\bkt=F\bka{K\bkt,A\bkt\,L\bkt}
-\end{align*}
-生产函数满足规模报酬不变、严格凹性与 Inada 条件。劳动和技术分别以外生速率 \(n\) 与 \(g\) 增长：
-\begin{align*}
-    \frac{\dot L\bkt}{L\bkt}&=n
-    \qquad \& \qquad
-    \frac{\dot A\bkt}{A\bkt}=g
-\end{align*}
-为集中讨论跨期选择，本章沿用原笔记的简化，令资本折旧率为零。若引入折旧率 \(\delta>0\)，只需在资本回报和收支平衡投资中相应减去或加上 \(\delta\)。定义有效人均变量
-\begin{align*}
-    k\coloneq\frac{K}{A\,L}
-    \qquad \& \qquad
-    y\coloneq\frac{Y}{A\,L}=f\bkk
-\end{align*}
-其中 \(f\bkk\coloneq F\bka{k,1}\)。
+% 时间 \(t\in\left[0,+\infty\right)\) 连续。总产出由资本 \(K\bkt\) 与有效劳动 \(A\bkt\,L\bkt\) 生产：
+% \begin{align*}
+%     Y\bkt=F\bka{K\bkt,A\bkt\,L\bkt}
+% \end{align*}
+% 生产函数满足规模报酬不变、严格凹性与 Inada 条件。劳动和技术分别以外生速率 \(n\) 与 \(g\) 增长：
+% \begin{align*}
+%     \frac{\dot L\bkt}{L\bkt}&=n
+%     \qquad \& \qquad
+%     \frac{\dot A\bkt}{A\bkt}=g
+% \end{align*}
+% 为集中讨论跨期选择，本章沿用原笔记的简化，令资本折旧率为零。若引入折旧率 \(\delta>0\)，只需在资本回报和收支平衡投资中相应减去或加上 \(\delta\)。定义有效人均变量
+% \begin{align*}
+%     k\coloneq\frac{K}{A\,L}
+%     \qquad \& \qquad
+%     y\coloneq\frac{Y}{A\,L}=f\bkk
+% \end{align*}
+% 其中 \(f\bkk\coloneq F\bka{k,1}\)。
 
-完全竞争厂商在每一时点解静态利润最大化问题：
-\begin{align*}
-    \max_{K,L} \quad & F\bka{K,A\,L}-r\,K-W\,L
-\end{align*}
-其中 \(r\) 是资本租金，\(W\) 是每单位原始劳动的工资。记每单位有效劳动的工资为 \(w\coloneq W\islash A\)，一阶条件给出
-\begin{align*}
-    r&=f'\bkk\\
-    w&=f\bkk-k\,f'\bkk
-\end{align*}
-规模报酬不变保证产出恰好耗尽于要素报酬，因此厂商的均衡经济利润为零。
+% 完全竞争厂商在每一时点解静态利润最大化问题：
+% \begin{align*}
+%     \max_{K,L} \quad & F\bka{K,A\,L}-r\,K-W\,L
+% \end{align*}
+% 其中 \(r\) 是资本租金，\(W\) 是每单位原始劳动的工资。记每单位有效劳动的工资为 \(w\coloneq W\islash A\)，一阶条件给出
+% \begin{align*}
+%     r&=f'\bkk\\
+%     w&=f\bkk-k\,f'\bkk
+% \end{align*}
+% 规模报酬不变保证产出恰好耗尽于要素报酬，因此厂商的均衡经济利润为零。
 
-\subsection{家庭部门}\label{subsec:RCKHouseholds}
+% \subsection{家庭部门}\label{subsec:RCKHouseholds}
 
-经济中有 \(H\) 个相同家庭，每个家庭的人口均以 \(n\) 增长，每位成员提供一单位劳动。家庭拥有资本和厂商，并把全部储蓄转化为资本。由于家庭完全相同，只需研究代表性家庭。
+% 经济中有 \(H\) 个相同家庭，每个家庭的人口均以 \(n\) 增长，每位成员提供一单位劳动。家庭拥有资本和厂商，并把全部储蓄转化为资本。由于家庭完全相同，只需研究代表性家庭。
 
-令 \(C\bkt\) 表示每位家庭成员的消费。家庭以纯时间偏好率 \(\rho>0\) 折现效用，终身效用为
-\begin{align*}
-    U
-    &=\int_0^\infty e^{-\rho\,t}\,u\bks{C\bkt}\,\frac{L\bkt}{H}\,\mathrm d t
-\end{align*}
-其中 \(L\islash H\) 是每个家庭的成员数。采用\,\term{常相对风险厌恶效用}{constant-relative-risk-aversion utility，CRRA}
-\begin{align*}
-    u\bka{C}
-    &=\frac{C^{1-\theta}}{1-\theta}
-    \,,\qquad \theta>0\,,\quad \theta\neq1
-\end{align*}
-当 \(\theta=1\) 时，其连续极限是 \(u\bka{C}=\log C\)。参数 \(\theta\) 是相对风险厌恶系数，也等于跨期替代弹性的倒数。
+% 令 \(C\bkt\) 表示每位家庭成员的消费。家庭以纯时间偏好率 \(\rho>0\) 折现效用，终身效用为
+% \begin{align*}
+%     U
+%     &=\int_0^\infty e^{-\rho\,t}\,u\bks{C\bkt}\,\frac{L\bkt}{H}\,\mathrm d t
+% \end{align*}
+% 其中 \(L\islash H\) 是每个家庭的成员数。采用\,\term{常相对风险厌恶效用}{constant-relative-risk-aversion utility，CRRA}
+% \begin{align*}
+%     u\bka{C}
+%     &=\frac{C^{1-\theta}}{1-\theta}
+%     \,,\qquad \theta>0\,,\quad \theta\neq1
+% \end{align*}
+% 当 \(\theta=1\) 时，其连续极限是 \(u\bka{C}=\log C\)。参数 \(\theta\) 是相对风险厌恶系数，也等于跨期替代弹性的倒数。
 
-定义有效人均消费 \(c\coloneq C\islash A\)。由 \(A\bkt=A\bko e^{g\,t}\) 和 \(L\bkt=L\bko e^{n\,t}\)，终身效用可以改写为
-\begin{align*}
-    U
-    &=B\int_0^\infty e^{-\beta\,t}\,\frac{c^{1-\theta}\bkt}{1-\theta}\,\mathrm d t\\
-    B&\coloneq\frac{A^{1-\theta}\bko\,L\bko}{H}>0\\
-    \beta&\coloneq\rho-n-\bka{1-\theta}g>0
-\end{align*}
-条件 \(\beta>0\) 保证沿有效人均消费不变的路径时，折现后的效用积分不会因人口与技术趋势而发散。
+% 定义有效人均消费 \(c\coloneq C\islash A\)。由 \(A\bkt=A\bko e^{g\,t}\) 和 \(L\bkt=L\bko e^{n\,t}\)，终身效用可以改写为
+% \begin{align*}
+%     U
+%     &=B\int_0^\infty e^{-\beta\,t}\,\frac{c^{1-\theta}\bkt}{1-\theta}\,\mathrm d t\\
+%     B&\coloneq\frac{A^{1-\theta}\bko\,L\bko}{H}>0\\
+%     \beta&\coloneq\rho-n-\bka{1-\theta}g>0
+% \end{align*}
+% 条件 \(\beta>0\) 保证沿有效人均消费不变的路径时，折现后的效用积分不会因人口与技术趋势而发散。
 
-\section{预算约束与跨期可行性}\label{sec:RCKBudget}
+% \section{预算约束与跨期可行性}\label{sec:RCKBudget}
 
-\subsection{资本积累}\label{subsec:RCKCapitalAccumulation}
+% \subsection{资本积累}\label{subsec:RCKCapitalAccumulation}
 
-从 \(0\) 到 \(t\) 的累计实际利率记为
-\begin{align*}
-    R\bkt\coloneq\int_0^t r\bka{s}\,\mathrm d s
-\end{align*}
-因此一单位资产在连续复利下的价值为 \(e^{R\bkt}\)，而不是 \(1+R\bkt\)。总资本满足
-\begin{align*}
-    \dot K=r\,K+W\,L-C\,L
-\end{align*}
-等式右侧依次是资本收入、劳动收入和总消费。利用 \(k=K\islash\bka{AL}\)、\(c=C\islash A\) 及 \(w=W\islash A\)，可得
-\begin{align*}
-    \dot k
-    &=\frac{\dot K}{A\,L}-\bka{n+g}k\\
-    &=\bka{r-n-g}k+w-c
-\end{align*}
-再代入资本租金与有效劳动工资的一阶条件，得到资源约束
-\begin{align*}
-    \dot k=f\bkk-\bka{n+g}k-c
-\end{align*}
+% 从 \(0\) 到 \(t\) 的累计实际利率记为
+% \begin{align*}
+%     R\bkt\coloneq\int_0^t r\bka{s}\,\mathrm d s
+% \end{align*}
+% 因此一单位资产在连续复利下的价值为 \(e^{R\bkt}\)，而不是 \(1+R\bkt\)。总资本满足
+% \begin{align*}
+%     \dot K=r\,K+W\,L-C\,L
+% \end{align*}
+% 等式右侧依次是资本收入、劳动收入和总消费。利用 \(k=K\islash\bka{AL}\)、\(c=C\islash A\) 及 \(w=W\islash A\)，可得
+% \begin{align*}
+%     \dot k
+%     &=\frac{\dot K}{A\,L}-\bka{n+g}k\\
+%     &=\bka{r-n-g}k+w-c
+% \end{align*}
+% 再代入资本租金与有效劳动工资的一阶条件，得到资源约束
+% \begin{align*}
+%     \dot k=f\bkk-\bka{n+g}k-c
+% \end{align*}
 
-\subsection{非庞氏条件}\label{subsec:RCKNoPonzi}
+% \subsection{非庞氏条件}\label{subsec:RCKNoPonzi}
 
-把总资本积累方程写成每户形式，乘以贴现因子 \(e^{-R\bkt}\) 并积分，可得
-\begin{align*}
-    e^{-R\bka{T}}\frac{K\bka{T}}{H}
-    &=\frac{K\bko}{H}
-    +\int_0^T e^{-R\bka{s}}\bks{W\bka{s}-C\bka{s}}\frac{L\bka{s}}{H}\,\mathrm d s
-\end{align*}
-为排除用不断新增债务偿还旧债的计划，要求家庭资产的贴现值在无穷远处不能严格为负：
-\begin{align*}
-    \lim_{T\to\infty}e^{-R\bka{T}}\frac{K\bka{T}}{H}\geq0
-\end{align*}
-由于 \(K\bka{T}=A\bka{T}\,L\bka{T}\,k\bka{T}\)，忽略恒正的初值比例后，这一条件等价于
-\begin{align*}
-    \lim_{T\to\infty}e^{-R\bka{T}+\bka{n+g}T}\,k\bka{T}\geq0
-\end{align*}
-非庞氏条件只排除无限负债。最优路径还满足更强的横截条件，它要求家庭不能在无穷远处留下仍有正影子价值、却从未用于消费的资产。
+% 把总资本积累方程写成每户形式，乘以贴现因子 \(e^{-R\bkt}\) 并积分，可得
+% \begin{align*}
+%     e^{-R\bka{T}}\frac{K\bka{T}}{H}
+%     &=\frac{K\bko}{H}
+%     +\int_0^T e^{-R\bka{s}}\bks{W\bka{s}-C\bka{s}}\frac{L\bka{s}}{H}\,\mathrm d s
+% \end{align*}
+% 为排除用不断新增债务偿还旧债的计划，要求家庭资产的贴现值在无穷远处不能严格为负：
+% \begin{align*}
+%     \lim_{T\to\infty}e^{-R\bka{T}}\frac{K\bka{T}}{H}\geq0
+% \end{align*}
+% 由于 \(K\bka{T}=A\bka{T}\,L\bka{T}\,k\bka{T}\)，忽略恒正的初值比例后，这一条件等价于
+% \begin{align*}
+%     \lim_{T\to\infty}e^{-R\bka{T}+\bka{n+g}T}\,k\bka{T}\geq0
+% \end{align*}
+% 非庞氏条件只排除无限负债。最优路径还满足更强的横截条件，它要求家庭不能在无穷远处留下仍有正影子价值、却从未用于消费的资产。
 
-\section{家庭最优化与 Euler 方程}\label{sec:RCKOptimization}
+% \section{家庭最优化与 Euler 方程}\label{sec:RCKOptimization}
 
-\subsection{最优化问题}\label{subsec:RCKHouseholdProblem}
+% \subsection{最优化问题}\label{subsec:RCKHouseholdProblem}
 
-给定价格路径 \(r\bkt\) 与 \(w\bkt\)，家庭选择消费路径：
-\begin{align*}
-    \max_{\left\{c\bkt:t\geq0\right\}} \quad
-    & B\int_0^\infty e^{-\beta\,t}\,\frac{c^{1-\theta}\bkt}{1-\theta}\,\mathrm d t\\
-    \text{s.t.} \quad
-    & \dot k=\bka{r-n-g}k+w-c\\
-    & c\bkt\geq0\,,\qquad k\bko>0\\
-    & \lim_{T\to\infty}e^{-R\bka{T}+\bka{n+g}T}\,k\bka{T}\geq0
-\end{align*}
-这里 \(c\) 是可以即时调整的控制变量，\(k\) 是由运动方程连续演化的状态变量。
+% 给定价格路径 \(r\bkt\) 与 \(w\bkt\)，家庭选择消费路径：
+% \begin{align*}
+%     \max_{\left\{c\bkt:t\geq0\right\}} \quad
+%     & B\int_0^\infty e^{-\beta\,t}\,\frac{c^{1-\theta}\bkt}{1-\theta}\,\mathrm d t\\
+%     \text{s.t.} \quad
+%     & \dot k=\bka{r-n-g}k+w-c\\
+%     & c\bkt\geq0\,,\qquad k\bko>0\\
+%     & \lim_{T\to\infty}e^{-R\bka{T}+\bka{n+g}T}\,k\bka{T}\geq0
+% \end{align*}
+% 这里 \(c\) 是可以即时调整的控制变量，\(k\) 是由运动方程连续演化的状态变量。
 
-使用现值 Hamiltonian
-\begin{align*}
-    \mathcal H
-    &=B\,e^{-\beta\,t}\frac{c^{1-\theta}}{1-\theta}
-    +\lambda\bks{\bka{r-n-g}k+w-c}
-\end{align*}
-内点解的一阶条件、状态方程与共态方程分别为
-\begin{align*}
-    B\,e^{-\beta\,t}c^{-\theta}&=\lambda\\
-    \dot k&=\bka{r-n-g}k+w-c\\
-    \dot\lambda&=-\lambda\bka{r-n-g}
-\end{align*}
-横截条件为
-\begin{align*}
-    \lim_{T\to\infty}\lambda\bka{T}\,k\bka{T}=0
-\end{align*}
-由共态方程可得
-\begin{align*}
-    \lambda\bka{T}=\lambda\bko\,e^{\bka{n+g}T-R\bka{T}}
-\end{align*}
-而消费的一阶条件保证 \(\lambda\bko>0\)。所以横截条件也可写为
-\begin{align*}
-    \lim_{T\to\infty}e^{\bka{n+g}T-R\bka{T}}\,k\bka{T}=0
-\end{align*}
-它与非庞氏条件并不矛盾：前者把最优路径上的极限收紧为零，后者只要求可行路径的极限不为负。
+% 使用现值 Hamiltonian
+% \begin{align*}
+%     \mathcal H
+%     &=B\,e^{-\beta\,t}\frac{c^{1-\theta}}{1-\theta}
+%     +\lambda\bks{\bka{r-n-g}k+w-c}
+% \end{align*}
+% 内点解的一阶条件、状态方程与共态方程分别为
+% \begin{align*}
+%     B\,e^{-\beta\,t}c^{-\theta}&=\lambda\\
+%     \dot k&=\bka{r-n-g}k+w-c\\
+%     \dot\lambda&=-\lambda\bka{r-n-g}
+% \end{align*}
+% 横截条件为
+% \begin{align*}
+%     \lim_{T\to\infty}\lambda\bka{T}\,k\bka{T}=0
+% \end{align*}
+% 由共态方程可得
+% \begin{align*}
+%     \lambda\bka{T}=\lambda\bko\,e^{\bka{n+g}T-R\bka{T}}
+% \end{align*}
+% 而消费的一阶条件保证 \(\lambda\bko>0\)。所以横截条件也可写为
+% \begin{align*}
+%     \lim_{T\to\infty}e^{\bka{n+g}T-R\bka{T}}\,k\bka{T}=0
+% \end{align*}
+% 它与非庞氏条件并不矛盾：前者把最优路径上的极限收紧为零，后者只要求可行路径的极限不为负。
 
-\subsection{消费 Euler 方程}\label{subsec:RCKEulerEquation}
+% \subsection{消费 Euler 方程}\label{subsec:RCKEulerEquation}
 
-对消费的一阶条件关于时间求导，再利用共态方程消去 \(\lambda\) 与 \(\dot\lambda\)，得到
-\begin{align*}
-    -\beta-\theta\frac{\dot c}{c}
-    &=-\bka{r-n-g}
-\end{align*}
-代入 \(\beta=\rho-n-\bka{1-\theta}g\)，得到有效人均消费的 Euler 方程
-\begin{align*}
-    \frac{\dot c}{c}
-    &=\frac{r-\rho-\theta\,g}{\theta}
-    =\frac{f'\bkk-\rho-\theta\,g}{\theta}
-\end{align*}
-由于 \(C=A\,c\)，人均消费增长率为
-\begin{align*}
-    \frac{\dot C}{C}
-    &=g+\frac{\dot c}{c}
-    =\frac{r-\rho}{\theta}
-\end{align*}
-人均消费 Euler 方程的机制十分清楚：更高的资本回报提高推迟消费的收益，因而加快消费增长；更强的时间偏好提高当期消费的吸引力；更大的 \(\theta\) 意味着更低的跨期替代弹性，因此消费对回报差异反应更弱。
+% 对消费的一阶条件关于时间求导，再利用共态方程消去 \(\lambda\) 与 \(\dot\lambda\)，得到
+% \begin{align*}
+%     -\beta-\theta\frac{\dot c}{c}
+%     &=-\bka{r-n-g}
+% \end{align*}
+% 代入 \(\beta=\rho-n-\bka{1-\theta}g\)，得到有效人均消费的 Euler 方程
+% \begin{align*}
+%     \frac{\dot c}{c}
+%     &=\frac{r-\rho-\theta\,g}{\theta}
+%     =\frac{f'\bkk-\rho-\theta\,g}{\theta}
+% \end{align*}
+% 由于 \(C=A\,c\)，人均消费增长率为
+% \begin{align*}
+%     \frac{\dot C}{C}
+%     &=g+\frac{\dot c}{c}
+%     =\frac{r-\rho}{\theta}
+% \end{align*}
+% 人均消费 Euler 方程的机制十分清楚：更高的资本回报提高推迟消费的收益，因而加快消费增长；更强的时间偏好提高当期消费的吸引力；更大的 \(\theta\) 意味着更低的跨期替代弹性，因此消费对回报差异反应更弱。
 
-在完全竞争、无外部性且市场完备的假设下，竞争均衡与社会规划者配置一致，因此该路径是帕累托有效的。这里没有“帕累托次优”与黄金律之间的冲突：黄金律只最大化稳态消费水平，而最优配置最大化包含转型期消费并经过时间折现的终身效用。
+% 在完全竞争、无外部性且市场完备的假设下，竞争均衡与社会规划者配置一致，因此该路径是帕累托有效的。这里没有“帕累托次优”与黄金律之间的冲突：黄金律只最大化稳态消费水平，而最优配置最大化包含转型期消费并经过时间折现的终身效用。
 
-\section{二维动态系统}\label{sec:RCKDynamics}
+% \section{二维动态系统}\label{sec:RCKDynamics}
 
-\subsection{两条零运动线}\label{subsec:RCKNullclines}
+% \subsection{两条零运动线}\label{subsec:RCKNullclines}
 
-RCK 经济的动态由消费与资本两个方程共同决定：
-\begin{align*}
-    \dot c
-    &=\frac{f'\bkk-\rho-\theta\,g}{\theta}\,c\\
-    \dot k
-    &=f\bkk-\bka{n+g}k-c
-\end{align*}
-对正消费而言，\(\dot c=0\) 确定一条竖直线：
-\begin{align*}
-    f'\bkkstar=\rho+\theta\,g=n+g+\beta
-\end{align*}
-由于 \(f''\bkk<0\)，当 \(k<k^*\) 时有 \(\dot c>0\)，当 \(k>k^*\) 时有 \(\dot c<0\)。资本的零运动线则为
-\begin{align*}
-    c=f\bkk-\bka{n+g}k
-\end{align*}
-曲线下方 \(\dot k>0\)，曲线上方 \(\dot k<0\)。两条零运动线的交点给出稳态 \(\bka{k^*,c^*}\)。
+% RCK 经济的动态由消费与资本两个方程共同决定：
+% \begin{align*}
+%     \dot c
+%     &=\frac{f'\bkk-\rho-\theta\,g}{\theta}\,c\\
+%     \dot k
+%     &=f\bkk-\bka{n+g}k-c
+% \end{align*}
+% 对正消费而言，\(\dot c=0\) 确定一条竖直线：
+% \begin{align*}
+%     f'\bkkstar=\rho+\theta\,g=n+g+\beta
+% \end{align*}
+% 由于 \(f''\bkk<0\)，当 \(k<k^*\) 时有 \(\dot c>0\)，当 \(k>k^*\) 时有 \(\dot c<0\)。资本的零运动线则为
+% \begin{align*}
+%     c=f\bkk-\bka{n+g}k
+% \end{align*}
+% 曲线下方 \(\dot k>0\)，曲线上方 \(\dot k<0\)。两条零运动线的交点给出稳态 \(\bka{k^*,c^*}\)。
 
-图 \ref{fig:RCKGlobalPhase} 将这些方向合在一起。给定预定的初始资本 \(k\bko\)，消费可以在初始时刻跳跃，但只有点 \(F\) 位于通向稳态的鞍点路径上。过高的初始消费最终耗尽资本；过低的初始消费则造成过度积累，并违反横截条件。
+% 图 \ref{fig:RCKGlobalPhase} 将这些方向合在一起。给定预定的初始资本 \(k\bko\)，消费可以在初始时刻跳跃，但只有点 \(F\) 位于通向稳态的鞍点路径上。过高的初始消费最终耗尽资本；过低的初始消费则造成过度积累，并违反横截条件。
 
-\begin{figure}[htbp]
-    \centering
-    \begin{tikzpicture}[x=1.40cm,y=1.35cm,line cap=round,line join=round,>=Latex,every node/.style={font=\normalsize}]
-        \pgfmathsetmacro{\xmax}{8.05}
-        \pgfmathsetmacro{\ymax}{7.55}
-        \pgfmathsetmacro{\kinit}{2.45}
-        \pgfmathsetmacro{\kstar}{3.45}
-        \pgfmathsetmacro{\cstar}{3.70}
-        \draw[semithick,DiagramPrimary] (0,0) -- (\xmax,0) node[below left] {\(k\)};
-        \draw[semithick,DiagramPrimary] (0,0) -- (0,\ymax) node[below left,xshift=-2pt,yshift=5pt] {\(c\)};
-        \draw[DiagramGuide,dashed,semithick] (\kinit,0) -- (\kinit,7.18);
-        \draw[DiagramPrimary,semithick] (\kstar,0) -- (\kstar,7.10);
-        \node[below,DiagramPrimary] at (\kinit,0) {\(k\bko\)};
-        \node[below,DiagramPrimary] at (\kstar,0) {\(k^*\)};
-        \node[above,DiagramPrimary] at (\kstar,7.10) {\(\dot c=0\)};
-        % 资本零运动线：分段 Bézier 精确通过 B、E，并在连接点保持光滑。
-        \draw[DiagramPrimary,very thick]
-            (0,0)
-            .. controls (0.50,1.85) and (1.55,3.14) .. (\kinit,3.38)
-            .. controls (2.75,3.50) and (3.15,3.64) .. (\kstar,\cstar)
-            .. controls (4.70,3.95) and (7.18,2.72) .. (7.82,0);
-        \node[DiagramPrimary,right] at (6.42,2.58) {\(\dot k=0\)};
-        \draw[DiagramPrimary,very thick,-{Latex[length=3.0mm,width=2.2mm]}] (\kinit,6.15) .. controls (2.10,6.45) and (1.62,7.02) .. (1.43,7.38);
-        \draw[DiagramPrimary,very thick,-{Latex[length=3.0mm,width=2.2mm]}] (\kinit,4.25) .. controls (2.70,4.82) and (2.16,5.62) .. (1.83,5.85);
-        % C 对应的路径先向右上方运动，越过资本零运动线后转向左上方。
-        \draw[DiagramPrimary,very thick,-{Latex[length=3.0mm,width=2.2mm]}]
-            (\kinit,2.45)
-            .. controls (2.87,2.72) and (2.96,3.34) .. (2.66,3.85)
-            .. controls (2.40,4.45) and (1.95,5.22) .. (1.65,5.50);
-        \draw[DiagramPrimary,very thick,-{Latex[length=3.0mm,width=2.2mm]}] (\kinit,0.62) .. controls (2.78,1.34) and (4.20,1.55) .. (7.62,0.16);
-        % F--E 是唯一稳定臂；整条路径连续、单调，并在 E 与稳态相交。
-        \draw[DiagramPrimary,very thick]
-            (\kinit,1.88) .. controls (2.78,2.13) and (3.27,3.17) .. (\kstar,\cstar);
-        \draw[DiagramPrimary,very thick,-{Latex[length=2.8mm,width=2.0mm]}]
-            (2.66,2.10) -- (2.83,2.34);
-        \draw[DiagramPrimary,very thick,-{Latex[length=2.8mm,width=2.0mm]}]
-            (3.02,2.72) -- (3.16,3.01);
-        \fill[DiagramPrimary] (\kinit,6.15) circle (1.7pt) node[right] {\(A\)};
-        \fill[DiagramPrimary] (\kinit,3.38) circle (1.7pt) node[left] {\(B\)};
-        \fill[DiagramPrimary] (\kinit,2.45) circle (1.7pt) node[left] {\(C\)};
-        \fill[DiagramPrimary] (\kinit,0.62) circle (1.7pt) node[left] {\(D\)};
-        \fill[DiagramPrimary] (\kinit,1.88) circle (1.7pt) node[left] {\(F\)};
-        \fill[DiagramPrimary] (\kstar,\cstar) circle (1.8pt) node[above left] {\(E\)};
-    \end{tikzpicture}
-    \caption{RCK 模型的相图与不同初始消费对应的动态路径}
-    \label{fig:RCKGlobalPhase}
-\end{figure}
+% \begin{figure}[htbp]
+%     \centering
+%     \begin{tikzpicture}[x=1.40cm,y=1.35cm,line cap=round,line join=round,>=Latex,every node/.style={font=\normalsize}]
+%         \pgfmathsetmacro{\xmax}{8.05}
+%         \pgfmathsetmacro{\ymax}{7.55}
+%         \pgfmathsetmacro{\kinit}{2.45}
+%         \pgfmathsetmacro{\kstar}{3.45}
+%         \pgfmathsetmacro{\cstar}{3.70}
+%         \draw[semithick,DiagramPrimary] (0,0) -- (\xmax,0) node[below left] {\(k\)};
+%         \draw[semithick,DiagramPrimary] (0,0) -- (0,\ymax) node[below left,xshift=-2pt,yshift=5pt] {\(c\)};
+%         \draw[DiagramGuide,dashed,semithick] (\kinit,0) -- (\kinit,7.18);
+%         \draw[DiagramPrimary,semithick] (\kstar,0) -- (\kstar,7.10);
+%         \node[below,DiagramPrimary] at (\kinit,0) {\(k\bko\)};
+%         \node[below,DiagramPrimary] at (\kstar,0) {\(k^*\)};
+%         \node[above,DiagramPrimary] at (\kstar,7.10) {\(\dot c=0\)};
+%         % 资本零运动线：分段 Bézier 精确通过 B、E，并在连接点保持光滑。
+%         \draw[DiagramPrimary,very thick]
+%             (0,0)
+%             .. controls (0.50,1.85) and (1.55,3.14) .. (\kinit,3.38)
+%             .. controls (2.75,3.50) and (3.15,3.64) .. (\kstar,\cstar)
+%             .. controls (4.70,3.95) and (7.18,2.72) .. (7.82,0);
+%         \node[DiagramPrimary,right] at (6.42,2.58) {\(\dot k=0\)};
+%         \draw[DiagramPrimary,very thick,-{Latex[length=3.0mm,width=2.2mm]}] (\kinit,6.15) .. controls (2.10,6.45) and (1.62,7.02) .. (1.43,7.38);
+%         \draw[DiagramPrimary,very thick,-{Latex[length=3.0mm,width=2.2mm]}] (\kinit,4.25) .. controls (2.70,4.82) and (2.16,5.62) .. (1.83,5.85);
+%         % C 对应的路径先向右上方运动，越过资本零运动线后转向左上方。
+%         \draw[DiagramPrimary,very thick,-{Latex[length=3.0mm,width=2.2mm]}]
+%             (\kinit,2.45)
+%             .. controls (2.87,2.72) and (2.96,3.34) .. (2.66,3.85)
+%             .. controls (2.40,4.45) and (1.95,5.22) .. (1.65,5.50);
+%         \draw[DiagramPrimary,very thick,-{Latex[length=3.0mm,width=2.2mm]}] (\kinit,0.62) .. controls (2.78,1.34) and (4.20,1.55) .. (7.62,0.16);
+%         % F--E 是唯一稳定臂；整条路径连续、单调，并在 E 与稳态相交。
+%         \draw[DiagramPrimary,very thick]
+%             (\kinit,1.88) .. controls (2.78,2.13) and (3.27,3.17) .. (\kstar,\cstar);
+%         \draw[DiagramPrimary,very thick,-{Latex[length=2.8mm,width=2.0mm]}]
+%             (2.66,2.10) -- (2.83,2.34);
+%         \draw[DiagramPrimary,very thick,-{Latex[length=2.8mm,width=2.0mm]}]
+%             (3.02,2.72) -- (3.16,3.01);
+%         \fill[DiagramPrimary] (\kinit,6.15) circle (1.7pt) node[right] {\(A\)};
+%         \fill[DiagramPrimary] (\kinit,3.38) circle (1.7pt) node[left] {\(B\)};
+%         \fill[DiagramPrimary] (\kinit,2.45) circle (1.7pt) node[left] {\(C\)};
+%         \fill[DiagramPrimary] (\kinit,0.62) circle (1.7pt) node[left] {\(D\)};
+%         \fill[DiagramPrimary] (\kinit,1.88) circle (1.7pt) node[left] {\(F\)};
+%         \fill[DiagramPrimary] (\kstar,\cstar) circle (1.8pt) node[above left] {\(E\)};
+%     \end{tikzpicture}
+%     \caption{RCK 模型的相图与不同初始消费对应的动态路径}
+%     \label{fig:RCKGlobalPhase}
+% \end{figure}
 
-\subsection{稳态与黄金律}\label{subsec:RCKGoldenRule}
+% \subsection{稳态与黄金律}\label{subsec:RCKGoldenRule}
 
-因为本章令 \(\delta=0\)，黄金律资本满足
-\begin{align*}
-    f'\bka{k_{\mathrm{GR}}}=n+g
-\end{align*}
-而 RCK 稳态满足上述资本稳态条件。由 \(\beta>0\) 可知
-\begin{align*}
-    f'\bkkstar=n+g+\beta>n+g=f'\bka{k_{\mathrm{GR}}}
-\end{align*}
-再由边际产量递减可得 \(k^*<k_{\mathrm{GR}}\)。RCK 稳态之所以没有达到最大稳态消费的黄金律，并非市场失灵，而是因为家庭具有正的有效折现率：为了提高较早时期的消费，家庭不会积累到黄金律资本水平。
+% 因为本章令 \(\delta=0\)，黄金律资本满足
+% \begin{align*}
+%     f'\bka{k_{\mathrm{GR}}}=n+g
+% \end{align*}
+% 而 RCK 稳态满足上述资本稳态条件。由 \(\beta>0\) 可知
+% \begin{align*}
+%     f'\bkkstar=n+g+\beta>n+g=f'\bka{k_{\mathrm{GR}}}
+% \end{align*}
+% 再由边际产量递减可得 \(k^*<k_{\mathrm{GR}}\)。RCK 稳态之所以没有达到最大稳态消费的黄金律，并非市场失灵，而是因为家庭具有正的有效折现率：为了提高较早时期的消费，家庭不会积累到黄金律资本水平。
 
-若一条路径越过黄金律资本并继续积累，则此后 \(r\bkt=f'\bks{k\bkt}<n+g\)。从越过时点 \(t^*\) 积分至 \(T\)，可得
-\begin{align*}
-    R\bka{T}-R\bka{t^*}
-    &<\bka{n+g}\bka{T-t^*}\\
-    e^{\bka{n+g}T-R\bka{T}}
-    &>e^{\bka{n+g}t^*-R\bka{t^*}}>0
-\end{align*}
-只要资本没有趋于零得足够快，横截条件就不能成立。这说明图 \ref{fig:RCKGlobalPhase} 中过度积累的路径虽满足局部运动方程，却不是家庭的最优路径。
+% 若一条路径越过黄金律资本并继续积累，则此后 \(r\bkt=f'\bks{k\bkt}<n+g\)。从越过时点 \(t^*\) 积分至 \(T\)，可得
+% \begin{align*}
+%     R\bka{T}-R\bka{t^*}
+%     &<\bka{n+g}\bka{T-t^*}\\
+%     e^{\bka{n+g}T-R\bka{T}}
+%     &>e^{\bka{n+g}t^*-R\bka{t^*}}>0
+% \end{align*}
+% 只要资本没有趋于零得足够快，横截条件就不能成立。这说明图 \ref{fig:RCKGlobalPhase} 中过度积累的路径虽满足局部运动方程，却不是家庭的最优路径。
 
-\section{局部动态与鞍点路径}\label{sec:RCKLocalDynamics}
+% \section{局部动态与鞍点路径}\label{sec:RCKLocalDynamics}
 
-\subsection{线性化系统}\label{subsec:RCKLinearization}
+% \subsection{线性化系统}\label{subsec:RCKLinearization}
 
-在稳态附近对消费与资本运动方程作一阶 Taylor 展开。定义偏离稳态的变量
-\begin{align*}
-    \tilde c\coloneq c-c^*
-    \qquad \& \qquad
-    \tilde k\coloneq k-k^*
-\end{align*}
-利用稳态条件，可得
-\begin{align*}
-    \begin{bmatrix}
-        \dot{\tilde c}\\
-        \dot{\tilde k}
-    \end{bmatrix}
-    &\approx
-    \underbrace{
-    \begin{bmatrix}
-        0 & \dfrac{f''\bkkstar\,c^*}{\theta}\\[6pt]
-        -1 & \beta
-    \end{bmatrix}}_{\boldsymbol G}
-    \begin{bmatrix}
-        \tilde c\\
-        \tilde k
-    \end{bmatrix}
-\end{align*}
-其中使用了
-\begin{align*}
-    f'\bkkstar-\bka{n+g}=\beta
-\end{align*}
-矩阵 \(\boldsymbol G\) 的行列式为
-\begin{align*}
-    \det\boldsymbol G
-    &=\frac{f''\bkkstar\,c^*}{\theta}<0
-\end{align*}
-这里必须同时考察迹与特征方程，不能仅凭行列式判断稳定性。特征值满足
-\begin{align*}
-    \mu^2-\beta\,\mu+\frac{f''\bkkstar\,c^*}{\theta}=0
-\end{align*}
-由于常数项 \(f''\bkkstar\,c^*\islash\theta<0\)，两个特征值异号：
-\begin{align*}
-    \mu_1
-    &=\frac{\beta+\sqrt{\beta^2-4\,f''\bkkstar\,c^*\islash\theta}}{2}>0\\
-    \mu_2
-    &=\frac{\beta-\sqrt{\beta^2-4\,f''\bkkstar\,c^*\islash\theta}}{2}<0
-\end{align*}
-因此稳态是鞍点。状态变量 \(k\bko\) 已由历史给定，而控制变量 \(c\bko\) 可以跳跃；恰有一个消费初值消除不稳定特征根，使经济沿稳定臂收敛到稳态。
+% 在稳态附近对消费与资本运动方程作一阶 Taylor 展开。定义偏离稳态的变量
+% \begin{align*}
+%     \tilde c\coloneq c-c^*
+%     \qquad \& \qquad
+%     \tilde k\coloneq k-k^*
+% \end{align*}
+% 利用稳态条件，可得
+% \begin{align*}
+%     \begin{bmatrix}
+%         \dot{\tilde c}\\
+%         \dot{\tilde k}
+%     \end{bmatrix}
+%     &\approx
+%     \underbrace{
+%     \begin{bmatrix}
+%         0 & \dfrac{f''\bkkstar\,c^*}{\theta}\\[6pt]
+%         -1 & \beta
+%     \end{bmatrix}}_{\boldsymbol G}
+%     \begin{bmatrix}
+%         \tilde c\\
+%         \tilde k
+%     \end{bmatrix}
+% \end{align*}
+% 其中使用了
+% \begin{align*}
+%     f'\bkkstar-\bka{n+g}=\beta
+% \end{align*}
+% 矩阵 \(\boldsymbol G\) 的行列式为
+% \begin{align*}
+%     \det\boldsymbol G
+%     &=\frac{f''\bkkstar\,c^*}{\theta}<0
+% \end{align*}
+% 这里必须同时考察迹与特征方程，不能仅凭行列式判断稳定性。特征值满足
+% \begin{align*}
+%     \mu^2-\beta\,\mu+\frac{f''\bkkstar\,c^*}{\theta}=0
+% \end{align*}
+% 由于常数项 \(f''\bkkstar\,c^*\islash\theta<0\)，两个特征值异号：
+% \begin{align*}
+%     \mu_1
+%     &=\frac{\beta+\sqrt{\beta^2-4\,f''\bkkstar\,c^*\islash\theta}}{2}>0\\
+%     \mu_2
+%     &=\frac{\beta-\sqrt{\beta^2-4\,f''\bkkstar\,c^*\islash\theta}}{2}<0
+% \end{align*}
+% 因此稳态是鞍点。状态变量 \(k\bko\) 已由历史给定，而控制变量 \(c\bko\) 可以跳跃；恰有一个消费初值消除不稳定特征根，使经济沿稳定臂收敛到稳态。
 
-\subsection{鞍点路径的斜率与调整速度}\label{subsec:RCKSaddleSlope}
+% \subsection{鞍点路径的斜率与调整速度}\label{subsec:RCKSaddleSlope}
 
-沿稳定特征方向，\(\tilde c\) 与 \(\tilde k\) 以共同速率 \(\mu_2\) 变化。由线性化系统第一行可得
-\begin{align*}
-    \mu_2\,\tilde c
-    &=\frac{f''\bkkstar\,c^*}{\theta}\,\tilde k
-\end{align*}
-所以稳态附近的鞍点路径为
-\begin{align*}
-    c-c^*
-    &\approx\frac{f''\bkkstar\,c^*}{\theta\,\mu_2}\bka{k-k^*}
-\end{align*}
-由于 \(f''\bkkstar<0\) 且 \(\mu_2<0\)，鞍点路径斜率为正。偏离稳态的部分近似按 \(e^{\mu_2\,t}\) 衰减，因此局部收敛速度为 \(-\mu_2>0\)。
+% 沿稳定特征方向，\(\tilde c\) 与 \(\tilde k\) 以共同速率 \(\mu_2\) 变化。由线性化系统第一行可得
+% \begin{align*}
+%     \mu_2\,\tilde c
+%     &=\frac{f''\bkkstar\,c^*}{\theta}\,\tilde k
+% \end{align*}
+% 所以稳态附近的鞍点路径为
+% \begin{align*}
+%     c-c^*
+%     &\approx\frac{f''\bkkstar\,c^*}{\theta\,\mu_2}\bka{k-k^*}
+% \end{align*}
+% 由于 \(f''\bkkstar<0\) 且 \(\mu_2<0\)，鞍点路径斜率为正。偏离稳态的部分近似按 \(e^{\mu_2\,t}\) 衰减，因此局部收敛速度为 \(-\mu_2>0\)。
 
-图 \ref{fig:RCKLinearPhase} 展示线性系统的两条特征方向。橙色正斜率直线是稳定臂，箭头指向稳态；灰色负斜率直线是不稳定方向，箭头离开稳态。资本零运动线在线性近似下斜率为 \(\beta>0\)，而消费零运动线仍为竖直线。
+% 图 \ref{fig:RCKLinearPhase} 展示线性系统的两条特征方向。橙色正斜率直线是稳定臂，箭头指向稳态；灰色负斜率直线是不稳定方向，箭头离开稳态。资本零运动线在线性近似下斜率为 \(\beta>0\)，而消费零运动线仍为竖直线。
 
-\begin{figure}[htbp]
-    \centering
-    \begin{tikzpicture}[x=1.25cm,y=1.05cm,line cap=round,line join=round,>=Latex,every node/.style={font=\small}]
-        \pgfmathsetmacro{\xmax}{8.0}
-        \pgfmathsetmacro{\ymax}{5.7}
-        \pgfmathsetmacro{\kstar}{4.15}
-        \pgfmathsetmacro{\cstar}{2.65}
-        \draw[-{Latex[length=2.5mm,width=1.8mm]},semithick,DiagramPrimary] (0,0) -- (\xmax,0) node[below left] {\(k\)};
-        \draw[-{Latex[length=2.5mm,width=1.8mm]},semithick,DiagramPrimary] (0,0) -- (0,\ymax) node[below left,xshift=-2pt,yshift=5pt] {\(c\)};
-        \draw[DiagramGuide,semithick] (\kstar,0) -- (\kstar,5.35);
-        \node[below,DiagramAnnotation] at (\kstar,0) {\(k^*\)};
-        \node[above,DiagramAnnotation] at (\kstar,5.35) {\(\dot c=0\)};
-        \draw[DiagramPrimary,very thick] (1.45,1.48) -- (6.72,3.86);
-        \node[DiagramAnnotation,right] at (6.72,3.86) {\(\dot k=0\)};
-        \draw[DiagramHighlight,very thick] (2.28,0.70) -- (6.16,5.03);
-        \draw[DiagramHighlight,very thick,-{Latex[length=2.5mm,width=1.8mm]}] (2.62,1.08) -- (3.28,1.82);
-        \draw[DiagramHighlight,very thick,-{Latex[length=2.5mm,width=1.8mm]}] (5.63,4.44) -- (5.00,3.74);
-        \node[DiagramHighlight,left] at (2.28,0.70) {\(S\)};
-        \node[DiagramHighlight,right] at (6.16,5.03) {\(S\)};
-        \draw[DiagramComparison,very thick] (1.18,3.18) -- (7.08,2.05);
-        \draw[DiagramComparison,very thick,-{Latex[length=2.5mm,width=1.8mm]}] (3.45,2.78) -- (2.48,2.97);
-        \draw[DiagramComparison,very thick,-{Latex[length=2.5mm,width=1.8mm]}] (4.88,2.51) -- (5.87,2.32);
-        \node[DiagramComparison,above] at (1.18,3.18) {\(U\)};
-        \node[DiagramComparison,above] at (7.08,2.05) {\(U\)};
-        \fill[DiagramHighlight] (\kstar,\cstar) circle (1.8pt);
-        \node[above left,BodyText] at (\kstar,\cstar) {\(E\)};
-    \end{tikzpicture}
-    \caption{RCK 模型在稳态附近的线性化相图}
-    \label{fig:RCKLinearPhase}
-\end{figure}
+% \begin{figure}[htbp]
+%     \centering
+%     \begin{tikzpicture}[x=1.25cm,y=1.05cm,line cap=round,line join=round,>=Latex,every node/.style={font=\small}]
+%         \pgfmathsetmacro{\xmax}{8.0}
+%         \pgfmathsetmacro{\ymax}{5.7}
+%         \pgfmathsetmacro{\kstar}{4.15}
+%         \pgfmathsetmacro{\cstar}{2.65}
+%         \draw[-{Latex[length=2.5mm,width=1.8mm]},semithick,DiagramPrimary] (0,0) -- (\xmax,0) node[below left] {\(k\)};
+%         \draw[-{Latex[length=2.5mm,width=1.8mm]},semithick,DiagramPrimary] (0,0) -- (0,\ymax) node[below left,xshift=-2pt,yshift=5pt] {\(c\)};
+%         \draw[DiagramGuide,semithick] (\kstar,0) -- (\kstar,5.35);
+%         \node[below,DiagramAnnotation] at (\kstar,0) {\(k^*\)};
+%         \node[above,DiagramAnnotation] at (\kstar,5.35) {\(\dot c=0\)};
+%         \draw[DiagramPrimary,very thick] (1.45,1.48) -- (6.72,3.86);
+%         \node[DiagramAnnotation,right] at (6.72,3.86) {\(\dot k=0\)};
+%         \draw[DiagramHighlight,very thick] (2.28,0.70) -- (6.16,5.03);
+%         \draw[DiagramHighlight,very thick,-{Latex[length=2.5mm,width=1.8mm]}] (2.62,1.08) -- (3.28,1.82);
+%         \draw[DiagramHighlight,very thick,-{Latex[length=2.5mm,width=1.8mm]}] (5.63,4.44) -- (5.00,3.74);
+%         \node[DiagramHighlight,left] at (2.28,0.70) {\(S\)};
+%         \node[DiagramHighlight,right] at (6.16,5.03) {\(S\)};
+%         \draw[DiagramComparison,very thick] (1.18,3.18) -- (7.08,2.05);
+%         \draw[DiagramComparison,very thick,-{Latex[length=2.5mm,width=1.8mm]}] (3.45,2.78) -- (2.48,2.97);
+%         \draw[DiagramComparison,very thick,-{Latex[length=2.5mm,width=1.8mm]}] (4.88,2.51) -- (5.87,2.32);
+%         \node[DiagramComparison,above] at (1.18,3.18) {\(U\)};
+%         \node[DiagramComparison,above] at (7.08,2.05) {\(U\)};
+%         \fill[DiagramHighlight] (\kstar,\cstar) circle (1.8pt);
+%         \node[above left,BodyText] at (\kstar,\cstar) {\(E\)};
+%     \end{tikzpicture}
+%     \caption{RCK 模型在稳态附近的线性化相图}
+%     \label{fig:RCKLinearPhase}
+% \end{figure}
 
-\section{平衡增长路径}\label{sec:RCKBalancedGrowth}
+% \section{平衡增长路径}\label{sec:RCKBalancedGrowth}
 
-在稳态上，有效人均资本、产出与消费保持不变；带有技术趋势的人均变量以 \(g\) 增长，总量变量还包含人口增长 \(n\)。各变量的增长率汇总于表 \ref{tab:RCKBGPRates}。
+% 在稳态上，有效人均资本、产出与消费保持不变；带有技术趋势的人均变量以 \(g\) 增长，总量变量还包含人口增长 \(n\)。各变量的增长率汇总于表 \ref{tab:RCKBGPRates}。
 
-\begin{table}[htbp]
-    \centering
-    \renewcommand{\arraystretch}{1.35}
-    \begin{tabular}{>{\centering\arraybackslash}p{0.28\linewidth}>{\centering\arraybackslash}p{0.29\linewidth}>{\centering\arraybackslash}p{0.20\linewidth}}
-        \toprule
-        变量 & 定义 & BGP 增长率\\
-        \midrule
-        有效人均资本 & \(k=K\islash\bka{AL}\) & \(0\)\\
-        有效人均产出 & \(y=Y\islash\bka{AL}\) & \(0\)\\
-        有效人均消费 & \(c=C\islash A\) & \(0\)\\
-        人均资本 & \(K\islash L\) & \(g\)\\
-        人均产出 & \(Y\islash L\) & \(g\)\\
-        人均消费 & \(C\) & \(g\)\\
-        劳动 & \(L\) & \(n\)\\
-        技术 & \(A\) & \(g\)\\
-        资本与产出总量 & \(K\)、\(Y\) & \(n+g\)\\
-        总消费 & \(C\,L\) & \(n+g\)\\
-        \bottomrule
-    \end{tabular}
-    \caption{RCK 模型平衡增长路径上的增长率}
-    \label{tab:RCKBGPRates}
-    \renewcommand{\arraystretch}{0}
-\end{table}
+% \begin{table}[htbp]
+%     \centering
+%     \renewcommand{\arraystretch}{1.35}
+%     \begin{tabular}{>{\centering\arraybackslash}p{0.28\linewidth}>{\centering\arraybackslash}p{0.29\linewidth}>{\centering\arraybackslash}p{0.20\linewidth}}
+%         \toprule
+%         变量 & 定义 & BGP 增长率\\
+%         \midrule
+%         有效人均资本 & \(k=K\islash\bka{AL}\) & \(0\)\\
+%         有效人均产出 & \(y=Y\islash\bka{AL}\) & \(0\)\\
+%         有效人均消费 & \(c=C\islash A\) & \(0\)\\
+%         人均资本 & \(K\islash L\) & \(g\)\\
+%         人均产出 & \(Y\islash L\) & \(g\)\\
+%         人均消费 & \(C\) & \(g\)\\
+%         劳动 & \(L\) & \(n\)\\
+%         技术 & \(A\) & \(g\)\\
+%         资本与产出总量 & \(K\)、\(Y\) & \(n+g\)\\
+%         总消费 & \(C\,L\) & \(n+g\)\\
+%         \bottomrule
+%     \end{tabular}
+%     \caption{RCK 模型平衡增长路径上的增长率}
+%     \label{tab:RCKBGPRates}
+%     \renewcommand{\arraystretch}{0}
+% \end{table}
 
-稳态储蓄率不再是外生参数。由 \(\dot k=0\) 可知，稳态投资恰好补偿人口与技术进步造成的资本稀释，因此
-\begin{align*}
-    s^*
-    &=\frac{Y-C\,L}{Y}
-    =\frac{\bka{n+g}k^*}{f\bkkstar}
-\end{align*}
-偏好参数通过资本稳态条件决定 \(k^*\)，继而决定长期储蓄率。这正是 RCK 模型相较于 Solow 模型的关键进步：长期增长率仍由外生技术进步决定，但消费、资本水平与储蓄率来自跨期最优化。
+% 稳态储蓄率不再是外生参数。由 \(\dot k=0\) 可知，稳态投资恰好补偿人口与技术进步造成的资本稀释，因此
+% \begin{align*}
+%     s^*
+%     &=\frac{Y-C\,L}{Y}
+%     =\frac{\bka{n+g}k^*}{f\bkkstar}
+% \end{align*}
+% 偏好参数通过资本稳态条件决定 \(k^*\)，继而决定长期储蓄率。这正是 RCK 模型相较于 Solow 模型的关键进步：长期增长率仍由外生技术进步决定，但消费、资本水平与储蓄率来自跨期最优化。
 
 \FinishStandaloneChapter

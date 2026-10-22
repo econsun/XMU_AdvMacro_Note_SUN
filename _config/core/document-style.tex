@@ -70,7 +70,7 @@
 \floatplacement{table}{!htbp}
 \setstretch{1.38}
 \setlength{\parindent}{2em}
-\setlength{\parskip}{2ex plus 0.3ex minus 0.2ex}
+\setlength{\parskip}{\BodyParagraphSpacing}
 \newcommand{\TTTFont}{\fontsize{11.5pt}{12.5pt}\selectfont\ttfamily}
 \DeclareRobustCommand{\ttt}[1]{{\TTTFont #1}}
 
@@ -236,7 +236,7 @@
     % 不改变总目录原有的缩进、点线和行距。
     \let\CourseOriginalDottedTocLine\@dottedtocline
     \renewcommand{\@dottedtocline}[5]{%
-        \CourseOriginalDottedTocLine{##1}{##2}{##3}{##4}{{\HeadingLatinFont ##5}}}%
+        \CourseOriginalDottedTocLine{##1}{##2}{##3}{##4}{{\HeadingLatinFont\color{ActiveAccent} ##5}}}%
     \renewcommand*\l@part[2]{%
         \addpenalty{-\@highpenalty}%
         \addvspace{1.25em plus 1pt}%
@@ -272,9 +272,12 @@
             {\bfseries\color{ActiveAccent}##1}%
             {\HeadingLatinFont\bfseries\color{ActiveAccent}##2}}%
     \renewcommand*\l@section[2]{%
+        \begingroup
+        \def\@dotsep{4.5}%
         \@dottedtocline{1}{1.1em}{3.3em}%
             {\color{SecondaryText}##1}%
-            {\HeadingLatinFont\color{SecondaryText}##2}}%
+            {\HeadingLatinFont\color{ActiveAccent}##2}%
+        \endgroup}%
     \localtableofcontents*%
     \endgroup
 }
